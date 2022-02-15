@@ -1,0 +1,3 @@
+node_modules/
+rsync_deploy.sh
+package-lock.json

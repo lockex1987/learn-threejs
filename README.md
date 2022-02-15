@@ -38,13 +38,15 @@ Các bài viết trên Viblo:
 
 Để chạy một trang web sử dụng Three.js, trình duyệt của bạn phải hỗ trợ WebGL. Ngoài ra, để chạy các ví dụ mà tôi sẽ viết thì trình duyệt của bạn cũng cần hỗ trợ load script dạng module, hỗ trợ lập trình hướng đối tượng trong JS. Có lẽ bạn sẽ không cần quá quan tâm vì hầu hết các trình duyệt hiện nay đều đã hỗ trợ tất cả những điều đó rồi.
 
-TODO: Các source code đi kèm được tôi đẩy lên GitHub để bạn có thể lấy về:
+Các source code đi kèm được tôi đẩy lên GitHub để bạn có thể lấy về:
 
-[https://github.com/josdirksen/learning-threejs-third](https://github.com/josdirksen/learning-threejs-third)
+[https://github.com/lockex1987/learn-threejs](https://github.com/lockex1987/learn-threejs)
 
 Các source code đều là các file định dạng text (`html`, `js`,  `css`). Để chỉnh sửa, bạn chỉ cần bất cứ text editor nào mà bạn muốn (ví dụ VSCode).
 
 Để chạy các file ví dụ mà tôi viết ở máy của bạn, bạn cần có web server vì một số ví dụ có tải các tài nguyên ngoài cho Texture và model. Ngoài ra các ví dụ viết kiểu JS module nên chắc chắn cần web server. Bạn không thể chạy file html dạng `file:///` được.
+
+
 
 ### Tải thư viện Three.js
 
