@@ -102,7 +102,7 @@ Bạn có thể sử dụng npm:
 npm install three
 ```
 
-Lệnh npm trên thực hiện khá là nhanh do chỉ download các thư mục `build`,        `examples`, `src`.
+Lệnh npm trên thực hiện khá là nhanh do chỉ download các thư mục `build`,  `examples`, `src`.
 
 Nếu bạn có nhu cầu cần nâng cấp giữa các phiên bản thì có thể làm theo hướng dẫn ở địa chỉ sau:
 
