@@ -46,7 +46,11 @@ Các source code đều là các file định dạng text (`html`, `js`,  `css`)
 
 Để chạy các file ví dụ mà tôi viết ở máy của bạn, bạn cần có web server vì một số ví dụ có tải các tài nguyên ngoài cho Texture và model. Ngoài ra các ví dụ viết kiểu JS module nên chắc chắn cần web server. Bạn không thể chạy file html dạng `file:///` được.
 
+Bạn có thể tạo một web server đơn giản bằng PHP như sau:
 
+```
+php -S localhost:8000
+```
 
 ### Tải thư viện Three.js
 
