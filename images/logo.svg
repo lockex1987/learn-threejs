@@ -1,0 +1,109 @@
+<svg version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    width="330px"
+    height="330px"
+    viewBox="0 0 330 330">
+    <defs>
+        <pattern id="partsBackground2"
+            x="0"
+            y="0"
+            width="400"
+            height="320"
+            patternUnits="userSpaceOnUse">
+            <g transform="rotate(-25 0 0)">
+                <g transform="translate(-150 -320)">
+                    <!-- Màu hồng: #f63a99 -->
+                    <!-- Màu đỏ: hsl(354, 70%, 63%) -->
+                    <!-- Màu lục: #28a745 -->
+                    <!-- Màu lam nhẹ: #13aff0 -->
+                    <!-- Màu vàng: hsl(45, 100%, 43%) -->
+                    <!--
+                    bs-blue: #0d6efd;
+                    bs-indigo: #6610f2;
+                    bs-purple: #6f42c1;
+                    bs-pink: #d63384;
+                    bs-red: #dc3545;
+                    bs-orange: #fd7e14;
+                    bs-yellow: #ffc107;
+                    bs-green: #198754;
+                    bs-teal: #20c997;
+                    bs-cyan: #0dcaf0;
+                    -->
+                    <rect x="0"   y="0" width="400" height="80" fill="#20c997"></rect>
+                    <rect x="0"  y="80" width="400" height="80" fill="#d63384"></rect>
+                    <rect x="0" y="160" width="400" height="80" fill="#0d6efd"></rect>
+                    <rect x="0" y="240" width="400" height="80" fill="#ffc107"></rect>
+
+                    <rect x="0" y="320" width="400" height="80" fill="#20c997"></rect>
+                    <rect x="0" y="400" width="400" height="80" fill="#d63384"></rect>
+                    <rect x="0" y="480" width="400" height="80" fill="#0d6efd"></rect>
+                    <rect x="0" y="560" width="400" height="80" fill="#ffc107"></rect>
+
+                    <animateTransform attributeName="transform"
+                        attributeType="XML"
+                        type="translate"
+                        from="-150 -320"
+                        to="-150 0"
+                        dur="5s"
+                        repeatCount="indefinite"></animateTransform>
+                </g>
+            </g>
+        </pattern>
+    </defs>
+    
+    <!-- Chú ý tỷ lệ vàng 1:0.618 -->
+    <g transform="translate(70, 0)">
+        <!-- Kem -->
+        <path d="M 0 80
+            A 70 80 0 0 1 70 0
+            L 120 0
+            A 70 80 0 0 0 190 80
+            L 190 250
+            A 10 10 0 0 1 180 260
+            L 10 260
+            A 10 10 0 0 1 0 250
+            Z"
+            fill="url(#partsBackground2)" />
+
+        <!-- Bóng của kem -->
+        <path d="M 20 80
+            A 10 10 0 0 1 40 80
+            L 40 230
+            A 10 10 0 0 1 20 230
+            Z"
+            fill="rgba(255, 255, 255, 0.5)" />
+
+        <!-- Que cầm -->
+        <path d="M 70 260
+            L 120 260
+            L 120 315
+            A 30 30 0 0 1 70 315
+            Z"
+            fill="#E09C5F" />
+        
+        <!-- Bóng của que cầm -->
+        <rect x="70" y="260"
+            width="50" height="25"
+            fill="#8D613B"/>
+        
+        <!-- Ngôi sao nhấp nháy -->
+        <g transform="scale(0.1) translate(1600, 200)">
+            <path id="twinkleStart"
+                d="M -100 0
+                    A 100 100 0 0 0 0 -100
+                    A 100 100 0 0 0 100 0
+                    A 100 100 0 0 0 0 100
+                    A 100 100 0 0 0 -100 0"
+                fill="#fd7e14">
+                <animateTransform attributeName="transform"
+                    attributeType="XML"
+                    type="rotate"
+                    from="0 0 0"
+                    to="360 0 0"
+                    dur="3s"
+                    repeatCount="indefinite"></animateTransform>
+            </path>
+        </g>
+    </g>
+</svg>
