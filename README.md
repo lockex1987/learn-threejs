@@ -246,7 +246,7 @@ constructor(canvas) {
 
 ```javascript
 createCube() {
-    const cubeGeometry = new BoxGeometry(16, 16, 16);
+    const cubeGeometry = new BoxGeometry(6, 6, 6);
     const cubeMaterial = new MeshNormalMaterial();
     const cube = new Mesh(cubeGeometry, cubeMaterial);
     cube.position.set(-4, 3, 0);
@@ -325,7 +325,7 @@ class ThreejsExample {
     }
 
     createCube() {
-        const cubeGeometry = new BoxGeometry(16, 16, 16);
+        const cubeGeometry = new BoxGeometry(6, 6, 6);
         const cubeMaterial = new MeshNormalMaterial();
         const cube = new Mesh(cubeGeometry, cubeMaterial);
         cube.position.set(-4, 3, 0);
