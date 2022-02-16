@@ -124,3 +124,6 @@ function init() {
         renderer.setSize(window.innerWidth, window.innerHeight);
     }
 }
+
+
+init();

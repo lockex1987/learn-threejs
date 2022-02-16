@@ -116,3 +116,5 @@ function init() {
         renderer.render(scene, camera);
     }
 }
+
+init();
