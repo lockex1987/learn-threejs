@@ -24,6 +24,10 @@ Bạn có thể xem ví dụ của sách trên online ở đây:
 
 [All (150+) learning Three.js third edition examples online - SmartJava](https://www.smartjava.org/content/all-learning-three-js-third-edition-examples-online/)
 
+Bạn có thể download source code cho sách này ở:
+
+[https://github.com/PacktPublishing/Learn-Three.js-Third-Edition](https://github.com/PacktPublishing/Learn-Three.js-Third-Edition)
+
 Bạn cũng có thể học theo tutorial sau:
 
 [Discover Three.js](https://discoverthreejs.com)
