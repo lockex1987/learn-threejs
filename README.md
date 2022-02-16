@@ -362,43 +362,59 @@ Ví dụ đơn giản của chúng ta chỉ sử dụng các đối tượng cơ
 
 Các cảnh 3D đều được tạo từ các đối tượng cơ bản trên, cùng với đối tượng cơ bản khác là Light mà chúng ta chưa nhắc đến.
 
+### Sử dụng dat.GUI để trải nghiệm dễ dàng hơn
 
+Thư viện dat.GUI cho phép bạn tạo một giao diện đơn giản để bạn có thể thay đổi các biến trong code của bạn. Chúng ta sẽ tích hợp dat.GUI vào các ví dụ để có thể điều chỉnh vị trí, xoay các đối tượng, thay đổi các cấu hình khác, giúp bạn hiểu hơn khi tìm hiểu từng khái niệm mới.
 
+Trang GitHub chủ của thư viện là:
 
+[GitHub - dataarts/dat.gui: dat.gui is a lightweight controller library for  JavaScript](https://github.com/dataarts/dat.gui)
 
+Để sử dụng thư viện, chúng ta thêm thẻ `script` sau vào trang:
 
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
+```
 
+Chúng ta sẽ khai báo một đối tượng JS mà sẽ có các thuộc tính mà chúng ta muốn thay đổi sử dụng dat.GUI. Ví dụ chúng ta muốn thay đổi góc quay theo 3 trục của hình lập phương mà chúng ta đã tạo ở ví dụ trước:
 
+```javascript
+this.controls = {
+    rotationX: 0,
+    rotationY: 0,
+    rotationZ: 0
+};
+```
 
+Tiếp theo, chúng ta sẽ truyền đối tượng này cho đối tượng dat.GUI mới và định nghĩa khoảng giá trị của các thuộc tính (từ 0 đến 360 độ). Chúng ta cũng định nghĩa nghiệp vụ khi giá trị các thuộc tính được thay đổi ở phương thức `onChange`. Các góc trong Three.js sử dụng đơn vị là radian nên chúng ta cũng có thêm phương thức `convertDegToRad` để chuyển từ độ sang radian.
 
+```javascript
+createGui() {
+    const gui = new dat.GUI();
+    gui.add(this.controls, 'rotationX', 0, 360).onChange(value => {
+        this.cube.rotation.x = this.convertDegToRad(value);
+        this.render();
+    });
+    gui.add(this.controls, 'rotationY', 0, 360).onChange(value => {
+        this.cube.rotation.y = this.convertDegToRad(value);
+        this.render();
+    });
+    gui.add(this.controls, 'rotationZ', 0, 360).onChange(value => {
+        this.cube.rotation.z = this.convertDegToRad(value);
+        this.render();
+    });
+}
 
+convertDegToRad(deg) {
+    return deg * Math.PI / 180;
+}
+```
 
+[Ví dụ 01.03 - Control GUI](https://static.lockex1987.com/learn-threejs/chapter-01/03-control-gui.html)
 
+Khi bạn chạy ví dụ trên, bạn sẽ thấy một giao diện đơn giản ở góc trên phải của màn hình mà bạn có thể điều khiển góc quay theo các trục X, Y, Z.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![01-03](screenshots/01-03.png)
 
 
 

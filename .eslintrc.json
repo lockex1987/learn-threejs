@@ -9,7 +9,8 @@
     ],
     "globals": {
         "Vue": "readonly",
-        "axios": "readonly"
+        "axios": "readonly",
+        "dat": "readonly"
     },
     "parserOptions": {
         "ecmaVersion": 12,
