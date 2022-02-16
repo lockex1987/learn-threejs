@@ -8,6 +8,8 @@ import {
     Mesh
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
+import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
+
 
 class ThreejsExample {
     constructor(canvas) {

@@ -373,7 +373,13 @@ Trang GitHub chủ của thư viện là:
 Để sử dụng thư viện, chúng ta thêm thẻ `script` sau vào trang:
 
 ```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
+<script src="https://unpkg.com/dat.gui@0.7.7/build/dat.gui.min.js"></script>
+```
+
+Hoặc bạn cũng có thể import như sau:
+
+```javascript
+import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
 ```
 
 Chúng ta sẽ khai báo một đối tượng JS mà sẽ có các thuộc tính mà chúng ta muốn thay đổi sử dụng dat.GUI. Ví dụ chúng ta muốn thay đổi góc quay theo 3 trục của hình lập phương mà chúng ta đã tạo ở ví dụ trước:

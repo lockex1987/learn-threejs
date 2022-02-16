@@ -13,7 +13,12 @@ import {
     Clock
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
-// import { initTrackballControls } from '../../js/utils.js';
+import {
+    initStats,
+    initTrackballControls
+} from '../../js/utils.js';
+
+import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
 
 
 class ThreejsExample {
@@ -43,13 +48,13 @@ class ThreejsExample {
         };
         this.createGui();
 
-        // this.stats = initStats();
+        this.stats = initStats();
 
         // Call the render function
         this.step = 0;
 
         // Attach them here, since appendChild needs to be called first
-        // this.trackballControls = initTrackballControls(this.camera, this.renderer);
+        this.trackballControls = initTrackballControls(this.camera, this.renderer);
 
         this.clock = new Clock();
 
@@ -153,9 +158,8 @@ class ThreejsExample {
     }
 
     render() {
-        // Update the stats and the controls
-        // this.trackballControls.update(this.clock.getDelta());
-        // this.stats.update();
+        this.stats.update();
+        this.trackballControls.update(this.clock.getDelta());
         this.update();
         this.renderer.render(this.scene, this.camera);
         requestAnimationFrame(this.render.bind(this));
