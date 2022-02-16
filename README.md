@@ -412,7 +412,7 @@ convertDegToRad(deg) {
 
 [Ví dụ 01.03 - Control GUI](https://static.lockex1987.com/learn-threejs/chapter-01/03-control-gui.html)
 
-Khi bạn chạy ví dụ trên, bạn sẽ thấy một giao diện đơn giản ở góc trên phải của màn hình mà bạn có thể điều khiển góc quay theo các trục X, Y, Z.
+Khi bạn chạy ví dụ trên, bạn sẽ thấy một giao diện đơn giản ở góc trên phải của màn hình mà bạn có thể điều khiển góc quay theo các trục X, Y, Z. Hãy tự mình xoay hình lập phương theo các góc khác nhau để cảm nhận tính 3D của cảnh.
 
 ![01-03](screenshots/01-03.png)
 
