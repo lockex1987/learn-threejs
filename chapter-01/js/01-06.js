@@ -1,129 +1,242 @@
-function init() {
-    // Listen to the resize events
-    window.addEventListener('resize', onResize, false);
+import {
+    Scene,
+    PerspectiveCamera,
+    WebGLRenderer,
+    Color,
+    BoxGeometry,
+    ConeGeometry,
+    CylinderGeometry,
+    SphereGeometry,
+    PlaneGeometry,
+    MeshLambertMaterial,
+    Mesh,
+    SpotLight,
+    AmbientLight,
+    Vector2
+} from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
-    // Initialize stats
-    const stats = initStats();
 
-    // create a scene, that will hold all our elements such as objects, cameras and lights.
-    const scene = new THREE.Scene();
+/**
+ * r65 → r66: Renamed CubeGeometry to BoxGeometry.
+ */
+class ThreejsExample {
+    constructor(canvas) {
+        this.scene = this.createScene();
+        this.camera = this.createCamera();
+        this.renderer = this.createRenderer(canvas);
 
-    // create a camera, which defines where we're looking at.
-    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const cube = this.createCube();
+        this.scene.add(cube);
 
-    // create a render and set the size
-    const renderer = new THREE.WebGLRenderer();
+        const sphere = this.createSphere();
+        this.scene.add(sphere);
 
-    renderer.setClearColor(new THREE.Color(0x000000));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMap.enabled = true;
+        const plane = this.createPlane();
+        this.scene.add(plane);
 
-    // initialize the trackball controls and the clock which is needed
-    const trackballControls = initTrackballControls(camera, renderer);
-    const clock = new THREE.Clock();
+        this.createBoundingWall(this.scene);
+        this.createGroundPlane(this.scene);
+        this.createHouse(this.scene);
+        this.createTree(this.scene);
 
-    // create the ground plane
-    const planeGeometry = new THREE.PlaneGeometry(60, 20, 1, 1);
-    const planeMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
-    const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-    plane.receiveShadow = true;
+        const spotLight = this.createSpotLight();
+        this.scene.add(spotLight);
 
-    // rotate and position the plane
-    plane.rotation.x = -0.5 * Math.PI;
-    plane.position.x = 15;
-    plane.position.y = 0;
-    plane.position.z = 0;
+        const ambienLight = this.createAmbientLight();
+        this.scene.add(ambienLight);
 
-    // add the plane to the scene
-    scene.add(plane);
-
-    // create a cube
-    const cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
-    const cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
-    const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-    cube.castShadow = true;
-
-    // position the cube
-    cube.position.x = -4;
-    cube.position.y = 3;
-    cube.position.z = 0;
-
-    // add the cube to the scene
-    scene.add(cube);
-
-    const sphereGeometry = new THREE.SphereGeometry(4, 20, 20);
-    const sphereMaterial = new THREE.MeshLambertMaterial({ color: 0x7777ff });
-    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-
-    // position the sphere
-    sphere.position.x = 20;
-    sphere.position.y = 0;
-    sphere.position.z = 2;
-    sphere.castShadow = true;
-
-    // add the sphere to the scene
-    scene.add(sphere);
-
-    // position and point the camera to the center of the scene
-    camera.position.x = -30;
-    camera.position.y = 40;
-    camera.position.z = 30;
-    camera.lookAt(scene.position);
-
-    // add subtle ambient lighting
-    const ambienLight = new THREE.AmbientLight(0x353535);
-    scene.add(ambienLight);
-
-    // add spotlight for the shadows
-    const spotLight = new THREE.SpotLight(0xffffff);
-    spotLight.position.set(-10, 20, -5);
-    spotLight.castShadow = true;
-    scene.add(spotLight);
-
-    // add the output of the renderer to the html element
-    document.getElementById('webgl-output').appendChild(renderer.domElement);
-
-    // call the render function
-    let step = 0;
-
-    const controls = new function () {
-        this.rotationSpeed = 0.02;
-        this.bouncingSpeed = 0.03;
-    }();
-
-    const gui = new dat.GUI();
-    gui.add(controls, 'rotationSpeed', 0, 0.5);
-    gui.add(controls, 'bouncingSpeed', 0, 0.5);
-
-    render();
-
-    function render() {
-        // update the stats and the controls
-        trackballControls.update(clock.getDelta());
-
-        stats.update();
-
-        // rotate the cube around its axes
-        cube.rotation.x += controls.rotationSpeed;
-        cube.rotation.y += controls.rotationSpeed;
-        cube.rotation.z += controls.rotationSpeed;
-
-        // bounce the sphere up and down
-        step += controls.bouncingSpeed;
-        sphere.position.x = 20 + (10 * (Math.cos(step)));
-        sphere.position.y = 2 + (10 * Math.abs(Math.sin(step)));
-
-        // render using requestAnimationFrame
-        requestAnimationFrame(render);
-        renderer.render(scene, camera);
+        this.render();
     }
 
-    function onResize() {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
+    createScene() {
+        const scene = new Scene();
+        return scene;
+    }
+
+    createCamera() {
+        const aspect = window.innerWidth / window.innerHeight;
+        const camera = new PerspectiveCamera(45, aspect, 0.1, 1000);
+        camera.position.x = -30;
+        camera.position.y = 40;
+        camera.position.z = 30;
+        camera.lookAt(this.scene.position);
+        return camera;
+    }
+
+    createRenderer(canvas) {
+        const renderer = new WebGLRenderer({
+            canvas,
+            antialias: true
+        });
+        renderer.setClearColor(new Color(0x000000));
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        return renderer;
+    }
+
+    createCube() {
+        const cubeGeometry = new BoxGeometry(4, 4, 4);
+        const cubeMaterial = new MeshLambertMaterial({
+            color: 0xFF0000
+        });
+        const cube = new Mesh(cubeGeometry, cubeMaterial);
+        cube.castShadow = true;
+
+        cube.position.x = -4;
+        cube.position.y = 2;
+        cube.position.z = 0;
+
+        return cube;
+    }
+
+    createSphere() {
+        const sphereGeometry = new SphereGeometry(4, 20, 20);
+        const sphereMaterial = new MeshLambertMaterial({
+            color: 0x7777ff
+        });
+        const sphere = new Mesh(sphereGeometry, sphereMaterial);
+        sphere.castShadow = true;
+
+        sphere.position.x = 20;
+        sphere.position.y = 4;
+        sphere.position.z = 2;
+
+        return sphere;
+    }
+
+    createPlane() {
+        const planeGeometry = new PlaneGeometry(60, 20);
+        const planeMaterial = new MeshLambertMaterial({
+            color: 0xAAAAAA
+        });
+        const plane = new Mesh(planeGeometry, planeMaterial);
+        plane.receiveShadow = true;
+        plane.rotation.x = -0.5 * Math.PI;
+        plane.position.set(15, 0, 0);
+        return plane;
+    }
+
+    createBoundingWall(scene) {
+        const wallLeft = new BoxGeometry(70, 2, 2);
+        const wallRight = new BoxGeometry(70, 2, 2);
+        const wallTop = new BoxGeometry(2, 2, 50);
+        const wallBottom = new BoxGeometry(2, 2, 50);
+
+        const wallMaterial = new MeshLambertMaterial({
+            color: 0xa0522d
+        });
+
+        const wallLeftMesh = new Mesh(wallLeft, wallMaterial);
+        const wallRightMesh = new Mesh(wallRight, wallMaterial);
+        const wallTopMesh = new Mesh(wallTop, wallMaterial);
+        const wallBottomMesh = new Mesh(wallBottom, wallMaterial);
+
+        wallLeftMesh.position.set(15, 1, -25);
+        wallRightMesh.position.set(15, 1, 25);
+        wallTopMesh.position.set(-19, 1, 0);
+        wallBottomMesh.position.set(49, 1, 0);
+
+        scene.add(wallLeftMesh);
+        scene.add(wallRightMesh);
+        scene.add(wallBottomMesh);
+        scene.add(wallTopMesh);
+    }
+
+    createGroundPlane(scene) {
+        // Create the ground plane
+        const planeGeometry = new PlaneGeometry(70, 50);
+        const planeMaterial = new MeshLambertMaterial({
+            color: 0x9acd32
+        });
+        const plane = new Mesh(planeGeometry, planeMaterial);
+        plane.receiveShadow = true;
+
+        // Rotate and position the plane
+        plane.rotation.x = -0.5 * Math.PI;
+        plane.position.x = 15;
+        plane.position.y = 0;
+        plane.position.z = 0;
+
+        scene.add(plane);
+    }
+
+    createHouse(scene) {
+        const roof = new ConeGeometry(5, 4);
+        const base = new CylinderGeometry(5, 5, 6);
+
+        // Create the mesh
+        const roofMesh = new Mesh(roof, new MeshLambertMaterial({
+            color: 0x8b7213
+        }));
+        const baseMesh = new Mesh(base, new MeshLambertMaterial({
+            color: 0xffe4c4
+        }));
+
+        roofMesh.position.set(25, 8, 0);
+        baseMesh.position.set(25, 3, 0);
+
+        roofMesh.receiveShadow = true;
+        baseMesh.receiveShadow = true;
+        roofMesh.castShadow = true;
+        baseMesh.castShadow = true;
+
+        scene.add(roofMesh);
+        scene.add(baseMesh);
+    }
+
+    createTree(scene) {
+        const trunk = new BoxGeometry(1, 8, 1);
+        const leaves = new SphereGeometry(4);
+
+        // Create the mesh
+        const trunkMesh = new Mesh(trunk, new MeshLambertMaterial({
+            color: 0x8b4513
+        }));
+        const leavesMesh = new Mesh(leaves, new MeshLambertMaterial({
+            color: 0x00ff00
+        }));
+
+        // Position the trunk. Set y to half of height of trunk
+        trunkMesh.position.set(-10, 4, 0);
+        leavesMesh.position.set(-10, 12, 0);
+
+        trunkMesh.castShadow = true;
+        trunkMesh.receiveShadow = true;
+        leavesMesh.castShadow = true;
+        leavesMesh.receiveShadow = true;
+
+        scene.add(trunkMesh);
+        scene.add(leavesMesh);
+    }
+
+    /**
+     * Add spotlight for the shadows.
+     */
+    createSpotLight() {
+        const spotLight = new SpotLight(0xFFFFFF);
+        spotLight.position.set(-40, 40, -15);
+        spotLight.castShadow = true;
+
+        spotLight.shadow.mapSize = new Vector2(1024, 1024);
+        spotLight.shadow.camera.far = 130;
+        spotLight.shadow.camera.near = 40;
+
+        // If you want a more detailled shadow you can increase the
+        // mapSize used to draw the shadows
+        // spotLight.shadow.mapSize = new Vector2(1024, 1024);
+
+        return spotLight;
+    }
+
+    createAmbientLight() {
+        const ambienLight = new AmbientLight(0x353535);
+        return ambienLight;
+    }
+
+    render() {
+        this.renderer.render(this.scene, this.camera);
     }
 }
 
 
-init();
+new ThreejsExample(document.querySelector('#webglOutput'));

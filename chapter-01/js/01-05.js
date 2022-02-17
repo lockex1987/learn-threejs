@@ -1,26 +1,14 @@
 function init() {
-    // Listen to the resize events
-    window.addEventListener('resize', onResize, false);
-
-    // Initialize stats
     const stats = initStats();
 
-    // create a scene, that will hold all our elements such as objects, cameras and lights.
+    // default setup
     const scene = new THREE.Scene();
-
-    // create a camera, which defines where we're looking at.
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-    // create a render and set the size
     const renderer = new THREE.WebGLRenderer();
 
     renderer.setClearColor(new THREE.Color(0x000000));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
-
-    // initialize the trackball controls and the clock which is needed
-    const trackballControls = initTrackballControls(camera, renderer);
-    const clock = new THREE.Clock();
 
     // create the ground plane
     const planeGeometry = new THREE.PlaneGeometry(60, 20, 1, 1);
@@ -45,7 +33,7 @@ function init() {
 
     // position the cube
     cube.position.x = -4;
-    cube.position.y = 3;
+    cube.position.y = 4;
     cube.position.z = 0;
 
     // add the cube to the scene
@@ -80,51 +68,31 @@ function init() {
     spotLight.castShadow = true;
     scene.add(spotLight);
 
-    // add the output of the renderer to the html element
-    document.getElementById('webgl-output').appendChild(renderer.domElement);
+    // Add the output of the renderer to the html element
+    document.getElementById('webgl-output')
+        .appendChild(renderer.domElement);
 
     // call the render function
     let step = 0;
+    renderScene();
 
-    const controls = new function () {
-        this.rotationSpeed = 0.02;
-        this.bouncingSpeed = 0.03;
-    }();
-
-    const gui = new dat.GUI();
-    gui.add(controls, 'rotationSpeed', 0, 0.5);
-    gui.add(controls, 'bouncingSpeed', 0, 0.5);
-
-    render();
-
-    function render() {
-        // update the stats and the controls
-        trackballControls.update(clock.getDelta());
-
+    function renderScene() {
         stats.update();
 
-        // rotate the cube around its axes
-        cube.rotation.x += controls.rotationSpeed;
-        cube.rotation.y += controls.rotationSpeed;
-        cube.rotation.z += controls.rotationSpeed;
+        // Rotate the cube around its axes
+        cube.rotation.x += 0.02;
+        cube.rotation.y += 0.02;
+        cube.rotation.z += 0.02;
 
-        // bounce the sphere up and down
-        step += controls.bouncingSpeed;
+        // Bounce the sphere up and down
+        step += 0.04;
         sphere.position.x = 20 + (10 * (Math.cos(step)));
         sphere.position.y = 2 + (10 * Math.abs(Math.sin(step)));
 
-        // render using requestAnimationFrame
-        requestAnimationFrame(render);
+        // Render using requestAnimationFrame
+        requestAnimationFrame(renderScene);
         renderer.render(scene, camera);
     }
-
-    function onResize() {
-        // return;
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    }
 }
-
 
 init();
