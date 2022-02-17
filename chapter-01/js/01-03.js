@@ -27,7 +27,7 @@ class ThreejsExample {
             rotationY: 0,
             rotationZ: 0
         };
-        this.createGui();
+        this.createControlsGui();
     }
 
     createScene() {
@@ -61,7 +61,7 @@ class ThreejsExample {
         return cube;
     }
 
-    createGui() {
+    createControlsGui() {
         const gui = new dat.GUI();
         gui.add(this.controls, 'rotationX', 0, 360).onChange(value => {
             this.cube.rotation.x = this.convertDegToRad(value);
