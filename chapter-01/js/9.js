@@ -32,13 +32,7 @@ class ThreejsExample {
         this.render();
 
         // container.appendChild(this.renderer.domElement);
-
         // this.setSize();
-
-        window.addEventListener('resize', () => {
-            this.setSize();
-            // this.render();
-        });
     }
 
     createScene() {
@@ -96,19 +90,6 @@ class ThreejsExample {
         this.renderer.render(this.scene, this.camera);
         requestAnimationFrame(this.render.bind(this));
     }
-
-    setSize() {
-        const canvas = this.renderer.domElement;
-
-        console.log(canvas.clientWidth, canvas.clientHeight);
-
-        this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-        this.renderer.setPixelRatio(window.devicePixelRatio);
-    }
 }
-
-// window.addEventListener('load', () => {});
 
 new ThreejsExample(document.querySelector('#webglOutput'));
