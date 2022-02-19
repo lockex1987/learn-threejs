@@ -522,7 +522,7 @@ Khi bạn chạy ví dụ trên, bạn sẽ thấy một giao diện đơn giả
 
 ### Responsive
 
-#### Cảnh chiếm toàn bộ viewport
+#### Cảnh chiếm toàn bộ viewport, responsive theo viewport
 
 Trong các ví dụ trước, bạn đã tạo được một cảnh 3D đơn giản. Tuy nhiên, khi bạn thay đổi kích thước viewport của trình duyệt, bạn có thể thấy là kích thước của cảnh vẫn giữ nguyên. Do đó, nếu bạn mở rộng viewport thì sẽ có các khoảng trắng ở bên phải hoặc bên dưới, còn nếu bạn thu nhỏ viewport thì một số phần của cảnh sẽ bị che mất.
 
@@ -652,7 +652,7 @@ new ThreejsExample(document.querySelector('#webglOutput'));
 
 Bạn có thể test responsive trên các thiết bị mobile bằng cách xoay qua lại giữa chế độ `portrait` và `landscape`. Sự kiện resize cũng xảy ra trên máy tính nếu như chúng ta sử dụng nhiều màn hình và di chuyển trình duyệt giữa các màn hình.
 
-#### Cảnh không chiếm toàn bộ viewport
+#### Cảnh không chiếm toàn bộ viewport, responsive theo canvas
 
 Ở ví dụ trên, chúng ta xử lý trong trường hợp cảnh 3D chiếm toàn bộ viewport. Chúng ta tính toán với các kích thước của viewport (window.innerWidth, window.innerHeight). Vậy trong trường hợp cảnh không chiếm toàn bộ viewport thì sao? Ví dụ khi mà cảnh 3D chỉ là một phần trang trí của trang web, có thể có kích thước cố định nào đó hoặc là kích thước tương đối theo phần trăm với viewport. Lúc đó chúng ta sẽ cần dựa vào phần tử canvas của trang, nơi mà cảnh 3D được render.
 
@@ -795,7 +795,19 @@ window.addEventListener('load', () => {
 
 #### Pixel ratio
 
-Trên máy Mac, thiết bị mobile
+Trên máy Mac, thiết bị mobile. Điện thoại của tôi có giá trị là 3.
+
+Ảnh
+
+Một số ví dụ trên mạng có thể hướng dẫn cách sau:
+
+this.renderer.setPixelRatio(window.devicePixelRatio);
+
+Tuy nhiên, documentation trên trang chủ của Three.js khuyên không nên sử dụng cách này.
+
+Khóa học Three.js Journey khuyên chỉ để tối đa là 2.
+
+Ví dụ 01.06 - Pixel ratio
 
 
 
