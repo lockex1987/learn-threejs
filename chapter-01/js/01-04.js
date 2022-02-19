@@ -39,6 +39,9 @@ class ThreejsExample {
             antialias: true
         });
         renderer.setClearColor(new Color(0x000000));
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        renderer.setSize(width, height, false);
         return renderer;
     }
 
