@@ -795,21 +795,23 @@ window.addEventListener('load', () => {
 
 #### Pixel ratio
 
-Trên máy Mac, thiết bị mobile. Điện thoại của tôi có giá trị là 3.
+Trên máy Mac, thiết bị mobile, pixel ratio thường lớn hơn 1; trên màn hình máy tính bình thường thường bằng 1. Điện thoại của tôi có giá trị là 3.
 
 Ảnh
 
 Một số ví dụ trên mạng có thể hướng dẫn cách sau:
 
+```javascript
 this.renderer.setPixelRatio(window.devicePixelRatio);
+```
 
 Tuy nhiên, documentation trên trang chủ của Three.js khuyên không nên sử dụng cách này.
 
 Khóa học Three.js Journey khuyên chỉ để tối đa là 2.
 
-Ví dụ 01.06 - Pixel ratio
+[Ví dụ 01.06 - Pixel ratio](https://static.lockex1987.com/learn-threejs/chapter-01/06-pixel-ratio.html)
 
-
+x
 
 
 
