@@ -522,6 +522,8 @@ Khi bạn chạy ví dụ trên, bạn sẽ thấy một giao diện đơn giả
 
 ### Responsive
 
+#### Cảnh chiếm toàn bộ viewport
+
 Trong các ví dụ trước, bạn đã tạo được một cảnh 3D đơn giản. Tuy nhiên, khi bạn thay đổi kích thước viewport của trình duyệt, bạn có thể thấy là kích thước của cảnh vẫn giữ nguyên. Do đó, nếu bạn mở rộng viewport thì sẽ có các khoảng trắng ở bên phải hoặc bên dưới, còn nếu bạn thu nhỏ viewport thì một số phần của cảnh sẽ bị che mất.
 
 Mở rộng:
@@ -561,15 +563,241 @@ Chúng ta cũng cần lại render lại cảnh:
 this.render();
 ```
 
+Chú ý: Không xử lý nặng ở hàm resize. Có thể sử dụng kỹ thuật throttle để tránh bị gọi với tần suất cao.
+
 Toàn bộ code đầy đủ là (`chapter-01/js/01-04.js`):
 
 ```javascript
-x
+import {
+    Scene,
+    PerspectiveCamera,
+    WebGLRenderer,
+    Color,
+    BoxGeometry,
+    MeshNormalMaterial,
+    Mesh
+} from 'https://unpkg.com/three@0.137.5/build/three.module.js';
+
+
+class ThreejsExample {
+    constructor(canvas) {
+        this.scene = this.createScene();
+        this.camera = this.createCamera();
+        this.renderer = this.createRenderer(canvas);
+        const cube = this.createCube();
+        this.scene.add(cube);
+        this.render();
+        this.handleResize();
+    }
+
+    createScene() {
+        const scene = new Scene();
+        return scene;
+    }
+
+    createCamera() {
+        const aspect = window.innerWidth / window.innerHeight;
+        const camera = new PerspectiveCamera(45, aspect, 0.1, 1000);
+        camera.position.set(-30, 40, 30);
+        camera.lookAt(this.scene.position);
+        return camera;
+    }
+
+    createRenderer(canvas) {
+        const renderer = new WebGLRenderer({
+            canvas,
+            antialias: true
+        });
+        renderer.setClearColor(new Color(0x000000));
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        renderer.setSize(width, height);
+        return renderer;
+    }
+
+    createCube() {
+        const cubeGeometry = new BoxGeometry(6, 6, 6);
+        const cubeMaterial = new MeshNormalMaterial();
+        const cube = new Mesh(cubeGeometry, cubeMaterial);
+        cube.position.set(-4, 3, 0);
+        return cube;
+    }
+
+    render() {
+        this.renderer.render(this.scene, this.camera);
+    }
+
+    handleResize() {
+        window.addEventListener('resize', () => {
+            this.onResize();
+            this.render();
+        });
+    }
+
+    onResize() {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const aspect = width / height;
+        this.camera.aspect = aspect;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(width, height);
+    }
+}
+
+
+new ThreejsExample(document.querySelector('#webglOutput'));
 ```
 
 [Ví dụ 01.04 - Responsive](https://static.lockex1987.com/learn-threejs/chapter-01/04-responsive.html)
 
-TODO: Nếu canvas không chiếm toàn bộ màn hình thì sao?
+Bạn có thể test responsive trên các thiết bị mobile bằng cách xoay qua lại giữa chế độ `portrait` và `landscape`. Sự kiện resize cũng xảy ra trên máy tính nếu như chúng ta sử dụng nhiều màn hình và di chuyển trình duyệt giữa các màn hình.
+
+#### Cảnh không chiếm toàn bộ viewport
+
+Ở ví dụ trên, chúng ta xử lý trong trường hợp cảnh 3D chiếm toàn bộ viewport. Chúng ta tính toán với các kích thước của viewport (window.innerWidth, window.innerHeight). Vậy trong trường hợp cảnh không chiếm toàn bộ viewport thì sao? Ví dụ khi mà cảnh 3D chỉ là một phần trang trí của trang web, có thể có kích thước cố định nào đó hoặc là kích thước tương đối theo phần trăm với viewport. Lúc đó chúng ta sẽ cần dựa vào phần tử canvas của trang, nơi mà cảnh 3D được render.
+
+Để minh họa cho việc cảnh không chiếm toàn bộ viewport, chúng ta có thể để kích thước canvas chiếm 70% của chiều width và height:
+
+```html
+<style>
+    #webglOutput {
+        width: 70%;
+        height: 70%;
+    }
+</style>
+```
+
+Chúng ta sẽ cần chờ cho trang web được tải xong hoàn toàn rồi mới thực thi. Khi đó việc tính toán kích thước canvas mới chính xác:
+
+```javascript
+window.addEventListener('load', () => {
+    new ThreejsExample(document.querySelector('#webglOutput'));
+});
+```
+
+Lúc khởi tạo đối tượng Renderer (phương thức `createRenderer`), chúng ta sẽ thiết lập kích thước của Renderer bằng kích thước của canvas. Chú ý chúng ta thêm tham số thứ ba bằng `false` vào phương thức `setSize`. Khi truyền giá trị false, `canvas` sẽ không được thiết lập kích thước hiển thị bằng CSS với thuộc tính `style`. Three.js chỉ thiết lập thuộc tính `width` và `height` của canvas.
+
+```javascript
+const width = canvas.clientWidth;
+const height = canvas.clientHeight;
+renderer.setSize(width, height, false);
+```
+
+Nếu không truyền `false`:
+
+![Renderer setSize true](images/renderer setSize true.png)
+
+Nếu truyền `false`:
+
+![Renderer setSize false](images/renderer setSize false.png)
+
+Nếu chúng ta không truyền false thì những lần sau gọi `canvas.clientWidth` hoặc `canvas.clientHeight` sẽ luôn trả về một giá trị không thay đổi.
+
+Ở phương thức `onResize`, chúng ta lấy lại đối tượng canvas thông qua thuộc tính `domElement` của đối tượng Renderer và xử lý theo kích thước của canvas. Khi gọi lại phương thức `setSize` của đối tượng Renderer, chúng ta cũng truyền tham số thứ ba là `false`.
+
+```javascript
+const canvas = this.renderer.domElement;
+const width = canvas.clientWidth;
+const height = canvas.clientHeight;
+const aspect = width / height;
+this.camera.aspect = aspect;
+this.camera.updateProjectionMatrix();
+this.renderer.setSize(width, height, false);
+```
+
+Toàn bộ code đầy đủ là (`chapter-01/js/01-05.js`):
+
+```javascript
+import {
+    Scene,
+    PerspectiveCamera,
+    WebGLRenderer,
+    Color,
+    BoxGeometry,
+    MeshNormalMaterial,
+    Mesh
+} from 'https://unpkg.com/three@0.137.5/build/three.module.js';
+
+
+class ThreejsExample {
+    constructor(canvas) {
+        this.scene = this.createScene();
+        this.camera = this.createCamera();
+        this.renderer = this.createRenderer(canvas);
+        const cube = this.createCube();
+        this.scene.add(cube);
+        this.render();
+        this.handleResize();
+    }
+
+    createScene() {
+        const scene = new Scene();
+        return scene;
+    }
+
+    createCamera() {
+        const aspect = window.innerWidth / window.innerHeight;
+        const camera = new PerspectiveCamera(45, aspect, 0.1, 1000);
+        camera.position.set(-30, 40, 30);
+        camera.lookAt(this.scene.position);
+        return camera;
+    }
+
+    createRenderer(canvas) {
+        const renderer = new WebGLRenderer({
+            canvas,
+            antialias: true
+        });
+        renderer.setClearColor(new Color(0x000000));
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        renderer.setSize(width, height, false);
+        return renderer;
+    }
+
+    createCube() {
+        const cubeGeometry = new BoxGeometry(6, 6, 6);
+        const cubeMaterial = new MeshNormalMaterial();
+        const cube = new Mesh(cubeGeometry, cubeMaterial);
+        cube.position.set(-4, 3, 0);
+        return cube;
+    }
+
+    render() {
+        this.renderer.render(this.scene, this.camera);
+    }
+
+    handleResize() {
+        window.addEventListener('resize', () => {
+            this.onResize();
+            this.render();
+        });
+    }
+
+    onResize() {
+        const canvas = this.renderer.domElement;
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        const aspect = width / height;
+        this.camera.aspect = aspect;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(width, height, false);
+    }
+}
+
+
+window.addEventListener('load', () => {
+    new ThreejsExample(document.querySelector('#webglOutput'));
+});
+```
+
+[Ví dụ 01.05 - Responsive theo canvas](https://static.lockex1987.com/learn-threejs/chapter-01/05-responsive-by-canvas.html)
+
+#### Pixel ratio
+
+Trên máy Mac, thiết bị mobile
+
+
 
 
 

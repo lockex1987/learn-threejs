@@ -41,7 +41,7 @@ class ThreejsExample {
         renderer.setClearColor(new Color(0x000000));
         const width = window.innerWidth;
         const height = window.innerHeight;
-        renderer.setSize(width, height, false);
+        renderer.setSize(width, height);
         return renderer;
     }
 
@@ -60,9 +60,6 @@ class ThreejsExample {
     handleResize() {
         window.addEventListener('resize', () => {
             this.onResize();
-
-            // Chú ý: Không xử lý nặng ở hàm resize
-            // Có thể sử dụng kỹ thuật throttle để tránh bị gọi với tần suất cao
             this.render();
         });
     }
