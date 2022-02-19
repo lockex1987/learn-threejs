@@ -795,9 +795,24 @@ window.addEventListener('load', () => {
 
 #### Pixel ratio
 
-Trên máy Mac, thiết bị mobile, pixel ratio thường lớn hơn 1; trên màn hình máy tính bình thường thường bằng 1. Điện thoại của tôi có giá trị là 3.
+Trên màn hình máy tính bình thường thì pixel ratio thường bằng 1. Tuy nhiên, trên máy Mac hay thiết bị mobile, pixel ratio thường lớn hơn 1. Bạn có thể lấy pixel ratio của thiết bị hiển thị trong JS bằng `window.devicePixelRatio`.
 
-Ảnh
+Điện thoại của tôi có giá trị pixel ratio là 3. Cảnh 3D của ví dụ trước khi hiển thị trên điện thoại của tôi như sau:
+
+![pixel ratio 1 on mobile](images/pixel ratio 1 on mobile.jpg)
+
+Bạn có thể thấy rằng hình ảnh không được sắc nét lắm.
+
+Để xử lý trên các thiết bị hiển thị mà có pixel ratio lớn hơn 1, khi thiết lập kích thước của Renderer, bạn hãy nhân với pixel ratio:
+
+```javascript
+const pixelRatio = window.devicePixelRatio;
+const width = canvas.clientWidth * pixelRatio;
+const height = canvas.clientHeight * pixelRatio;
+this.renderer.setSize(width, height, false);
+```
+
+Tất nhiên, việc tăng kích thước của Renderer sẽ tăng khối lượng tính toán, có thể ảnh hưởng đến hiệu năng. Khóa học Three.js Journey khuyên chỉ để tối đa là 2.
 
 Một số ví dụ trên mạng có thể hướng dẫn cách sau:
 
@@ -807,11 +822,13 @@ this.renderer.setPixelRatio(window.devicePixelRatio);
 
 Tuy nhiên, documentation trên trang chủ của Three.js khuyên không nên sử dụng cách này.
 
-Khóa học Three.js Journey khuyên chỉ để tối đa là 2.
-
 [Ví dụ 01.06 - Pixel ratio](https://static.lockex1987.com/learn-threejs/chapter-01/06-pixel-ratio.html)
 
-x
+Cảnh đã trông sắc nét hơn trên mobile:
 
+![pixel ratio 3 on mobile](images/pixel ratio 3 on mobile.jpg)
 
+### Animation
+
+[Ví dụ 01.07 - Animation](https://static.lockex1987.com/learn-threejs/chapter-01/07-animation.html)
 

@@ -1,98 +1,100 @@
-function init() {
-    const stats = initStats();
+import {
+    Scene,
+    PerspectiveCamera,
+    WebGLRenderer,
+    Color,
+    BoxGeometry,
+    MeshNormalMaterial,
+    Mesh,
+    Clock // 4
+} from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
-    // default setup
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer();
 
-    renderer.setClearColor(new THREE.Color(0x000000));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMap.enabled = true;
+class ThreejsExample {
+    constructor(canvas) {
+        this.scene = this.createScene();
+        this.camera = this.createCamera();
+        this.renderer = this.createRenderer(canvas);
+        this.cube = this.createCube();
+        this.scene.add(this.cube);
+        this.clock = new Clock(); // 4
+        this.render();
+        this.handleResize();
+    }
 
-    // create the ground plane
-    const planeGeometry = new THREE.PlaneGeometry(60, 20, 1, 1);
-    const planeMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff });
-    const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-    plane.receiveShadow = true;
+    createScene() {
+        const scene = new Scene();
+        return scene;
+    }
 
-    // rotate and position the plane
-    plane.rotation.x = -0.5 * Math.PI;
-    plane.position.x = 15;
-    plane.position.y = 0;
-    plane.position.z = 0;
+    createCamera() {
+        const aspect = window.innerWidth / window.innerHeight;
+        const camera = new PerspectiveCamera(45, aspect, 0.1, 1000);
+        camera.position.set(-30, 40, 30);
+        camera.lookAt(this.scene.position);
+        return camera;
+    }
 
-    // add the plane to the scene
-    scene.add(plane);
+    createRenderer(canvas) {
+        const renderer = new WebGLRenderer({
+            canvas,
+            antialias: true
+        });
+        renderer.setClearColor(new Color(0x000000));
+        const pixelRatio = window.devicePixelRatio;
+        const width = canvas.clientWidth * pixelRatio;
+        const height = canvas.clientHeight * pixelRatio;
+        renderer.setSize(width, height, false);
+        return renderer;
+    }
 
-    // create a cube
-    const cubeGeometry = new THREE.BoxGeometry(4, 4, 4);
-    const cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
-    const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-    cube.castShadow = true;
+    createCube() {
+        const cubeGeometry = new BoxGeometry(6, 6, 6);
+        const cubeMaterial = new MeshNormalMaterial();
+        const cube = new Mesh(cubeGeometry, cubeMaterial);
+        cube.position.set(-4, 3, 0);
+        return cube;
+    }
 
-    // position the cube
-    cube.position.x = -4;
-    cube.position.y = 4;
-    cube.position.z = 0;
-
-    // add the cube to the scene
-    scene.add(cube);
-
-    const sphereGeometry = new THREE.SphereGeometry(4, 20, 20);
-    const sphereMaterial = new THREE.MeshLambertMaterial({ color: 0x7777ff });
-    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-
-    // position the sphere
-    sphere.position.x = 20;
-    sphere.position.y = 0;
-    sphere.position.z = 2;
-    sphere.castShadow = true;
-
-    // add the sphere to the scene
-    scene.add(sphere);
-
-    // position and point the camera to the center of the scene
-    camera.position.x = -30;
-    camera.position.y = 40;
-    camera.position.z = 30;
-    camera.lookAt(scene.position);
-
-    // add subtle ambient lighting
-    const ambienLight = new THREE.AmbientLight(0x353535);
-    scene.add(ambienLight);
-
-    // add spotlight for the shadows
-    const spotLight = new THREE.SpotLight(0xffffff);
-    spotLight.position.set(-10, 20, -5);
-    spotLight.castShadow = true;
-    scene.add(spotLight);
-
-    // Add the output of the renderer to the html element
-    document.getElementById('webgl-output')
-        .appendChild(renderer.domElement);
-
-    // call the render function
-    let step = 0;
-    renderScene();
-
-    function renderScene() {
-        stats.update();
-
+    // 3
+    update() {
         // Rotate the cube around its axes
-        cube.rotation.x += 0.02;
-        cube.rotation.y += 0.02;
-        cube.rotation.z += 0.02;
+        // this.cube.rotation.x += 0.02;
+        // this.cube.rotation.y += 0.02;
+        // this.cube.rotation.z += 0.02;
 
-        // Bounce the sphere up and down
-        step += 0.04;
-        sphere.position.x = 20 + (10 * (Math.cos(step)));
-        sphere.position.y = 2 + (10 * Math.abs(Math.sin(step)));
+        // 5
+        const delta = this.clock.getDelta();
+        const elapsedTime = this.clock.getElapsedTime();
+        this.cube.rotation.y = elapsedTime * Math.PI;
+    }
 
-        // Render using requestAnimationFrame
-        requestAnimationFrame(renderScene);
-        renderer.render(scene, camera);
+    render() {
+        this.update(); // 2
+        this.renderer.render(this.scene, this.camera);
+        requestAnimationFrame(this.render.bind(this)); // 3
+    }
+
+    handleResize() {
+        window.addEventListener('resize', () => {
+            this.onResize();
+            // this.render(); // 1
+        });
+    }
+
+    onResize() {
+        const canvas = this.renderer.domElement;
+        const pixelRatio = window.devicePixelRatio;
+        const width = canvas.clientWidth * pixelRatio;
+        const height = canvas.clientHeight * pixelRatio;
+        const aspect = width / height;
+        this.camera.aspect = aspect;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(width, height, false);
     }
 }
 
-init();
+
+window.addEventListener('load', () => {
+    new ThreejsExample(document.querySelector('#webglOutput'));
+});
