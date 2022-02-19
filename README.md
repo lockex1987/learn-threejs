@@ -520,5 +520,56 @@ Khi bạn chạy ví dụ trên, bạn sẽ thấy một giao diện đơn giả
 
 ![01-03](screenshots/01-03.png)
 
+### Responsive
+
+Trong các ví dụ trước, bạn đã tạo được một cảnh 3D đơn giản. Tuy nhiên, khi bạn thay đổi kích thước viewport của trình duyệt, bạn có thể thấy là kích thước của cảnh vẫn giữ nguyên. Do đó, nếu bạn mở rộng viewport thì sẽ có các khoảng trắng ở bên phải hoặc bên dưới, còn nếu bạn thu nhỏ viewport thì một số phần của cảnh sẽ bị che mất.
+
+Mở rộng:
+
+![01-04-large](screenshots/01-04-large.png)
+
+Thu nhỏ:
+
+![01-04-small](screenshots/01-04-small.png)
+
+Để có thể thay đổi kích thước của cảnh theo kích thước của viewport, chúng ta cần lắng nghe sự kiện resize của window. Đây là JS bình thường, chưa phải là Three.js:
+
+```javascript
+handleResize() {
+    window.addEventListener('resize', () => {
+        this.onResize();
+    });
+}
+```
+
+Trong sự kiện resize, chúng ta sẽ cần update lại aspect của Camera theo tỷ lệ chiều ngang / chiều dọc của viewport, thông báo cập nhật lại ma trận chiếu của camera, đồng thời cập nhật lại kích thước của Renderer:
+
+```javascript
+onResize() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const aspect = width / height;
+    this.camera.aspect = aspect;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(width, height);
+}
+```
+
+Chúng ta cũng cần lại render lại cảnh:
+
+```javascript
+this.render();
+```
+
+Toàn bộ code đầy đủ là (`chapter-01/js/01-04.js`):
+
+```javascript
+x
+```
+
+[Ví dụ 01.04 - Responsive](https://static.lockex1987.com/learn-threejs/chapter-01/04-responsive.html)
+
+
+
 
 
