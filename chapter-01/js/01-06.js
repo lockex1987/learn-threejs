@@ -39,8 +39,9 @@ class ThreejsExample {
             antialias: true
         });
         renderer.setClearColor(new Color(0x000000));
-        const width = canvas.clientWidth;
-        const height = canvas.clientHeight;
+        const pixelRatio = window.devicePixelRatio;
+        const width = canvas.clientWidth * pixelRatio;
+        const height = canvas.clientHeight * pixelRatio;
         renderer.setSize(width, height, false);
         return renderer;
     }
@@ -66,8 +67,9 @@ class ThreejsExample {
 
     onResize() {
         const canvas = this.renderer.domElement;
-        const width = canvas.clientWidth;
-        const height = canvas.clientHeight;
+        const pixelRatio = window.devicePixelRatio;
+        const width = canvas.clientWidth * pixelRatio;
+        const height = canvas.clientHeight * pixelRatio;
         const aspect = width / height;
         this.camera.aspect = aspect;
         this.camera.updateProjectionMatrix();
