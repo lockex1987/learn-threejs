@@ -532,7 +532,7 @@ Thu nhỏ:
 
 ![01-04-small](screenshots/01-04-small.png)
 
-Để có thể thay đổi kích thước của cảnh theo kích thước của viewport, chúng ta cần lắng nghe sự kiện resize của window. Đây là JS bình thường, chưa phải là Three.js:
+Để có thể thay đổi kích thước của cảnh theo kích thước của viewport, chúng ta cần lắng nghe sự kiện `resize` của window. Đây là JS bình thường, chưa phải là Three.js:
 
 ```javascript
 handleResize() {
@@ -542,7 +542,7 @@ handleResize() {
 }
 ```
 
-Trong sự kiện resize, chúng ta sẽ cần update lại aspect của Camera theo tỷ lệ chiều ngang / chiều dọc của viewport, thông báo cập nhật lại ma trận chiếu của camera, đồng thời cập nhật lại kích thước của Renderer:
+Trong sự kiện `resize`, chúng ta sẽ cần update lại aspect của Camera theo tỷ lệ chiều ngang / chiều dọc của viewport, thông báo cập nhật lại ma trận chiếu của camera, đồng thời cập nhật lại kích thước của Renderer:
 
 ```javascript
 onResize() {
@@ -569,7 +569,7 @@ x
 
 [Ví dụ 01.04 - Responsive](https://static.lockex1987.com/learn-threejs/chapter-01/04-responsive.html)
 
-
+TODO: Nếu canvas không chiếm toàn bộ màn hình thì sao?
 
 
 

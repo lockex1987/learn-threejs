@@ -39,7 +39,6 @@ class ThreejsExample {
             antialias: true
         });
         renderer.setClearColor(new Color(0x000000));
-        renderer.setSize(window.innerWidth, window.innerHeight);
         return renderer;
     }
 
@@ -58,22 +57,20 @@ class ThreejsExample {
     handleResize() {
         window.addEventListener('resize', () => {
             this.onResize();
+
+            // Chú ý: Không xử lý nặng ở hàm resize
+            // Có thể sử dụng kỹ thuật throttle để tránh bị gọi với tần suất cao
             this.render();
         });
     }
 
     onResize() {
-        const canvas = this.renderer.domElement;
-        console.log(canvas.clientWidth, canvas.clientHeight);
-
         const width = window.innerWidth;
         const height = window.innerHeight;
         const aspect = width / height;
         this.camera.aspect = aspect;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(width, height);
-
-        // this.renderer.setPixelRatio(window.devicePixelRatio);
     }
 }
 
