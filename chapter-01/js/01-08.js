@@ -51,20 +51,18 @@ class ThreejsExample {
         const cubeMaterial = new MeshNormalMaterial();
         const cube = new Mesh(cubeGeometry, cubeMaterial);
         cube.position.set(-4, 3, 0);
-        cube.tick = () => {
-            cube.rotation.x += 0.02;
-            cube.rotation.y += 0.02;
-            cube.rotation.z += 0.02;
+        cube.tick = (ms) => {
+            this.cube.rotation.y = ms * Math.PI / 1000;
         };
         return cube;
     }
 
-    update() {
-        this.cube.tick();
+    update(ms) {
+        this.cube.tick(ms);
     }
 
-    render() {
-        this.update();
+    render(ms = 0) {
+        this.update(ms);
         this.renderer.render(this.scene, this.camera);
         requestAnimationFrame(this.render.bind(this));
     }
