@@ -1008,5 +1008,92 @@ render(ms = 0) {
 
 [Ví dụ 01.08 - Animation theo khoảng thời gian đã trôi qua](https://static.lockex1987.com/learn-threejs/chapter-01/08-animation-by-elapsed-time.html)
 
+## Chương 2 - Các thành phần cơ bản tạo nên một ứng dụng Three.js
 
+Scene, Camera, Geometry cơ bản
+
+### Tạo một Scene
+
+Một Scene là một không gian 3D mà trong đó bạn có thể đặt các đối        tượng, camera và ánh sáng.
+
+```
+const scene = new THREE.Scene();
+```
+
+Camera, Light, Object, Renderer.
+
+Scene là container cảu Light và Object.
+
+#### Các tính năng cơ bản của một Scene
+
+Thêm, loại bỏ các Object.
+
+Phương thức Scene.getObjectByName(name).
+
+Thuộc tính Scene.children.
+
+Phương thức Scene.add(object), Scene.remove(object), Scene.traverse().
+
+[Example 02.01 - Basic Scene](learn three.js/src/chapter-02/01-basic-scene.html)
+
+#### Thêm sương mù
+
+Càng xa càng khó nhìn.
+
+[Example 02.02 - Foggy Scene](learn three.js/src/chapter-02/02-foggy-scene.html)
+
+#### Sử dụng thuộc tính overrideMaterial
+
+Ít dùng.
+
+[Example 02.03 - Override Material](learn three.js/src/chapter-02/03-forced-materials.html)
+
+### Các Geometry và Mesh
+
+Các đối tượng Mesh là kết hợp của Geometry và Material.
+
+#### Geometry
+
+Geometry là một tập các điểm, cũng được gọi là các đỉnh, và các mặt kết        nối các điểm đó với nhau.
+
+[Example 02.04 - Geometries](learn three.js/src/chapter-02/04-geometries.html)
+
+Tự tạo hình lập phương bằng các điểm và các mặt.
+
+[Example 02.05 - Custom geometry](learn three.js/src/chapter-02/05-custom-geometry.html)
+
+#### Mesh
+
+Các thuộc tính position, rotation, scale, visible.
+
+Các phương thức translateX(amount), translateY(amount),        translateZ(amount).
+
+[Example 02.06 - Mesh Properties](learn three.js/src/chapter-02/06-mesh-properties.html)
+
+### Các Camera khác nhau cho các sử dụng khác nhau
+
+#### Orthographic vs Perspective
+
+Một camera phối cảnh sẽ mô phỏng hành động của một camera quay phim        trong đời thực. Vị trí của camera và hướng của nó sẽ quyết định phần nào        của khung cảnh được render trên màn hình. Khi thiết lập một camera, bạn        cần truyền vào:
+
+- `fov`: field of view (fov) theo chiều dọc
+- `aspect`: tỷ lệ chiều ngang - chiều dọc
+- `near`: mặt phẳng gần
+- `far`: mặt phẳng xa
+
+Bốn giá trị đó chỉ định không gian 3D mà có thể được chụp lại bởi        camera của bạn.
+
+![Camera frustum](images/frustum.svg)
+
+[Example 02.07 - Cameras](learn three.js/src/chapter-02/07-both-cameras.html)
+
+#### Nhìn vào một điểm chỉ định
+
+Bình thường, Camera sẽ hướng về trung tâm, điểm (0, 0, 0). Bạn có thể        thay đổi Camera nhìn cái gì, ví dụ:
+
+```
+camera.lookAt(new THREE.Vector3(x, y, z));
+```
+
+[Example 02.08 - Cameras look at](learn three.js/src/chapter-02/08-cameras-lookat.html)
 
