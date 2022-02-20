@@ -5,7 +5,8 @@ import {
     Color,
     BoxGeometry,
     MeshNormalMaterial,
-    Mesh
+    Mesh,
+    AxesHelper
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
 import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
@@ -20,8 +21,12 @@ class ThreejsExample {
         this.scene.add(cube);
         requestAnimationFrame(this.render.bind(this));
         this.handleResize();
+
         this.controls = this.createControls(this.scene, this.createCube);
         this.createControlsGui();
+
+        const axesHelper = new AxesHelper(15);
+        this.scene.add(axesHelper);
     }
 
     createScene() {
@@ -57,9 +62,9 @@ class ThreejsExample {
         const cube = new Mesh(cubeGeometry, cubeMaterial);
 
         // Position the cube randomly in the scene
-        cube.position.x = -30 + Math.round((Math.random() * 60));
+        cube.position.x = -15 + Math.round((Math.random() * 30));
         cube.position.y = Math.round((Math.random() * 5));
-        cube.position.z = -20 + Math.round((Math.random() * 40));
+        cube.position.z = -10 + Math.round((Math.random() * 20));
 
         cube.tick = ms => {
             cube.rotation.y = ms * Math.PI / 1000;
