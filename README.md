@@ -991,7 +991,7 @@ Chúng ta sẽ sửa lại code như sau:
 createCube() {
     // ...
     cube.tick = (ms) => {
-        cube.rotation.y += ms * Math.PI / 1000;
+        cube.rotation.y = ms * Math.PI / 1000;
     };
     // ...
 }
@@ -1010,7 +1010,11 @@ render(ms = 0) {
 
 ## Chương 2 - Các thành phần cơ bản tạo nên một ứng dụng Three.js
 
-Scene, Camera, Geometry cơ bản
+Scene (add, remove, traverse, children), Renderer (antialias), Camera, Geometry cơ bản
+
+Một post dài
+
+[Ví dụ 02.01](https://static.lockex1987.com/learn-threejs/chapter-02/00.html)
 
 ### Tạo một Scene
 

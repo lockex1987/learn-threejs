@@ -8,16 +8,20 @@ import {
     Mesh
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
+import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
+
 
 class ThreejsExample {
     constructor(canvas) {
         this.scene = this.createScene();
         this.camera = this.createCamera();
         this.renderer = this.createRenderer(canvas);
-        this.cube = this.createCube();
-        this.scene.add(this.cube);
-        this.render();
+        const cube = this.createCube();
+        this.scene.add(cube);
+        requestAnimationFrame(this.render.bind(this));
         this.handleResize();
+        this.controls = this.createControls(this.scene, this.createCube);
+        this.createControlsGui();
     }
 
     createScene() {
@@ -47,21 +51,62 @@ class ThreejsExample {
     }
 
     createCube() {
-        const cubeGeometry = new BoxGeometry(6, 6, 6);
+        const cubeSize = Math.ceil((Math.random() * 3));
+        const cubeGeometry = new BoxGeometry(cubeSize, cubeSize, cubeSize);
         const cubeMaterial = new MeshNormalMaterial();
         const cube = new Mesh(cubeGeometry, cubeMaterial);
-        cube.position.set(-4, 3, 0);
-        cube.tick = (ms) => {
+
+        // Position the cube randomly in the scene
+        cube.position.x = -30 + Math.round((Math.random() * 60));
+        cube.position.y = Math.round((Math.random() * 5));
+        cube.position.z = -20 + Math.round((Math.random() * 40));
+
+        cube.tick = ms => {
             cube.rotation.y = ms * Math.PI / 1000;
         };
+
         return cube;
     }
 
-    update(ms) {
-        this.cube.tick(ms);
+    createControls(scene, createCubeFunc) {
+        // Chú ý đối tượng this ở đây
+        const controls = {
+            numberOfObjects: scene.children.length,
+
+            removeCube() {
+                const allObjects = scene.children;
+                const lastObject = allObjects[allObjects.length - 1];
+                if (lastObject instanceof Mesh) {
+                    scene.remove(lastObject);
+                    this.numberOfObjects = scene.children.length;
+                }
+            },
+
+            addCube() {
+                const cube = createCubeFunc();
+                scene.add(cube);
+                this.numberOfObjects = scene.children.length;
+            }
+        };
+        return controls;
     }
 
-    render(ms = 0) {
+    createControlsGui() {
+        const gui = new dat.GUI();
+        gui.add(this.controls, 'addCube');
+        gui.add(this.controls, 'removeCube');
+        gui.add(this.controls, 'numberOfObjects').listen();
+    }
+
+    update(ms) {
+        this.scene.traverse(obj => {
+            if (obj instanceof Mesh) {
+                obj.tick(ms);
+            }
+        });
+    }
+
+    render(ms) {
         this.update(ms);
         this.renderer.render(this.scene, this.camera);
         requestAnimationFrame(this.render.bind(this));
