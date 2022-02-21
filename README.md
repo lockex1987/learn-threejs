@@ -1010,6 +1010,18 @@ render(ms = 0) {
 
 ## Chương 2 - Các thành phần cơ bản tạo nên một cảnh 3D trong Three.js
 
+### Hệ tọa độ
+
+X: từ trái sang phải
+
+Y: từ dưới lên trên
+
+Z: từ xa về gần màn hình
+
+AxisGridHelper
+
+AxesHelper
+
 ### Scene
 
 Ở các ví dụ trước, chúng ta đã biết để tạo một cảnh 3D trong Three.js cần các thành phần cơ bản sau:
@@ -1069,7 +1081,7 @@ Nhìn vào code JS của ví dụ này (`02-01.js`), bạn có thể thấy chú
 
 Ở bảng điều khiển bên gốc trên phải, bạn có thể nhấn nút addCube để thêm một hình lập phương vào cảnh. Kích thước, vị trí của hình lập phương mới sẽ được thiết lập ngẫu nhiên. Bạn cũng có thể nhấn nút removeCube để loại bỏ hình lập phương cuối cùng thêm vào. Mục numberOfObjects hiển thị số đối tượng hiện tại trong cảnh. Bạn có thể thấy khi mới mở ví dụ, chúng ta đã có sẵn 4 đối tượng. Đó là: mặt phẳng, một hình lập phương.
 
-[Ví dụ 02.01 - Scene](https://static.lockex1987.com/learn-threejs/chapter-02/00.html)
+[Ví dụ 02.01 - Scene](https://static.lockex1987.com/learn-threejs/chapter-02/01-scene.html)
 
 #### Hiệu ứng sương mù
 
@@ -1098,47 +1110,26 @@ Các đối tượng mà có khoảng cách nhỏ hơn `near` hoặc lớn hơn 
 
 ### Camera
 
-Trong Three.js, chúng ta có hai loại Camera là OrthographicCamera và PerspectiveCamera. Tuy nhiên, chúng ta sẽ chỉ tập trung vào PerspectiveCamera.
+Trong Three.js, chúng ta có hai loại Camera là OrthographicCamera và PerspectiveCamera. Tuy nhiên, chúng ta sẽ chỉ tập trung vào PerspectiveCamera vì nó giống thế giới thực nhất. Một PerspectiveCamera sẽ mô phỏng hành động của một camera quay phim trong đời thực. Đối tượng càng xa Camera thì trông càng bé. Vị trí của camera và hướng của nó sẽ quyết định phần nào của khung cảnh được render trên màn hình. Khi khởi tạo một camera mới, bạn cần truyền vào:
 
-Một PerspectiveCamera sẽ mô phỏng hành động của một camera quay phim trong đời thực. Vị trí của camera và hướng của nó sẽ quyết định phần nào của khung cảnh được render trên màn hình. Khi thiết lập một camera, bạn cần truyền vào:
+- `fov`: field of view (FOV) - góc nhìn theo chiều dọc. Góc càng rộng thì chúng ta càng nhìn được nhiều hơn, các đối tượng càng nhỏ đi. Con người thường có FOV bằng 180 độ, trong khi một số loài chim có thể có FOV bằng 360 độ. Tuy nhiên, màn hình máy tính không chiếm toàn bộ tầm nhìn của chúng ta, do đó chúng ta nên chọn một giá trị nhỏ hơn, nên để từ 45 đến 90. Giá trị tốt là 45.
+- `aspect`: tỷ lệ chiều ngang / chiều dọc của vùng mà chúng ta render đầu ra của cảnh. Tỷ lệ này quyết định sự khác nhau giữa FOV theo chiều ngang và FOV theo chiều dọc. Để hình ảnh không bị biến dạng, hãy để giá trị này bằng tỷ lệ chiều ngang / chiều dọc của canvas.
+- `near`: mặt phẳng gần. Nếu đối tượng cách Camera nhỏ hơn `near` thì sẽ không nhìn thấy. Nên để 0.1.
+- `far`: mặt phẳng xa. Nếu đối tượng cách Camera lớn hơn `far` thì sẽ không nhìn thấy. Nên để 1000. Nếu để quá cao, trong một số trường hợp có thể ảnh hưởng đến hiệu năng.
 
-- `fov`: field of view (fov) theo chiều dọc, nên để từ 45 đến 75. Góc càng rộng thì chúng ta càng nhìn được nhiều hơn, các đối tượng càng nhỏ đi.
-- `aspect`: tỷ lệ chiều ngang - chiều dọc.
-- `near`: mặt phẳng gần, nên để 0.1.
-- `far`: mặt phẳng xa, nên để 1000.
-
-Bốn giá trị đó chỉ định không gian 3D mà có thể được chụp lại bởi camera của bạn.
-
-Sử dụng phương thức length() để tính khoảng cách
-
-postion là Vector3
+Bốn giá trị trên chỉ định không gian 3D mà có thể được chụp lại bởi camera của bạn. Các đối tượng ở giữa `near` và `far`, trong khoảng `fov` (ngang và dọc) sẽ được hiển thị.
 
 ![Camera frustum](images/frustum.svg)
 
-[Example 02.07 - Cameras](https://static.lockex1987.com/learn-threejs/chapter-02/07-both-cameras.html)
-
-#### Nhìn vào một điểm chỉ định
+Bạn có thể sử dụng phương thức `Vector3.distanceTo(v: Vector3)` để tính khoảng cách giữa hai điểm, ví dụ `postion` của Camera và `position` của một đối tượng nào đó.
 
 Bình thường, Camera sẽ hướng về trung tâm, điểm (0, 0, 0). Bạn có thể thay đổi Camera nhìn cái gì, ví dụ:
 
 ```javascript
-camera.lookAt(new THREE.Vector3(x, y, z));
+camera.lookAt(new Vector3(x, y, z));
 ```
 
-[Example 02.08 - Cameras look at](https://static.lockex1987.com/learn-threejs/chapter-02/08-cameras-lookat.html)
-
-
-
-
-### Hệ tọa độ
-
-X: từ trái sang phải
-
-Y: từ dưới lên trên
-
-Z: từ xa về gần màn hình
-
-
+Nếu chúng ta mở ví dụ và tick chọn rotateCamera, bạn có thể thấy cảnh của chúng ta được xoay vòng tròn. Bản thân cảnh không thực sự đang di chuyển. Chính là Camera của chúng ta xoay vòng tròn và luôn luôn nhìn vào điểm trung tâm (0, 0, 0).
 
 ### Renderer
 
@@ -1185,18 +1176,50 @@ By default render buffers are cleared before rendering but you can prevent this 
 
 
 
-### Các Geometry và Mesh
+### Mesh và các Geometry cơ bản
 
-Các đối tượng Mesh là kết hợp của Geometry và Material.
+#### Mesh
+
+Đối tượng Mesh là kết hợp của Geometry và Material.
+
+Ví dụ để thêm một hình lập phương vào cảnh, chúng ta làm như sau:
+
+```javascript
+const geometry = new BoxGeometry(1, 1, 1);
+const material = new MeshBasicMaterial({
+    color: 0xffff00
+});
+const mesh = new Mesh(geometry, material);
+scene.add(mesh);
+```
+
+Class Mesh extend từ class Object3D nên kế thừa tất cả các thuộc tính, phương thức của Object3D như position, rotation,...
+
+#### Geometry
+
+Geometry là một tập các điểm, cũng được gọi là các đỉnh, và các mặt kết nối các điểm đó với nhau. Lấy hình lập phương làm ví dụ:
+
+- Một hình lập phương có 8 góc. Mỗi góc có thể định nghĩa bằng tọa độ x, y, z. Do đó hình lập phương có 8 đỉnh.
+- Một hình lập phương có 6 cạnh. Trong Three.js, một mặt luôn bao gồm 3 đỉnh để tạo thành một hình tam giác. Mỗi cạnh của hình lập phương sẽ bao gồm hai tam giác (hai mặt).
+
+Three.js có một tập nhiều các Geometry sẵn có mà bạn có thể sử dụng. Bạn chỉ việc thêm Material và tạo Mesh nữa là xong. Bạn không cần tự mình định nghĩa tất cả các đỉnh cũng như các mặt. Để tạo một hình lập phương, bạn chỉ cần định nghĩa chiều rộng, chiều cao, và chiều sâu.
 
 Các Geometry cơ bản:
 
 - BoxGeometry
+- PlaneGeometry
+- CylinderGeometry
+- BoxGeometry
+- SphereGeometry
+- IcosahedronGeometry
+- ConvexGeometry
+- LatheGeometry
+- OctahedronGeometry
+- ParametricGeometry
+- TetrahedronGeometry
+- TorusGeometry
+- TorusKnotGeometry
 - Danh sách cùng demo
-
-#### Geometry
-
-Geometry là một tập các điểm, cũng được gọi là các đỉnh, và các mặt kết nối các điểm đó với nhau.
 
 [Example 02.04 - Geometries](https://static.lockex1987.com/learn-threejs/chapter-02/04-geometries.html)
 
@@ -1204,13 +1227,6 @@ Tự tạo hình lập phương bằng các điểm và các mặt.
 
 [Example 02.05 - Custom geometry](https://static.lockex1987.com/learn-threejs/chapter-02/05-custom-geometry.html)
 
-#### Mesh
-
-Các thuộc tính position, rotation, scale, visible.
-
-Các phương thức translateX(amount), translateY(amount), translateZ(amount).
-
-[Example 02.06 - Mesh Properties](https://static.lockex1987.com/learn-threejs/chapter-02/06-mesh-properties.html)
 
 
 

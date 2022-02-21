@@ -26,13 +26,12 @@ class ThreejsExample {
         this.renderer = this.createRenderer(canvas);
 
         // Add lights
-        const ambientLight = new AmbientLight(0x0c0c0c);
-        this.scene.add(ambientLight);
-
-        const spotLight = new SpotLight(0xffffff, 1, 150, 120);
-        spotLight.position.set(-40, 60, -10);
-        spotLight.castShadow = true;
-        this.scene.add(spotLight);
+        {
+            const ambientLight = new AmbientLight(0x0c0c0c);
+            const spotLight = new SpotLight(0xffffff, 1, 150, 120);
+            spotLight.position.set(-40, 60, -10);
+            this.scene.add(ambientLight, spotLight);
+        }
 
         this.plane = this.createPlane();
         this.scene.add(this.plane);
@@ -66,9 +65,12 @@ class ThreejsExample {
         camera.tick = ms => {
             const seconds = ms / 1000;
             const angle = seconds * Math.PI / 8;
+
             // Sử dụng các hàm sin và cos để di chuyển vòng tròn
             camera.position.x = 30 * Math.sin(angle);
             camera.position.z = 30 * Math.cos(angle);
+
+            // Luôn nhìn vào điểm trung tâm (nhìn vào cảnh)
             camera.lookAt(this.scene.position);
 
             // console.log(30 * Math.sin(angle), Math.cos(angle));
@@ -164,6 +166,8 @@ class ThreejsExample {
                 this.scene.fog = null;
             }
         });
+
+        gui.add(this.plane.rotation, 'x', -2 * Math.PI, 2 * Math.PI);
 
         // Camera
         const size = 100;
