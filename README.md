@@ -369,6 +369,10 @@ Ví dụ đơn giản của chúng ta chỉ sử dụng các thành phần cơ b
 
 Các cảnh 3D đều được tạo từ các thành phần cơ bản trên, cùng với thành phần cơ bản khác là Light mà chúng ta chưa nhắc đến.
 
+![Three.js structure](images/threejs_structure.svg)
+
+Chúng ta sẽ lần lượt tìm hiểu từng thành phần ở những phần sau.
+
 ### Sử dụng dat.GUI để trải nghiệm dễ dàng hơn
 
 Thư viện dat.GUI cho phép bạn tạo một giao diện đơn giản để bạn có thể thay đổi các biến trong code của bạn. Chúng ta sẽ tích hợp dat.GUI vào các ví dụ để có thể điều chỉnh vị trí, xoay các đối tượng, thay đổi các cấu hình khác, giúp bạn hiểu hơn khi tìm hiểu từng khái niệm mới.
@@ -1012,6 +1016,8 @@ render(ms = 0) {
 
 ### Hệ tọa độ
 
+![Coordinate](images/coordinate_system_screen.svg)
+
 X: từ trái sang phải
 
 Y: từ dưới lên trên
@@ -1035,7 +1041,9 @@ Scene là một không gian 3D mà trong đó bạn có thể đặt các đối
 
 Scene là một cấu trúc mà đôi khi còn được gọi là scene graph. Một scene graph là một cấu trúc mà giữ tất cả các thông tin cần thiết của cảnh. Trong Three.js, điều đó có nghĩa là Scene chứa tất cả các đối tượng, nguồn sáng, và các đối tượng khác cần thiết để render. Như cái tên ám chỉ, scene graph không chỉ là một mảng các đối tượng; nó bao gồm một tập các node dạng cây.
 
-SCENE GRAPH IMAGE
+![Scene graph](images/scene_graph.svg)
+
+![Scene tree](images/scene_tree.svg)
 
 Mỗi đối tượng bạn có thể thêm vào Scene, và chính cả Scene, extend từ một base class là Object3D. Một đối tượng Object3D có thể có các đối tượng con riêng của nó.
 
@@ -1172,6 +1180,8 @@ Render a scene or another type of object using a camera.
 The render is done to a previously specified renderTarget set by calling .setRenderTarget or to the canvas as usual.
 
 By default render buffers are cleared before rendering but you can prevent this by setting the property autoClear to false. If you want to prevent only certain buffers being cleared you can set either the autoClearColor, autoClearStencil or autoClearDepth properties to false. To forcibly clear one ore more buffers call .clear.
+
+![Antialias](images/render_antialias.svg)
 
 
 
