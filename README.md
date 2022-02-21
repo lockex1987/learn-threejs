@@ -1091,7 +1091,7 @@ Nhìn vào code JS của ví dụ này (`02-01.js`), bạn có thể thấy chú
 
 [Ví dụ 02.01 - Scene](https://static.lockex1987.com/learn-threejs/chapter-02/01-scene.html)
 
-#### Hiệu ứng sương mù
+#### Hiệu ứng sương mù (Để sau Light và Material)
 
 Scene có thuộc tính `fog` để thêm hiệu ứng sương mù vào cảnh. Nếu đối tượng ở xa Camera thì sẽ bị mờ, nếu đối tượng ở gần Camera thì sẽ rõ hơn. Mặc định thuộc tính `fog` có giá trị `null`.
 
@@ -1232,6 +1232,8 @@ Các Geometry cơ bản:
 - Danh sách cùng demo
 
 [Example 02.04 - Geometries](https://static.lockex1987.com/learn-threejs/chapter-02/04-geometries.html)
+
+[Ví dụ 02.02 - Geometry Browser](https://static.lockex1987.com/learn-threejs/chapter-02/02-geometry-browser.html#BoxGeometry)
 
 Tự tạo hình lập phương bằng các điểm và các mặt.
 

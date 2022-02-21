@@ -609,11 +609,6 @@ function chooseFromHash(mesh) {
 
 // -------------------------------
 
-const selectedGeometry = window.location.hash.substring(1);
-
-if (guis[selectedGeometry] !== undefined) {
-    document.getElementById('newWindow').href += '#' + selectedGeometry;
-}
 
 const gui = new GUI();
 
@@ -627,7 +622,7 @@ const renderer = new WebGLRenderer({
     antialias: true
 });
 renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(window.innerWidth, window.innerHeight, false);
 document.body.appendChild(renderer.domElement);
 
 const orbitControls = new OrbitControls(camera, renderer.domElement);
@@ -682,7 +677,7 @@ function render() {
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight, false);
 });
 
 render();
