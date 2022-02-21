@@ -75,6 +75,16 @@ class ThreejsExample {
             this.cube.rotation.z = this.convertDegToRad(value);
             this.render();
         });
+
+        // Cube
+        /*
+        const size = 100;
+        const cubePositionGui = gui.addFolder('cube position');
+        cubePositionGui.add(cube.position, 'x', -size, size);
+        cubePositionGui.add(cube.position, 'y', -size, size);
+        cubePositionGui.add(cube.position, 'z', -size, size);
+        cubePositionGui.open();
+        */
     }
 
     convertDegToRad(deg) {

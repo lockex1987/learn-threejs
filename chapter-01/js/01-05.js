@@ -12,7 +12,7 @@ import {
 class ThreejsExample {
     constructor(canvas) {
         this.scene = this.createScene();
-        this.camera = this.createCamera();
+        this.camera = this.createCamera(canvas);
         this.renderer = this.createRenderer(canvas);
         const cube = this.createCube();
         this.scene.add(cube);
@@ -25,8 +25,10 @@ class ThreejsExample {
         return scene;
     }
 
-    createCamera() {
-        const aspect = window.innerWidth / window.innerHeight;
+    createCamera(canvas) {
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        const aspect = width / height;
         const camera = new PerspectiveCamera(45, aspect, 0.1, 1000);
         camera.position.set(-30, 40, 30);
         camera.lookAt(this.scene.position);

@@ -80,9 +80,6 @@ function init() {
                 camera.position.x = 120;
                 camera.position.y = 60;
                 camera.position.z = 180;
-
-
-
                 camera.lookAt(scene.position);
                 trackballControls = initTrackballControls(camera, renderer);
                 this.perspective = 'Perspective';

@@ -358,7 +358,7 @@ Nếu bạn mở ví dụ trên trình duyệt, chúng ta sẽ thấy một hìn
 
 ![01-02](screenshots/01-02.png)
 
-Ví dụ đơn giản của chúng ta chỉ sử dụng các đối tượng cơ bản sau:
+Ví dụ đơn giản của chúng ta chỉ sử dụng các thành phần cơ bản sau:
 
 - Scene
 - Camera (PerspectiveCamera)
@@ -367,7 +367,7 @@ Ví dụ đơn giản của chúng ta chỉ sử dụng các đối tượng cơ
 - Material (MeshNormalMaterial)
 - Mesh
 
-Các cảnh 3D đều được tạo từ các đối tượng cơ bản trên, cùng với đối tượng cơ bản khác là Light mà chúng ta chưa nhắc đến.
+Các cảnh 3D đều được tạo từ các thành phần cơ bản trên, cùng với thành phần cơ bản khác là Light mà chúng ta chưa nhắc đến.
 
 ### Sử dụng dat.GUI để trải nghiệm dễ dàng hơn
 
@@ -1008,96 +1008,209 @@ render(ms = 0) {
 
 [Ví dụ 01.08 - Animation theo khoảng thời gian đã trôi qua](https://static.lockex1987.com/learn-threejs/chapter-01/08-animation-by-elapsed-time.html)
 
-## Chương 2 - Các thành phần cơ bản tạo nên một ứng dụng Three.js
+## Chương 2 - Các thành phần cơ bản tạo nên một cảnh 3D trong Three.js
 
-Scene (add, remove, traverse, children), Renderer (antialias), Camera, Geometry cơ bản
+### Scene
 
-Một post dài
+Ở các ví dụ trước, chúng ta đã biết để tạo một cảnh 3D trong Three.js cần các thành phần cơ bản sau:
 
-[Ví dụ 02.01](https://static.lockex1987.com/learn-threejs/chapter-02/00.html)
+- Scene
+- Camera
+- Renderer
+- Mesh (là kết hợp của Geometry và Material)
 
-### Tạo một Scene
+Scene là một không gian 3D mà trong đó bạn có thể đặt các đối tượng như Mesh và Light.
 
-Một Scene là một không gian 3D mà trong đó bạn có thể đặt các đối        tượng, camera và ánh sáng.
+Scene là một cấu trúc mà đôi khi còn được gọi là scene graph. Một scene graph là một cấu trúc mà giữ tất cả các thông tin cần thiết của cảnh. Trong Three.js, điều đó có nghĩa là Scene chứa tất cả các đối tượng, nguồn sáng, và các đối tượng khác cần thiết để render. Như cái tên ám chỉ, scene graph không chỉ là một mảng các đối tượng; nó bao gồm một tập các node dạng cây.
+
+SCENE GRAPH IMAGE
+
+Mỗi đối tượng bạn có thể thêm vào Scene, và chính cả Scene, extend từ một base class là Object3D. Một đối tượng Object3D có thể có các đối tượng con riêng của nó.
+
+Phân hệ các class là:
 
 ```
-const scene = new THREE.Scene();
+Object3D
+├── Scene
+├── Camera
+│    └── PerspectiveCamera
+├── Mesh
+├── Group
+└── Light
+    ├── AmbientLight
+    ├── DirectionalLight
+    ├── SpotLight
+    ├── PointLight
+    └── HemisphereLight
 ```
 
-Camera, Light, Object, Renderer.
+Chúng ta tạo một đối tượng Scene mới như sau:
 
-Scene là container cảu Light và Object.
+```javascript
+const scene = new Scene();
+```
 
-#### Các tính năng cơ bản của một Scene
+Scene chính nó thì không có nhiều các thuộc tính và phương thức. Tuy nhiên, chúng ta có thể sử dụng một số các phương thức của base class Object3D sau:
 
-Thêm, loại bỏ các Object.
+- `castShadow` (Boolean): có đổ bóng không. Mặc định là `false`.
+- `children` (Array): mảng các đối tượng con.
+- `position` (Vector3): Vị trí của đối tượng. Mặc định là (0, 0, 0).
+- `rotation` (Euler): các góc quay local của đối tượng, bằng đơn vị radian.
+- `add`(Object3D,...): Thêm đối tượng nào đó thành con của đối tượng hiện tại.
+- `remove`(Object3D,...): Loại bỏ đối tượng con nào đó khỏi đối tượng hiện tại.
+- `lookAt`(Vector3): Xoay đối tượng để đối mặt với một điểm trong không gian.
+- `traverse`(Function): Thực hiện hàm callback trên đối tượng hiện tại và tất cả con cháu.
 
-Phương thức Scene.getObjectByName(name).
+Chúng ta hãy khám phá các tính năng của một Scene bằng cách nhìn vào một ví dụ. Trong thư mục source code cho chương này (`chapter-02`), bạn có thể tìm thấy file ví dụ `01-scene.html`. Khi bạn mở ví dụ này trên trình duyệt, cảnh sẽ trông tương tự như sau:
 
-Thuộc tính Scene.children.
+SCREENSHOT
 
-Phương thức Scene.add(object), Scene.remove(object), Scene.traverse().
+Nhìn vào code JS của ví dụ này (`02-01.js`), bạn có thể thấy chúng ta sử dụng các phương thức `this.scene.add` để thêm mặt phẳng, thêm các hình lập phương. Chúng ta cũng sử dụng phương thức `this.scene.remove` để loại bỏ các hình lập phương. Ngoài ra, chúng ta cũng sử dụng thuộc tính `this.scene.children` để lấy ra danh sách các hình lập phương và phương thức `this.scene.traverse` để duyệt qua các hình lập phương.
 
-[Example 02.01 - Basic Scene](learn three.js/src/chapter-02/01-basic-scene.html)
+Ở bảng điều khiển bên gốc trên phải, bạn có thể nhấn nút addCube để thêm một hình lập phương vào cảnh. Kích thước, vị trí của hình lập phương mới sẽ được thiết lập ngẫu nhiên. Bạn cũng có thể nhấn nút removeCube để loại bỏ hình lập phương cuối cùng thêm vào. Mục numberOfObjects hiển thị số đối tượng hiện tại trong cảnh. Bạn có thể thấy khi mới mở ví dụ, chúng ta đã có sẵn 4 đối tượng. Đó là: mặt phẳng, một hình lập phương.
 
-#### Thêm sương mù
+[Ví dụ 02.01 - Scene](https://static.lockex1987.com/learn-threejs/chapter-02/00.html)
 
-Càng xa càng khó nhìn.
+#### Hiệu ứng sương mù
 
-[Example 02.02 - Foggy Scene](learn three.js/src/chapter-02/02-foggy-scene.html)
+Scene có thuộc tính `fog` để thêm hiệu ứng sương mù vào cảnh. Nếu đối tượng ở xa Camera thì sẽ bị mờ, nếu đối tượng ở gần Camera thì sẽ rõ hơn. Mặc định thuộc tính `fog` có giá trị `null`.
 
-#### Sử dụng thuộc tính overrideMaterial
+Chúng ta định nghĩa một đối tượng Fog mới như sau:
 
-Ít dùng.
+```javascript
+new Fog(color: Integer, near: Float, far: Float)
+```
 
-[Example 02.03 - Override Material](learn three.js/src/chapter-02/03-forced-materials.html)
+Các tham số:
+
+- `color` (Integer): màu của sương mù.
+
+- `near` (Float): khoảng cách tối thiểu để áp dụng sương mù. Mặc định là 1.
+
+- `far` (Float): khoảng cách tối đa để áp dụng sương mù. Mặc định là 1000.
+
+
+Các đối tượng mà có khoảng cách nhỏ hơn `near` hoặc lớn hơn `far` thì sẽ không bị ảnh hưởng bởi sương mù. Mật độ sương mù sẽ tăng tuyến tính từ `near` đến `far`.
+
+[Example 02.02 - Foggy Scene](https://static.lockex1987.com/learn-threejs/chapter-02/02-foggy-scene.html)
+
+Để có thể xem được hiệu ứng, chúng ta cần có ánh sáng và không sử dụng MeshNormalMaterial hoặc MeshBasicMaterial. Có thể sử dụng MeshLambertMaterial.
+
+### Camera
+
+Trong Three.js, chúng ta có hai loại Camera là OrthographicCamera và PerspectiveCamera. Tuy nhiên, chúng ta sẽ chỉ tập trung vào PerspectiveCamera.
+
+Một PerspectiveCamera sẽ mô phỏng hành động của một camera quay phim trong đời thực. Vị trí của camera và hướng của nó sẽ quyết định phần nào của khung cảnh được render trên màn hình. Khi thiết lập một camera, bạn cần truyền vào:
+
+- `fov`: field of view (fov) theo chiều dọc, nên để từ 45 đến 75. Góc càng rộng thì chúng ta càng nhìn được nhiều hơn, các đối tượng càng nhỏ đi.
+- `aspect`: tỷ lệ chiều ngang - chiều dọc.
+- `near`: mặt phẳng gần, nên để 0.1.
+- `far`: mặt phẳng xa, nên để 1000.
+
+Bốn giá trị đó chỉ định không gian 3D mà có thể được chụp lại bởi camera của bạn.
+
+Sử dụng phương thức length() để tính khoảng cách
+
+postion là Vector3
+
+![Camera frustum](images/frustum.svg)
+
+[Example 02.07 - Cameras](https://static.lockex1987.com/learn-threejs/chapter-02/07-both-cameras.html)
+
+#### Nhìn vào một điểm chỉ định
+
+Bình thường, Camera sẽ hướng về trung tâm, điểm (0, 0, 0). Bạn có thể thay đổi Camera nhìn cái gì, ví dụ:
+
+```javascript
+camera.lookAt(new THREE.Vector3(x, y, z));
+```
+
+[Example 02.08 - Cameras look at](https://static.lockex1987.com/learn-threejs/chapter-02/08-cameras-lookat.html)
+
+
+
+
+### Hệ tọa độ
+
+X: từ trái sang phải
+
+Y: từ dưới lên trên
+
+Z: từ xa về gần màn hình
+
+
+
+### Renderer
+
+Chúng ta sử dụng WebGLRenderer để tận dụng sức mạnh của WebGL.
+
+WebGLRenderer(parameters : Object)
+
+canvas - A canvas where the renderer draws its output. This corresponds to the domElement property below. If not passed in here, a new canvas element will be created.
+
+antialias - whether to perform antialiasing. Default is false.
+
+
+
+Ví dụ có antialias và không.
+
+setClearColor
+
+.setClearColor ( color : Color, alpha : Float ) : undefined
+
+Sets the clear color and opacity.
+
+
+
+setSize
+
+.setSize ( width : Integer, height : Integer, updateStyle : Boolean ) : undefined
+
+Resizes the output canvas to (width, height) with device pixel ratio taken into account, and also sets the viewport to fit that size, starting in (0, 0). Setting updateStyle to false prevents any style changes to the output canvas.
+
+
+
+render
+
+
+
+.render ( scene : Object3D, camera : Camera ) : undefined
+
+Render a scene or another type of object using a camera.
+
+The render is done to a previously specified renderTarget set by calling .setRenderTarget or to the canvas as usual.
+
+By default render buffers are cleared before rendering but you can prevent this by setting the property autoClear to false. If you want to prevent only certain buffers being cleared you can set either the autoClearColor, autoClearStencil or autoClearDepth properties to false. To forcibly clear one ore more buffers call .clear.
+
+
+
 
 ### Các Geometry và Mesh
 
 Các đối tượng Mesh là kết hợp của Geometry và Material.
 
+Các Geometry cơ bản:
+
+- BoxGeometry
+- Danh sách cùng demo
+
 #### Geometry
 
-Geometry là một tập các điểm, cũng được gọi là các đỉnh, và các mặt kết        nối các điểm đó với nhau.
+Geometry là một tập các điểm, cũng được gọi là các đỉnh, và các mặt kết nối các điểm đó với nhau.
 
-[Example 02.04 - Geometries](learn three.js/src/chapter-02/04-geometries.html)
+[Example 02.04 - Geometries](https://static.lockex1987.com/learn-threejs/chapter-02/04-geometries.html)
 
 Tự tạo hình lập phương bằng các điểm và các mặt.
 
-[Example 02.05 - Custom geometry](learn three.js/src/chapter-02/05-custom-geometry.html)
+[Example 02.05 - Custom geometry](https://static.lockex1987.com/learn-threejs/chapter-02/05-custom-geometry.html)
 
 #### Mesh
 
 Các thuộc tính position, rotation, scale, visible.
 
-Các phương thức translateX(amount), translateY(amount),        translateZ(amount).
+Các phương thức translateX(amount), translateY(amount), translateZ(amount).
 
-[Example 02.06 - Mesh Properties](learn three.js/src/chapter-02/06-mesh-properties.html)
+[Example 02.06 - Mesh Properties](https://static.lockex1987.com/learn-threejs/chapter-02/06-mesh-properties.html)
 
-### Các Camera khác nhau cho các sử dụng khác nhau
 
-#### Orthographic vs Perspective
-
-Một camera phối cảnh sẽ mô phỏng hành động của một camera quay phim        trong đời thực. Vị trí của camera và hướng của nó sẽ quyết định phần nào        của khung cảnh được render trên màn hình. Khi thiết lập một camera, bạn        cần truyền vào:
-
-- `fov`: field of view (fov) theo chiều dọc
-- `aspect`: tỷ lệ chiều ngang - chiều dọc
-- `near`: mặt phẳng gần
-- `far`: mặt phẳng xa
-
-Bốn giá trị đó chỉ định không gian 3D mà có thể được chụp lại bởi        camera của bạn.
-
-![Camera frustum](images/frustum.svg)
-
-[Example 02.07 - Cameras](learn three.js/src/chapter-02/07-both-cameras.html)
-
-#### Nhìn vào một điểm chỉ định
-
-Bình thường, Camera sẽ hướng về trung tâm, điểm (0, 0, 0). Bạn có thể        thay đổi Camera nhìn cái gì, ví dụ:
-
-```
-camera.lookAt(new THREE.Vector3(x, y, z));
-```
-
-[Example 02.08 - Cameras look at](learn three.js/src/chapter-02/08-cameras-lookat.html)
 
