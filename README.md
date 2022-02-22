@@ -114,7 +114,7 @@ npm install three
 
 Lệnh npm trên thực hiện khá là nhanh do chỉ download các thư mục `build`,  `examples`, `src`.
 
-Nếu bạn có nhu cầu cần nâng cấp giữa các phiên bản thì có thể làm theo hướng dẫn ở địa chỉ sau:
+Nếu bạn có nhu cầu cần nâng cấp giữa các phiên bản (ví dụ class bạn dùng không tòn tại nữa do bị đổi tên) thì có thể làm theo hướng dẫn ở địa chỉ sau:
 
 [Migration Guide · mrdoob/three.js Wiki · GitHub](https://github.com/mrdoob/three.js/wiki/Migration-Guide)
 
@@ -375,13 +375,19 @@ Chúng ta sẽ lần lượt tìm hiểu từng thành phần ở những phần
 
 ### Sử dụng dat.GUI để trải nghiệm dễ dàng hơn
 
-Thư viện dat.GUI cho phép bạn tạo một giao diện đơn giản để bạn có thể thay đổi các biến trong code của bạn. Chúng ta sẽ tích hợp dat.GUI vào các ví dụ để có thể điều chỉnh vị trí, xoay các đối tượng, thay đổi các cấu hình khác, giúp bạn hiểu hơn khi tìm hiểu từng khái niệm mới.
+#### Hướng dẫn chung dat.GUI
+
+Thư viện dat.GUI cho phép bạn tạo một giao diện đơn giản để bạn có thể thay đổi các biến trong code của bạn. Chúng ta sẽ tích hợp dat.GUI vào các ví dụ để có thể điều chỉnh vị trí, xoay các đối tượng, thay đổi các cấu hình khác, giúp bạn hiểu hơn khi tìm hiểu từng khái niệm mới. Bạn có thể thay đổi trực tiếp và nhìn các thay đổi luôn ngay trên giao diện. Việc này là tốt hơn rất nhiều so với việc bạn sửa code, refresh trình duyệt, xem kết quả, rồi lại sửa code, refresh trình duyệt, xem kết quả mới,...
 
 Trang GitHub chủ của thư viện là:
 
 [GitHub - dataarts/dat.gui: dat.gui is a lightweight controller library for  JavaScript](https://github.com/dataarts/dat.gui)
 
-Để sử dụng thư viện, chúng ta thêm thẻ `script` sau vào trang:
+Các API mà thư viện cung cấp là:
+
+[https://github.com/dataarts/dat.gui/blob/master/API.md](https://github.com/dataarts/dat.gui/blob/master/API.md)
+
+Để sử dụng thư viện, chúng ta thêm thẻ `<script>` sau vào trang:
 
 ```html
 <script src="https://unpkg.com/dat.gui@0.7.7/build/dat.gui.min.js"></script>
@@ -392,6 +398,76 @@ Hoặc bạn cũng có thể import như sau:
 ```javascript
 import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
 ```
+
+Chúng ta khởi tạo một đối tượng dat.GUI như sau:
+
+```javascript
+const gui = new dat.GUI();
+```
+
+Ở câu lệnh trên, chúng ta không truyền thêm tham số nào khi khởi tạo. Tuy nhiên, chúng ta có thể thêm tham số là một đối tượng với các thuộc tính như `closed`, `width`,...
+
+Để thêm một cấu hình, chúng ta sử dụng phương thức:
+
+```javascript
+gui.add(object, property, [min], [max], [step])
+```
+
+Tham số thứ nhất `object` là một đối tượng. Tham số thứ hai `property` là tên thuộc tính của đối tượng đó.
+
+Loại của cấu hình sẽ được suy ra từ kiểu dữ liệu của giá trị của thuộc tính (giá trị của `object[property]`). Có thể có các loại sau:
+
+- Number: giá trị kiểu số
+- Range: giá trị kiểu số cùng với min, max, có thể có step hoặc không
+- Text: giá trị kiểu String
+- Checkbox: giá trị kiểu Boolean
+- Select: giá trị là mảng các giá trị
+- Button: giá trị là một hàm kiểu Function
+
+Ngoài ra, bạn có thể thêm nhãn bằng cách sử dụng phương thức `listen()` và thêm một mục to bằng phương thức `addFolder()`.
+
+Bạn có thể để truyền các giá trị min, max, step ở ngày trong phương thức `add()`, hoặc có thể chain các phương thức như sau:
+
+```javascript
+gui.add(object, property)
+    .min(min)
+    .max(max)
+    .step(step)
+```
+
+Tên hiển thị ở giao diện cấu hình sẽ chính là `property`. Nhiều khi tên này sẽ bị lặp, hoặc là không thân thiện lắm. Chúng ta có thể đổi tên hiển thị bằng phương thức `name()`.
+
+```javascript
+gui.add(object, propery)
+    .name(name)
+```
+
+Chúng ta có thể lắng nghe khi các giá trị cấu hình được thay đổi bằng phương thức `onChange()`.
+
+```javascript
+gui.add(object, property)
+    .onChange(value => {
+        // value là giá trị mới sau khi thay đổi
+        // xử lý nghiệp vụ ở đây
+    })
+```
+
+Để thêm cấu hình cho các giá trị màu sắc, bạn sử dụng phương thức `addColor()`. Chúng ta cần một phương thức mới, không sử dụng phương thức `add()` cũ vì cần phân biệt với các trường hợp kiểu dữ liệu là Number hoặc String.
+
+Chúng ta có thể truyền giá trị màu sắc ban đầu theo các định dạng sau:
+
+- Xâu CSS ('#FF0000')
+- Mảng RGB ([0, 128, 255])
+- Mảng RGB cùng giá trị alpha ([0, 128, 255, 0.3])
+- Giá trị hue, saturation, value ({ h: 350, s: 0.9, v: 0.3 })
+- Số nguyên (0xFF0000)
+
+Tips:
+
+- Bạn có thể nhấn phím H để ẩn / hiện giao diện cấu hình hoặc sử dụng các phương thức như `gui.hide()`, `gui.show()`.
+- Bạn có thể truyền `width` khi khởi tạo để chỉ định kích thước của giao diện
+
+#### Cấu hình góc xoay hình lập phương
 
 Chúng ta sẽ khai báo một đối tượng JS mà sẽ có các thuộc tính mà chúng ta muốn thay đổi sử dụng dat.GUI. Ví dụ chúng ta muốn thay đổi góc quay theo 3 trục của hình lập phương mà chúng ta đã tạo ở ví dụ trước:
 
@@ -856,6 +932,8 @@ render() {
 }
 ```
 
+Chúng ta cũng có thể sử dụng các thư viện như [gsap](https://github.com/greensock/GSAP), [tween.js](https://github.com/tweenjs/tween.js/),... Khi đó chúng ta không gọi `this.update()` trong phương thức `render()` nữa. Các thư viện trên sẽ có tiến trình riêng để cập nhật lại các đối tượng. Sử dụng các thư viện đó thì animation của chúng ta sẽ không bị đều đều mà sẽ có ease.
+
 Chúng ta cũng không cần render luôn lại cảnh khi resize trình duyệt nữa, vì đằng nào cảnh sẽ sớm được render lại. Hãy bỏ câu lệnh gọi `this.render()` trong phương thức `handleResize`.
 
 Chúng ta hãy định nghĩa thêm phương thức `tick` khi tạo hình lập phương. Trong phương thức này, chúng ta sẽ tăng các góc xoay của hình lập phương. Việc định nghĩa luôn lúc này sẽ giúp cho việc quản lý code của chúng ta tốt hơn khi cảnh có nhiều đối tượng. Trong phương thức `update`, chúng ta chỉ cần gọi `this.cube.tick()`.
@@ -1091,30 +1169,7 @@ Nhìn vào code JS của ví dụ này (`02-01.js`), bạn có thể thấy chú
 
 [Ví dụ 02.01 - Scene](https://static.lockex1987.com/learn-threejs/chapter-02/01-scene.html)
 
-#### Hiệu ứng sương mù (Để sau Light và Material)
-
-Scene có thuộc tính `fog` để thêm hiệu ứng sương mù vào cảnh. Nếu đối tượng ở xa Camera thì sẽ bị mờ, nếu đối tượng ở gần Camera thì sẽ rõ hơn. Mặc định thuộc tính `fog` có giá trị `null`.
-
-Chúng ta định nghĩa một đối tượng Fog mới như sau:
-
-```javascript
-new Fog(color: Integer, near: Float, far: Float)
-```
-
-Các tham số:
-
-- `color` (Integer): màu của sương mù.
-
-- `near` (Float): khoảng cách tối thiểu để áp dụng sương mù. Mặc định là 1.
-
-- `far` (Float): khoảng cách tối đa để áp dụng sương mù. Mặc định là 1000.
-
-
-Các đối tượng mà có khoảng cách nhỏ hơn `near` hoặc lớn hơn `far` thì sẽ không bị ảnh hưởng bởi sương mù. Mật độ sương mù sẽ tăng tuyến tính từ `near` đến `far`.
-
-[Example 02.02 - Foggy Scene](https://static.lockex1987.com/learn-threejs/chapter-02/02-foggy-scene.html)
-
-Để có thể xem được hiệu ứng, chúng ta cần có ánh sáng và không sử dụng MeshNormalMaterial hoặc MeshBasicMaterial. Có thể sử dụng MeshLambertMaterial.
+Scene có thuộc tính `fog` để thêm hiệu ứng sương mù vào cảnh. Tuy nhiên, để có thể xem được hiệu ứng, chúng ta cần có ánh sáng và không sử dụng MeshNormalMaterial hoặc MeshBasicMaterial. Có thể sử dụng MeshLambertMaterial. Vậy hãy để hiệu ứng này ở các bài sau.
 
 ### Camera
 
@@ -1214,16 +1269,17 @@ Geometry là một tập các điểm, cũng được gọi là các đỉnh, v�
 
 Three.js có một tập nhiều các Geometry sẵn có mà bạn có thể sử dụng. Bạn chỉ việc thêm Material và tạo Mesh nữa là xong. Bạn không cần tự mình định nghĩa tất cả các đỉnh cũng như các mặt. Để tạo một hình lập phương, bạn chỉ cần định nghĩa chiều rộng, chiều cao, và chiều sâu.
 
+Có nhiều Geometry. Có nhiều cái bạn sẽ không sử dụng.
+
 Các Geometry cơ bản:
 
 - BoxGeometry
+- SphereGeometry
 - PlaneGeometry
 - CylinderGeometry
-- BoxGeometry
-- SphereGeometry
 - IcosahedronGeometry
 - ConvexGeometry
-- LatheGeometry
+- LatheGeometry: hình khuôn tiện tạo bởi xoay các điểm theo một trục nào đó, ví dụ lọ hoa
 - OctahedronGeometry
 - ParametricGeometry
 - TetrahedronGeometry
@@ -1231,9 +1287,7 @@ Các Geometry cơ bản:
 - TorusKnotGeometry
 - Danh sách cùng demo
 
-[Example 02.04 - Geometries](https://static.lockex1987.com/learn-threejs/chapter-02/04-geometries.html)
-
-[Ví dụ 02.02 - Geometry Browser](https://static.lockex1987.com/learn-threejs/chapter-02/02-geometry-browser.html#BoxGeometry)
+[Ví dụ 02.02 - Geometry Browser](https://static.lockex1987.com/learn-threejs/chapter-02/02-geometry-browser.html)
 
 Tự tạo hình lập phương bằng các điểm và các mặt.
 
@@ -1241,4 +1295,29 @@ Tự tạo hình lập phương bằng các điểm và các mặt.
 
 
 
+## Chương 4 - Material
 
+#### Hiệu ứng sương mù (Để sau Light và Material)
+
+Scene có thuộc tính `fog` để thêm hiệu ứng sương mù vào cảnh. Nếu đối tượng ở xa Camera thì sẽ bị mờ, nếu đối tượng ở gần Camera thì sẽ rõ hơn. Mặc định thuộc tính `fog` có giá trị `null`.
+
+Chúng ta định nghĩa một đối tượng Fog mới như sau:
+
+```javascript
+new Fog(color: Integer, near: Float, far: Float)
+```
+
+Các tham số:
+
+- `color` (Integer): màu của sương mù.
+
+- `near` (Float): khoảng cách tối thiểu để áp dụng sương mù. Mặc định là 1.
+
+- `far` (Float): khoảng cách tối đa để áp dụng sương mù. Mặc định là 1000.
+
+
+Các đối tượng mà có khoảng cách nhỏ hơn `near` hoặc lớn hơn `far` thì sẽ không bị ảnh hưởng bởi sương mù. Mật độ sương mù sẽ tăng tuyến tính từ `near` đến `far`.
+
+[Example 02.02 - Foggy Scene](https://static.lockex1987.com/learn-threejs/chapter-02/02-foggy-scene.html)
+
+Để có thể xem được hiệu ứng, chúng ta cần có ánh sáng và không sử dụng MeshNormalMaterial hoặc MeshBasicMaterial. Có thể sử dụng MeshLambertMaterial.

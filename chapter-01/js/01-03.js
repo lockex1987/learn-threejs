@@ -63,28 +63,38 @@ class ThreejsExample {
 
     createControlsGui() {
         const gui = new dat.GUI();
-        gui.add(this.controls, 'rotationX', 0, 360).onChange(value => {
-            this.cube.rotation.x = this.convertDegToRad(value);
-            this.render();
-        });
-        gui.add(this.controls, 'rotationY', 0, 360).onChange(value => {
-            this.cube.rotation.y = this.convertDegToRad(value);
-            this.render();
-        });
-        gui.add(this.controls, 'rotationZ', 0, 360).onChange(value => {
-            this.cube.rotation.z = this.convertDegToRad(value);
-            this.render();
-        });
+        gui.add(this.controls, 'rotationX', 0, 360)
+            .onChange(value => {
+                this.cube.rotation.x = this.convertDegToRad(value);
+                this.render();
+            });
+        gui.add(this.controls, 'rotationY', 0, 360)
+            .onChange(value => {
+                this.cube.rotation.y = this.convertDegToRad(value);
+                this.render();
+            });
+        gui.add(this.controls, 'rotationZ', 0, 360)
+            .onChange(value => {
+                this.cube.rotation.z = this.convertDegToRad(value);
+                this.render();
+            });
 
-        // Cube
-        /*
-        const size = 100;
-        const cubePositionGui = gui.addFolder('cube position');
-        cubePositionGui.add(cube.position, 'x', -size, size);
-        cubePositionGui.add(cube.position, 'y', -size, size);
-        cubePositionGui.add(cube.position, 'z', -size, size);
+        // Vị trí hình lập phương
+        const size = 10;
+        const cubePositionGui = gui.addFolder('Cube position');
+        cubePositionGui.add(this.cube.position, 'x', -size, size)
+            .onChange(value => {
+                this.render();
+            });
+        cubePositionGui.add(this.cube.position, 'y', -size, size)
+            .onChange(value => {
+                this.render();
+            });
+        cubePositionGui.add(this.cube.position, 'z', -size, size)
+            .onChange(value => {
+                this.render();
+            });
         cubePositionGui.open();
-        */
     }
 
     convertDegToRad(deg) {

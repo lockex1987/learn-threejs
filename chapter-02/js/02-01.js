@@ -154,20 +154,25 @@ class ThreejsExample {
     }
 
     createControlsGui() {
-        const gui = new dat.GUI();
+        const gui = new dat.GUI({
+            // width: 500
+        });
         gui.add(this.controls, 'addCube');
         gui.add(this.controls, 'removeCube');
-        gui.add(this.controls, 'numberOfObjects').listen();
+        gui.add(this.controls, 'numberOfObjects')
+            .listen()
+            .name('Số đối tượng');
         gui.add(this.controls, 'rotateCamera');
-        gui.add(this.controls, 'hasFog').onChange(value => {
-            if (value) {
-                this.scene.fog = new Fog(0xffffff, 0.1, 1000);
-            } else {
-                this.scene.fog = null;
-            }
-        });
+        gui.add(this.controls, 'hasFog')
+            .onChange(value => {
+                if (value) {
+                    this.scene.fog = new Fog(0xffffff, 0.1, 1000);
+                } else {
+                    this.scene.fog = null;
+                }
+            });
 
-        gui.add(this.plane.rotation, 'x', -2 * Math.PI, 2 * Math.PI);
+        gui.add(this.plane.rotation, 'x', -2 * Math.PI, 2 * Math.PI, 0.01);
 
         // Camera
         const size = 100;
@@ -178,9 +183,10 @@ class ThreejsExample {
         cameraPositionGui.open();
 
         const cameraProjectionGui = gui.addFolder('Camera projection');
-        cameraProjectionGui.add(this.camera, 'fov', 0, 100).onChange(value => {
-            this.camera.updateProjectionMatrix();
-        });
+        cameraProjectionGui.add(this.camera, 'fov', 0, 100)
+            .onChange(value => {
+                this.camera.updateProjectionMatrix();
+            });
         cameraProjectionGui.open();
     }
 
