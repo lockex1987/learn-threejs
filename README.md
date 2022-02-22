@@ -1166,9 +1166,9 @@ Scene chính nó thì không có nhiều các thuộc tính và phương thức.
 - `lookAt`(Vector3): Xoay đối tượng để đối mặt với một điểm trong không gian.
 - `traverse`(Function): Thực hiện hàm callback trên đối tượng hiện tại và tất cả con cháu.
 
-Chúng ta hãy khám phá các tính năng của một Scene bằng cách nhìn vào một ví dụ. Trong thư mục source code cho chương này (`chapter-02`), bạn có thể tìm thấy file ví dụ `01-scene.html`. Khi bạn mở ví dụ này trên trình duyệt, cảnh sẽ trông tương tự như sau:
+Chúng ta hãy khám phá các tính năng của một Scene bằng cách nhìn vào một ví dụ. Trong thư mục source code cho chương này (`chapter-02`), bạn có thể tìm thấy file ví dụ `02-01-scene.html`. Khi bạn mở ví dụ này trên trình duyệt, cảnh sẽ trông tương tự như sau:
 
-SCREENSHOT
+![02-01](screenshots/02-01.png)
 
 Nhìn vào code JS của ví dụ này (`02-01.js`), bạn có thể thấy chúng ta sử dụng các phương thức `this.scene.add` để thêm mặt phẳng, thêm các hình lập phương. Chúng ta cũng sử dụng phương thức `this.scene.remove` để loại bỏ các hình lập phương. Ngoài ra, chúng ta cũng sử dụng thuộc tính `this.scene.children` để lấy ra danh sách các hình lập phương và phương thức `this.scene.traverse` để duyệt qua các hình lập phương.
 
@@ -1176,7 +1176,7 @@ Nhìn vào code JS của ví dụ này (`02-01.js`), bạn có thể thấy chú
 
 [Ví dụ 02.01 - Scene](https://static.lockex1987.com/learn-threejs/chapter-02/02-01-scene.html)
 
-Scene có thuộc tính `fog` để thêm hiệu ứng sương mù vào cảnh. Tuy nhiên, để có thể xem được hiệu ứng, chúng ta cần (có ánh sáng và) không sử dụng MeshNormalMaterial hoặc MeshBasicMaterial. Có thể sử dụng MeshLambertMaterial. Vậy hãy để hiệu ứng này ở các bài sau.
+Scene có thuộc tính `fog` để thêm hiệu ứng sương mù vào cảnh. Tuy nhiên, để có thể xem được hiệu ứng, chúng ta không được sử dụng MeshNormalMaterial hoặc MeshBasicMaterial. Có thể sử dụng MeshLambertMaterial. Vậy hãy để hiệu ứng này ở các bài sau. (có cần ánh sáng không?)
 
 ### Camera
 
@@ -1270,9 +1270,7 @@ Geometry là một tập các điểm, cũng được gọi là các đỉnh, v�
 
 Three.js có một tập nhiều các Geometry sẵn có mà bạn có thể sử dụng. Bạn chỉ việc thêm Material và tạo Mesh nữa là xong. Bạn không cần tự mình định nghĩa tất cả các đỉnh cũng như các mặt. Để tạo một hình lập phương, bạn chỉ cần định nghĩa chiều rộng, chiều cao, và chiều sâu.
 
-Có nhiều Geometry. Có nhiều cái bạn sẽ không sử dụng.
-
-Các Geometry cơ bản:
+Danh sách các Geometry mà Three.js cung cấp là:
 
 - BoxGeometry: hình hộp, ví dụ tòa nhà, bức tường
 - SphereGeometry: hình cầu, ví dụ quả bóng, trái đất
@@ -1284,17 +1282,25 @@ Các Geometry cơ bản:
 - TorusGeometry
 - TorusKnotGeometry
 
+Có nhiều cái bạn sẽ ít khi sử dụng.
+
 Bạn có thể xem trực quan các Geometry qua ví dụ sau:
 
 [Ví dụ 02.02 - Geometry Browser](https://static.lockex1987.com/learn-threejs/chapter-02/02-02-geometry-browser.html)
 
-Tự tạo hình lập phương bằng các điểm và các mặt.
+Chúng ta sẽ không đi sâu vào từng Geometry ở đây. Bạn có thể tham khảo từng cái ở Documentation của Three.js.
+
+
+
+Tự tạo hình lập phương bằng các điểm và các mặt (tạo hình tam giác cho đơn giản).
 
 [Example 02.05 - Custom geometry](https://static.lockex1987.com/learn-threejs/chapter-02/02-05-custom-geometry.html)
 
 
 
 ## Chương 3 - Light
+
+Light: ambient, direction, point, spot; bóng: cast và receive
 
 
 
@@ -1303,6 +1309,8 @@ Tự tạo hình lập phương bằng các điểm và các mặt.
 
 
 ## Chương 4 - Material
+
+Material: Lambert, Phong, smooth shading, texture
 
 #### Hiệu ứng sương mù (Để sau Light và Material)
 
@@ -1331,3 +1339,10 @@ Các đối tượng mà có khoảng cách nhỏ hơn `near` hoặc lớn hơn 
 
 this.scene.fog = new Fog(0xffffff, 1, 100);
 
+## Chương 5 - Texture
+
+## Chương 6 - Camera Controls
+
+## Chương 7 - Load model
+
+Data loader: binary, image, JSON, scene
