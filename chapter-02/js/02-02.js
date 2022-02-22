@@ -22,9 +22,6 @@ import {
     PlaneGeometry,
     PointLight,
     RingGeometry,
-    // ConvexGeometry,
-    ParametricGeometry,
-    // ParametricGeometries,
     Scene,
     Shape,
     ShapeGeometry,
@@ -89,6 +86,7 @@ function addSelectGeometryOptions(initGeometry = 'BoxGeometry') {
     }, 'link')
         .name('Link');
 }
+
 
 /**
  * Phục vụ TubeGeometry thôi.

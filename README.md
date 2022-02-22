@@ -1096,15 +1096,22 @@ render(ms = 0) {
 
 ![Coordinate](images/coordinate_system_screen.svg)
 
-X: từ trái sang phải
+Các đối tượng trong cảnh của Three.js nằm trong một không gian 3D gồm có ba trục:
 
-Y: từ dưới lên trên
+- Trục X: từ trái sang phải
+- Trục Y: từ dưới lên trên
 
-Z: từ xa về gần màn hình
+- Trục Z: từ xa về gần màn hình
 
-AxisGridHelper
 
-AxesHelper
+Chúng ta có thể sử dụng AxesHelper để hiện thị 3 trục tọa độ trên cảnh. Trục X có màu đỏ, trục Y có màu xanh lá cây, trục Z có màu xanh da trời. Ví dụ:
+
+```javascript
+const axesHelper = new AxesHelper(5);
+scene.add(axesHelper);
+```
+
+
 
 ### Scene
 
@@ -1167,9 +1174,9 @@ Nhìn vào code JS của ví dụ này (`02-01.js`), bạn có thể thấy chú
 
 Ở bảng điều khiển bên gốc trên phải, bạn có thể nhấn nút addCube để thêm một hình lập phương vào cảnh. Kích thước, vị trí của hình lập phương mới sẽ được thiết lập ngẫu nhiên. Bạn cũng có thể nhấn nút removeCube để loại bỏ hình lập phương cuối cùng thêm vào. Mục numberOfObjects hiển thị số đối tượng hiện tại trong cảnh. Bạn có thể thấy khi mới mở ví dụ, chúng ta đã có sẵn 4 đối tượng. Đó là: mặt phẳng, một hình lập phương.
 
-[Ví dụ 02.01 - Scene](https://static.lockex1987.com/learn-threejs/chapter-02/01-scene.html)
+[Ví dụ 02.01 - Scene](https://static.lockex1987.com/learn-threejs/chapter-02/02-01-scene.html)
 
-Scene có thuộc tính `fog` để thêm hiệu ứng sương mù vào cảnh. Tuy nhiên, để có thể xem được hiệu ứng, chúng ta cần có ánh sáng và không sử dụng MeshNormalMaterial hoặc MeshBasicMaterial. Có thể sử dụng MeshLambertMaterial. Vậy hãy để hiệu ứng này ở các bài sau.
+Scene có thuộc tính `fog` để thêm hiệu ứng sương mù vào cảnh. Tuy nhiên, để có thể xem được hiệu ứng, chúng ta cần (có ánh sáng và) không sử dụng MeshNormalMaterial hoặc MeshBasicMaterial. Có thể sử dụng MeshLambertMaterial. Vậy hãy để hiệu ứng này ở các bài sau.
 
 ### Camera
 
@@ -1196,50 +1203,44 @@ Nếu chúng ta mở ví dụ và tick chọn rotateCamera, bạn có thể th�
 
 ### Renderer
 
-Chúng ta sử dụng WebGLRenderer để tận dụng sức mạnh của WebGL.
+Trong Three.js, chúng ta có các Renderer sau: WebGLRenderer, WebGL1Renderer, CSS2DRenderer, CSS3DRenderer, SVGRenderer. Chúng ta sử dụng WebGLRenderer để tận dụng sức mạnh của WebGL 2.
 
-WebGLRenderer(parameters : Object)
+Chúng ta khởi tạo một đối tượng Renderer mới như sau:
 
-canvas - A canvas where the renderer draws its output. This corresponds to the domElement property below. If not passed in here, a new canvas element will be created.
+```javascript
+const renderer = new WebGLRenderer(parameters);
+```
 
-antialias - whether to perform antialiasing. Default is false.
+Tham số `parameters` là một đối tượng với các thuộc tính định nghĩa các hành vi của Renderer. Trong đó có hai thuộc tính cấu hình quan trọng là `canvas` và `antialias`.
 
+Thuộc tính cấu hình `canvas` chỉ định phần tử DOM canvas trong trang để vẽ đầu ra. Nó tương ứng với thuộc tính domElement của đối tượng Renderer. Nếu bạn không truyền ở đây, một phần tử canvas mới sẽ được tạo.
 
-
-Ví dụ có antialias và không.
-
-setClearColor
-
-.setClearColor ( color : Color, alpha : Float ) : undefined
-
-Sets the clear color and opacity.
-
-
-
-setSize
-
-.setSize ( width : Integer, height : Integer, updateStyle : Boolean ) : undefined
-
-Resizes the output canvas to (width, height) with device pixel ratio taken into account, and also sets the viewport to fit that size, starting in (0, 0). Setting updateStyle to false prevents any style changes to the output canvas.
-
-
-
-render
-
-
-
-.render ( scene : Object3D, camera : Camera ) : undefined
-
-Render a scene or another type of object using a camera.
-
-The render is done to a previously specified renderTarget set by calling .setRenderTarget or to the canvas as usual.
-
-By default render buffers are cleared before rendering but you can prevent this by setting the property autoClear to false. If you want to prevent only certain buffers being cleared you can set either the autoClearColor, autoClearStencil or autoClearDepth properties to false. To forcibly clear one ore more buffers call .clear.
+Thuộc tính cấu hình `antialias` chỉ định có thực hiện xử lý antialiasing hay không. Mặc định là `false`. Nếu để `antialias` bằng true thì hình ảnh sẽ sắc nét hơn.
 
 ![Antialias](images/render_antialias.svg)
 
+Trong các ví dụ trước, chúng ta hay sử dụng các phương thức sau của đối tượng Renderer: `setClearColor()`, `setSize()`, `render()`.
 
+Phương thức `setClearColor(color: Color, alpha: Float)` chỉ định màu để xóa (cũng là màu nền) và độ trong suốt. Chúng ta cần truyền vào tham số là một đối tượng Color của Three.js. Ví dụ:
 
+```javascript
+renderer.setClearColor(new Color(0x000000));
+```
+
+Phương thức `setSize(width: Integer, height: Integer, updateStyle: Boolean)` chỉ định độ phân giải của phần tử canvas. Chúng ta nên để độ phân giải này bằng kích thước hiển thị của canvas nhân với pixel ratio của thiết bị. Thiết lập `updateStyle` bằng `false` sẽ ngăn việc thiết lập style cho phần tử canvas.
+
+```javascript
+const pixelRatio = window.devicePixelRatio;
+const width = canvas.clientWidth * pixelRatio;
+const height = canvas.clientHeight * pixelRatio;
+renderer.setSize(width, height, false);
+```
+
+Phương thức `render(scene: Object3D, camera: Camera)` sẽ render cảnh hoặc đối tượng có kiểu dữ liệu khác sử dụng Camera.
+
+```javascript
+this.renderer.render(this.scene, this.camera);
+```
 
 ### Mesh và các Geometry cơ bản
 
@@ -1273,25 +1274,31 @@ Có nhiều Geometry. Có nhiều cái bạn sẽ không sử dụng.
 
 Các Geometry cơ bản:
 
-- BoxGeometry
-- SphereGeometry
-- PlaneGeometry
+- BoxGeometry: hình hộp, ví dụ tòa nhà, bức tường
+- SphereGeometry: hình cầu, ví dụ quả bóng, trái đất
+- PlaneGeometry: mặt phẳng
 - CylinderGeometry
 - IcosahedronGeometry
-- ConvexGeometry
 - LatheGeometry: hình khuôn tiện tạo bởi xoay các điểm theo một trục nào đó, ví dụ lọ hoa
 - OctahedronGeometry
-- ParametricGeometry
-- TetrahedronGeometry
 - TorusGeometry
 - TorusKnotGeometry
-- Danh sách cùng demo
 
-[Ví dụ 02.02 - Geometry Browser](https://static.lockex1987.com/learn-threejs/chapter-02/02-geometry-browser.html)
+Bạn có thể xem trực quan các Geometry qua ví dụ sau:
+
+[Ví dụ 02.02 - Geometry Browser](https://static.lockex1987.com/learn-threejs/chapter-02/02-02-geometry-browser.html)
 
 Tự tạo hình lập phương bằng các điểm và các mặt.
 
-[Example 02.05 - Custom geometry](https://static.lockex1987.com/learn-threejs/chapter-02/05-custom-geometry.html)
+[Example 02.05 - Custom geometry](https://static.lockex1987.com/learn-threejs/chapter-02/02-05-custom-geometry.html)
+
+
+
+## Chương 3 - Light
+
+
+
+
 
 
 
@@ -1321,3 +1328,6 @@ Các đối tượng mà có khoảng cách nhỏ hơn `near` hoặc lớn hơn 
 [Example 02.02 - Foggy Scene](https://static.lockex1987.com/learn-threejs/chapter-02/02-foggy-scene.html)
 
 Để có thể xem được hiệu ứng, chúng ta cần có ánh sáng và không sử dụng MeshNormalMaterial hoặc MeshBasicMaterial. Có thể sử dụng MeshLambertMaterial.
+
+this.scene.fog = new Fog(0xffffff, 1, 100);
+

@@ -7,12 +7,8 @@ import {
     PlaneGeometry,
     MeshNormalMaterial,
     MeshBasicMaterial,
-    MeshLambertMaterial,
     Mesh,
-    AxesHelper,
-    Fog,
-    AmbientLight,
-    SpotLight
+    AxesHelper
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
 import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
@@ -21,17 +17,8 @@ import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
 class ThreejsExample {
     constructor(canvas) {
         this.scene = this.createScene();
-        this.scene.fog = new Fog(0xffffff, 1, 100);
         this.camera = this.createCamera(canvas);
         this.renderer = this.createRenderer(canvas);
-
-        // Add lights
-        {
-            const ambientLight = new AmbientLight(0x0c0c0c);
-            const spotLight = new SpotLight(0xffffff, 1, 150, 120);
-            spotLight.position.set(-40, 60, -10);
-            this.scene.add(ambientLight, spotLight);
-        }
 
         this.plane = this.createPlane();
         this.scene.add(this.plane);
@@ -95,10 +82,7 @@ class ThreejsExample {
     createCube() {
         const cubeSize = Math.ceil((Math.random() * 3));
         const cubeGeometry = new BoxGeometry(cubeSize, cubeSize, cubeSize);
-        // const cubeMaterial = new MeshNormalMaterial();
-        const cubeMaterial = new MeshLambertMaterial({
-            color: 0xFF0000
-        });
+        const cubeMaterial = new MeshNormalMaterial();
         const cube = new Mesh(cubeGeometry, cubeMaterial);
 
         // Position the cube randomly in the scene
@@ -116,7 +100,8 @@ class ThreejsExample {
     createPlane() {
         const planeGeometry = new PlaneGeometry(30, 20, 1, 1);
         const planeMaterial = new MeshBasicMaterial({
-            color: 0xDDDDDDD
+            // color: 0xDDDDDDD
+            color: new Color('rgb(106, 193, 116)')
         });
         planeMaterial.opacity = 0.4; // không ăn
         const plane = new Mesh(planeGeometry, planeMaterial);
@@ -133,7 +118,6 @@ class ThreejsExample {
             numberOfObjects: scene.children.length,
 
             rotateCamera: false,
-            hasFog: false,
 
             removeCube() {
                 const allObjects = scene.children;
@@ -163,16 +147,9 @@ class ThreejsExample {
             .listen()
             .name('Số đối tượng');
         gui.add(this.controls, 'rotateCamera');
-        gui.add(this.controls, 'hasFog')
-            .onChange(value => {
-                if (value) {
-                    this.scene.fog = new Fog(0xffffff, 0.1, 1000);
-                } else {
-                    this.scene.fog = null;
-                }
-            });
 
-        gui.add(this.plane.rotation, 'x', -2 * Math.PI, 2 * Math.PI, 0.01);
+        gui.add(this.plane.rotation, 'x', -2 * Math.PI, 2 * Math.PI, 0.01)
+            .name('Mặt phẳng');
 
         // Camera
         const size = 100;

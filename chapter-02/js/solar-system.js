@@ -1,10 +1,11 @@
 import * as THREE from 'three';
-import { GUI } from 'https://threejs.org/examples/jsm/libs/lil-gui.module.min.js';
+import { GUI } from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
 
 function main() {
     const canvas = document.querySelector('#c');
     const renderer = new THREE.WebGLRenderer({
         canvas
+        // antialias: true
     });
     const gui = new GUI();
 
