@@ -196,7 +196,7 @@ new ThreejsExample();
 
 Các ví dụ có phần HTML và CSS gần như giống nhau hết, chỉ có phần JS là khác nhau.
 
-[Ví dụ 01.01 - Khung cơ bản](https://static.lockex1987.com/learn-threejs/chapter-01/01-basic-skeleton.html)
+[Ví dụ 01.01 - Khung cơ bản](https://static.lockex1987.com/learn-threejs/chapter-01/01-01-basic-skeleton.html)
 
 Ví dụ trên chỉ hiển thị một trang web trắng cùng thông báo "*Phiên bản Three.js là: 137*".
 
@@ -352,7 +352,7 @@ class ThreejsExample {
 new ThreejsExample(document.querySelector('#webglOutput'));
 ```
 
-[Ví dụ 01.02 - Scene đầu tiên](https://static.lockex1987.com/learn-threejs/chapter-01/02-first-scene.html)
+[Ví dụ 01.02 - Scene đầu tiên](https://static.lockex1987.com/learn-threejs/chapter-01/01-02-first-scene.html)
 
 Nếu bạn mở ví dụ trên trình duyệt, chúng ta sẽ thấy một hình lập phương như sau:
 
@@ -598,7 +598,7 @@ class ThreejsExample {
 new ThreejsExample(document.querySelector('#webglOutput'));
 ```
 
-[Ví dụ 01.03 - Control GUI](https://static.lockex1987.com/learn-threejs/chapter-01/03-control-gui.html)
+[Ví dụ 01.03 - Control GUI](https://static.lockex1987.com/learn-threejs/chapter-01/01-03-control-gui.html)
 
 Khi bạn chạy ví dụ trên, bạn sẽ thấy một giao diện đơn giản ở góc trên phải của màn hình mà bạn có thể điều khiển góc quay theo các trục X, Y, Z. Hãy tự mình xoay hình lập phương theo các góc khác nhau để cảm nhận tính 3D của cảnh.
 
@@ -732,7 +732,7 @@ class ThreejsExample {
 new ThreejsExample(document.querySelector('#webglOutput'));
 ```
 
-[Ví dụ 01.04 - Responsive](https://static.lockex1987.com/learn-threejs/chapter-01/04-responsive.html)
+[Ví dụ 01.04 - Responsive](https://static.lockex1987.com/learn-threejs/chapter-01/01-04-responsive.html)
 
 Bạn có thể test responsive trên các thiết bị mobile bằng cách xoay qua lại giữa chế độ `portrait` và `landscape`. Sự kiện `resize` cũng xảy ra trên máy tính nếu như chúng ta sử dụng nhiều màn hình và di chuyển trình duyệt giữa các màn hình.
 
@@ -875,7 +875,7 @@ window.addEventListener('load', () => {
 });
 ```
 
-[Ví dụ 01.05 - Responsive theo canvas](https://static.lockex1987.com/learn-threejs/chapter-01/05-responsive-by-canvas.html)
+[Ví dụ 01.05 - Responsive theo canvas](https://static.lockex1987.com/learn-threejs/chapter-01/01-05-responsive-by-canvas.html)
 
 #### Pixel ratio
 
@@ -910,7 +910,7 @@ this.renderer.setPixelRatio(window.devicePixelRatio);
 
 Tuy nhiên, documentation trên trang chủ của Three.js khuyên không nên sử dụng cách này.
 
-[Ví dụ 01.06 - Pixel ratio](https://static.lockex1987.com/learn-threejs/chapter-01/06-pixel-ratio.html)
+[Ví dụ 01.06 - Pixel ratio](https://static.lockex1987.com/learn-threejs/chapter-01/01-06-pixel-ratio.html)
 
 Cảnh đã trông sắc nét hơn trên mobile:
 
@@ -1052,7 +1052,7 @@ window.addEventListener('load', () => {
 });
 ```
 
-[Ví dụ 01.07 - Animation](https://static.lockex1987.com/learn-threejs/chapter-01/07-animation.html)
+[Ví dụ 01.07 - Animation](https://static.lockex1987.com/learn-threejs/chapter-01/01-07-animation.html)
 
 Hình lập phương của chúng ta đã xoay. Trong nhiều trường hợp, việc tạo animation như vậy là đã thỏa mãn yêu cầu: chúng ta cập nhật lại đối tượng một chút ở mỗi lần render. Tuy nhiên, giả sử chúng ta có yêu cầu là xoay hình lập phương một vòng mỗi 2 giây thì sao? Với code như trên thì chúng ta không thể đảm bảo việc đó. Chúng ta không thể đảm bảo được tần suất phương thức `render` được gọi, việc này phụ thuộc trình duyệt. Ở các thiết bị mà có framerate lớn, phương thức render sẽ được gọi nhiều lần hơn, hình lập phương sẽ quay nhanh hơn.
 
@@ -1088,7 +1088,7 @@ render(ms = 0) {
 }
 ```
 
-[Ví dụ 01.08 - Animation theo khoảng thời gian đã trôi qua](https://static.lockex1987.com/learn-threejs/chapter-01/08-animation-by-elapsed-time.html)
+[Ví dụ 01.08 - Animation theo khoảng thời gian đã trôi qua](https://static.lockex1987.com/learn-threejs/chapter-01/01-08-animation-by-elapsed-time.html)
 
 ## Chương 2 - Các thành phần cơ bản tạo nên một cảnh 3D trong Three.js
 
