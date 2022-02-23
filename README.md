@@ -74,21 +74,24 @@ Cấu trúc thư mục cùng các file mà bạn cần là:
 
 ```
 build
-    three.cjs
-    three.js
-    three.min.js
-    three.module.js
+├── three.cjs
+├── three.js
+├── three.min.js
+└── three.module.js
+
 examples
-    fonts
-    js
-        controls
-            OrbitControls.js
-        loaders
+├── fonts
+├── js
+│   │   controls
+│   │   └── OrbitControls.js
+│   ├── loaders
+│       ...
+└── jsm
+    ├── controls
+    │   └── OrbitControls.js
+    ├── loaders
         ...
-    jsm
-        controls
-            OrbitControls.js
-        loaders
+
 src
 ```
 
@@ -736,6 +739,17 @@ new ThreejsExample(document.querySelector('#webglOutput'));
 
 Bạn có thể test responsive trên các thiết bị mobile bằng cách xoay qua lại giữa chế độ `portrait` và `landscape`. Sự kiện `resize` cũng xảy ra trên máy tính nếu như chúng ta sử dụng nhiều màn hình và di chuyển trình duyệt giữa các màn hình.
 
+Sử dụng kiểm tra check sau trong trường hợp không phải resize cả trình duyệt, mà resize thành phần của trang: ví dụ chúng ta có side panel ở bên trái có thể thay đổi kích thước:
+
+```javascript
+needResize(canvas) {
+    return canvas.width !== canvas.clientWidth
+        || canvas.height !== canvas.clientHeight;
+}
+```
+
+
+
 #### Cảnh không chiếm toàn bộ viewport, responsive theo canvas
 
 Ở ví dụ trên, chúng ta đã xử lý trong trường hợp cảnh 3D chiếm toàn bộ viewport. Chúng ta tính toán với các kích thước của viewport (`window.innerWidth`, `window.innerHeight`). Vậy trong trường hợp cảnh không chiếm toàn bộ viewport thì sao? Ví dụ khi mà cảnh 3D chỉ là một phần trang trí của trang web, có thể có kích thước cố định nào đó theo pixel hoặc là kích thước tương đối theo phần trăm với viewport. Lúc đó chúng ta sẽ cần dựa vào phần tử canvas của trang, nơi mà cảnh 3D được render.
@@ -1275,14 +1289,27 @@ Danh sách các Geometry mà Three.js cung cấp là:
 - BoxGeometry: hình hộp, ví dụ tòa nhà, bức tường
 - SphereGeometry: hình cầu, ví dụ quả bóng, trái đất
 - PlaneGeometry: mặt phẳng
-- CylinderGeometry
-- IcosahedronGeometry
-- LatheGeometry: hình khuôn tiện tạo bởi xoay các điểm theo một trục nào đó, ví dụ lọ hoa
-- OctahedronGeometry
-- TorusGeometry
-- TorusKnotGeometry
+- CylinderGeometry: hình trụ
+- TorusGeometry: hình vòng, ví dụ bánh xe, bánh donut
+- TorusKnotGeometry: hình vòng có nút thắt
+- LatheGeometry: hình khuôn tiện tạo bởi xoay các điểm theo một trục nào đó, ví dụ lọ hoa, ly rượu, cái cốc
+- OctahedronGeometry: hình 8 mặt
+- DodecahedronGeometry: hình 12 mặt
+- IcosahedronGeometry: hình 20 mặt
+- ExtrudeGeometry: hình nổi lên từ một hình 2D
+- TextGeometry: chữ 3D được sinh từ một typeface
+- TubeGeometry: hình vòng tròn dọc theo một đường, ví dụ ống nước
+- ...
+
+![Geometry basics](images/geometries_basic.svg)
+
+![Geometry exotic](images/geometries_exotic.svg)
+
+![Geometry specialized](images/geometries_specialized.svg)
 
 Có nhiều cái bạn sẽ ít khi sử dụng.
+
+Các Geometry trên đều có phiên bản Buffer tương ứng, ví dụ với BoxGeometry chúng ta sẽ có BoxBufferGeometry. Các phiên bản Buffer mới hơn và nhan hơn so với phiên bản không Buffer. Dữ liệu của chúng được lưu trong các mảng một chiều.   Bạn nên luôn luôn sử dụng phiên bản Buffer của từng Geometry. Phiên bản không Buffer được giữ lại chỉ để tương thích ngược với các phiên bản Three.js cũ.
 
 Bạn có thể xem trực quan các Geometry qua ví dụ sau:
 
@@ -1298,9 +1325,6 @@ Tự tạo hình lập phương bằng các điểm và các mặt (tạo hình 
 
 
 
-## Chương 3 - Light
-
-Light: ambient, direction, point, spot; bóng: cast và receive
 
 
 
@@ -1308,9 +1332,28 @@ Light: ambient, direction, point, spot; bóng: cast và receive
 
 
 
-## Chương 4 - Material
+
+## Chương 3 - Material
 
 Material: Lambert, Phong, smooth shading, texture
+
+### Một số Material cần Light
+
+It's a little better but it's still hard to see the 3d. What would help is to add some lighting so let's add a light. There are many kinds of lights in three.js which we'll go over in a future article. For now let's create a directional light.
+
+{
+  const color = 0xFFFFFF;
+  const intensity = 1;
+  const light = new THREE.DirectionalLight(color, intensity);
+  light.position.set(-1, 2, 4);
+  scene.add(light);
+}
+
+Directional lights have a position and a target. Both default to 0, 0, 0. In our case we're setting the light's position to -1, 2, 4 so it's slightly on the left, above, and behind our camera. The target is still 0, 0, 0 so it will shine toward the origin.
+
+We also need to change the material. The MeshBasicMaterial is not affected by lights. Let's change it to a MeshPhongMaterial which is affected by lights.
+
+
 
 #### Hiệu ứng sương mù (Để sau Light và Material)
 
@@ -1339,9 +1382,37 @@ Các đối tượng mà có khoảng cách nhỏ hơn `near` hoặc lớn hơn 
 
 this.scene.fog = new Fog(0xffffff, 1, 100);
 
+## Chương 4 - Light
+
+Light: ambient, direction, point, spot; bóng: cast và receive
+
+
+
 ## Chương 5 - Texture
 
+
+
 ## Chương 6 - Camera Controls
+
+Ở phiên bản 127, CDN vẫn load kiểu tương đối:
+
+https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js
+
+```javascript
+import {
+	EventDispatcher,
+	MOUSE,
+	Quaternion,
+	Spherical,
+	TOUCH,
+	Vector2,
+	Vector3
+} from '../../../build/three.module.js';
+```
+
+Từ phiên bản 128, CDN bắt đầu sửa lại kiểu `import { ... } from 'three'` thôi.
+
+
 
 ## Chương 7 - Load model
 
