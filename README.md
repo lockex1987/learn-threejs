@@ -1323,9 +1323,9 @@ Tự tạo hình lập phương bằng các điểm và các mặt (tạo hình 
 
 [Example 02.05 - Custom geometry](https://static.lockex1987.com/learn-threejs/chapter-02/02-05-custom-geometry.html)
 
+[Solar system](https://static.lockex1987.com/learn-threejs/chapter-02/solar-system.html)
 
-
-
+[Tank](https://static.lockex1987.com/learn-threejs/chapter-02/tank.html)
 
 
 
