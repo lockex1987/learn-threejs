@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GUI } from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
 
+
 function main() {
     const canvas = document.querySelector('#c');
     const renderer = new THREE.WebGLRenderer({
@@ -15,7 +16,7 @@ function main() {
     const far = 1000;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     camera.position.set(0, 50, 0);
-    camera.up.set(0, 0, 1);
+    // camera.up.set(0, 0, 1);
     camera.lookAt(0, 0, 0);
 
     const scene = new THREE.Scene();
@@ -28,30 +29,36 @@ function main() {
         scene.add(light);
     }
 
+    // Mảng các đối tượng để quay (mặt trời, trái đất, mặt trăng)
     const objects = [];
+
+    // Sử dụng chung Geometry (hình cầu)
     const radius = 1;
     const widthSegments = 6;
     const heightSegments = 6;
-    const sphereGeometry = new THREE.SphereGeometry(
-        radius, widthSegments, heightSegments);
+    const sphereGeometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
 
+    // Hệ mặt trời
     const solarSystem = new THREE.Object3D();
     scene.add(solarSystem);
     objects.push(solarSystem);
 
+    // Mặt trời
     const sunMaterial = new THREE.MeshPhongMaterial({
         emissive: 0xFFFF00
     });
     const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
-    sunMesh.scale.set(5, 5, 5);
+    sunMesh.scale.set(5, 5, 5); // lớn lên
     solarSystem.add(sunMesh);
     objects.push(sunMesh);
 
+    // Quỹ đạo trái đất
     const earthOrbit = new THREE.Object3D();
     earthOrbit.position.x = 10;
     solarSystem.add(earthOrbit);
     objects.push(earthOrbit);
 
+    // Trái đất
     const earthMaterial = new THREE.MeshPhongMaterial({
         color: 0x2233FF,
         emissive: 0x112244
@@ -60,16 +67,18 @@ function main() {
     earthOrbit.add(earthMesh);
     objects.push(earthMesh);
 
+    // Quỹ đạo mặt trăng
     const moonOrbit = new THREE.Object3D();
     moonOrbit.position.x = 2;
     earthOrbit.add(moonOrbit);
 
+    // Mặt trăng
     const moonMaterial = new THREE.MeshPhongMaterial({
         color: 0x888888,
         emissive: 0x222222
     });
     const moonMesh = new THREE.Mesh(sphereGeometry, moonMaterial);
-    moonMesh.scale.set(0.5, 0.5, 0.5);
+    moonMesh.scale.set(0.5, 0.5, 0.5); // nhỏ đi
     moonOrbit.add(moonMesh);
     objects.push(moonMesh);
 
@@ -108,7 +117,8 @@ function main() {
 
     function makeAxisGrid(node, label, units) {
         const helper = new AxisGridHelper(node, units);
-        gui.add(helper, 'visible').name(label);
+        gui.add(helper, 'visible')
+            .name(label);
     }
 
     makeAxisGrid(solarSystem, 'solarSystem', 26);
@@ -118,27 +128,28 @@ function main() {
     makeAxisGrid(moonOrbit, 'moonOrbit');
     makeAxisGrid(moonMesh, 'moonMesh');
 
-    function resizeRendererToDisplaySize(renderer) {
+    function resizeRendererToDisplaySize() {
         const canvas = renderer.domElement;
         const width = canvas.clientWidth;
         const height = canvas.clientHeight;
         const needResize = canvas.width !== width || canvas.height !== height;
         if (needResize) {
             renderer.setSize(width, height, false);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
         }
-        return needResize;
+    }
+
+    function update(time) {
+        objects.forEach(obj => {
+            obj.rotation.y = time;
+        });
     }
 
     function render(time) {
         time *= 0.001;
-        if (resizeRendererToDisplaySize(renderer)) {
-            const canvas = renderer.domElement;
-            camera.aspect = canvas.clientWidth / canvas.clientHeight;
-            camera.updateProjectionMatrix();
-        }
-        objects.forEach((obj) => {
-            obj.rotation.y = time;
-        });
+        resizeRendererToDisplaySize();
+        update(time);
         renderer.render(scene, camera);
         requestAnimationFrame(render);
     }

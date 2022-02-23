@@ -1,8 +1,11 @@
 import * as THREE from 'three';
 
+
 function main() {
     const canvas = document.querySelector('#c');
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas });
+    const renderer = new THREE.WebGLRenderer({
+        canvas: canvas
+    });
     renderer.setClearColor(0xAAAAAA);
     renderer.shadowMap.enabled = true;
 
@@ -12,8 +15,10 @@ function main() {
         const zFar = 1000;
         return new THREE.PerspectiveCamera(fov, aspect, zNear, zFar);
     }
+
     const camera = makeCamera();
-    camera.position.set(8, 4, 10).multiplyScalar(3);
+    camera.position.set(8, 4, 10)
+        .multiplyScalar(3);
     camera.lookAt(0, 0, 0);
 
     const scene = new THREE.Scene();
@@ -22,6 +27,7 @@ function main() {
         const light = new THREE.DirectionalLight(0xffffff, 1);
         light.position.set(0, 20, 0);
         scene.add(light);
+
         light.castShadow = true;
         light.shadow.mapSize.width = 2048;
         light.shadow.mapSize.height = 2048;
@@ -43,7 +49,9 @@ function main() {
     }
 
     const groundGeometry = new THREE.PlaneGeometry(50, 50);
-    const groundMaterial = new THREE.MeshPhongMaterial({ color: 0xCC8866 });
+    const groundMaterial = new THREE.MeshPhongMaterial({
+        color: 0xCC8866
+    });
     const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);
     groundMesh.rotation.x = Math.PI * -0.5;
     groundMesh.receiveShadow = true;
@@ -57,7 +65,9 @@ function main() {
     scene.add(tank);
 
     const bodyGeometry = new THREE.BoxGeometry(carWidth, carHeight, carLength);
-    const bodyMaterial = new THREE.MeshPhongMaterial({ color: 0x6688AA });
+    const bodyMaterial = new THREE.MeshPhongMaterial({
+        color: 0x6688AA
+    });
     const bodyMesh = new THREE.Mesh(bodyGeometry, bodyMaterial);
     bodyMesh.position.y = 1.4;
     bodyMesh.castShadow = true;
@@ -77,8 +87,11 @@ function main() {
         wheelRadius, // top radius
         wheelRadius, // bottom radius
         wheelThickness, // height of cylinder
-        wheelSegments);
-    const wheelMaterial = new THREE.MeshPhongMaterial({ color: 0x888888 });
+        wheelSegments
+    );
+    const wheelMaterial = new THREE.MeshPhongMaterial({
+        color: 0x888888
+    });
     const wheelPositions = [
         [-carWidth / 2 - wheelThickness / 2, -carHeight / 2, carLength / 3],
         [carWidth / 2 + wheelThickness / 2, -carHeight / 2, carLength / 3],
@@ -87,7 +100,7 @@ function main() {
         [-carWidth / 2 - wheelThickness / 2, -carHeight / 2, -carLength / 3],
         [carWidth / 2 + wheelThickness / 2, -carHeight / 2, -carLength / 3]
     ];
-    const wheelMeshes = wheelPositions.map((position) => {
+    const wheelMeshes = wheelPositions.map(position => {
         const mesh = new THREE.Mesh(wheelGeometry, wheelMaterial);
         mesh.position.set(...position);
         mesh.rotation.z = Math.PI * 0.5;
@@ -105,7 +118,8 @@ function main() {
     const domeThetaEnd = Math.PI * 0.5;
     const domeGeometry = new THREE.SphereGeometry(
         domeRadius, domeWidthSubdivisions, domeHeightSubdivisions,
-        domePhiStart, domePhiEnd, domeThetaStart, domeThetaEnd);
+        domePhiStart, domePhiEnd, domeThetaStart, domeThetaEnd
+    );
     const domeMesh = new THREE.Mesh(domeGeometry, bodyMaterial);
     domeMesh.castShadow = true;
     bodyMesh.add(domeMesh);
@@ -114,8 +128,7 @@ function main() {
     const turretWidth = 0.1;
     const turretHeight = 0.1;
     const turretLength = carLength * 0.75 * 0.2;
-    const turretGeometry = new THREE.BoxGeometry(
-        turretWidth, turretHeight, turretLength);
+    const turretGeometry = new THREE.BoxGeometry(turretWidth, turretHeight, turretLength);
     const turretMesh = new THREE.Mesh(turretGeometry, bodyMaterial);
     const turretPivot = new THREE.Object3D();
     turretMesh.castShadow = true;
@@ -130,7 +143,10 @@ function main() {
     turretMesh.add(turretCamera);
 
     const targetGeometry = new THREE.SphereGeometry(0.5, 6, 3);
-    const targetMaterial = new THREE.MeshPhongMaterial({ color: 0x00FF00, flatShading: true });
+    const targetMaterial = new THREE.MeshPhongMaterial({
+        color: 0x00FF00,
+        flatShading: true
+    });
     const targetMesh = new THREE.Mesh(targetGeometry, targetMaterial);
     const targetOrbit = new THREE.Object3D();
     const targetElevation = new THREE.Object3D();
@@ -167,7 +183,9 @@ function main() {
 
     const points = curve.getPoints(50);
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
-    const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
+    const material = new THREE.LineBasicMaterial({
+        color: 0xff0000
+    });
     const splineObject = new THREE.Line(geometry, material);
     splineObject.rotation.x = Math.PI * 0.5;
     splineObject.position.y = 0.05;
@@ -235,7 +253,7 @@ function main() {
         tank.getWorldPosition(targetPosition);
         targetCameraPivot.lookAt(targetPosition);
 
-        wheelMeshes.forEach((obj) => {
+        wheelMeshes.forEach(obj => {
             obj.rotation.x = time * 3;
         });
 
