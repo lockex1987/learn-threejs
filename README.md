@@ -1317,22 +1317,6 @@ Bạn có thể xem trực quan các Geometry qua ví dụ sau:
 
 Chúng ta sẽ không đi sâu vào từng Geometry ở đây. Bạn có thể tham khảo từng cái ở Documentation của Three.js.
 
-
-
-Tự tạo hình lập phương bằng các điểm và các mặt (tạo hình tam giác cho đơn giản).
-
-[Example 02.05 - Custom geometry](https://static.lockex1987.com/learn-threejs/chapter-02/02-05-custom-geometry.html)
-
-[Solar system](https://static.lockex1987.com/learn-threejs/chapter-02/solar-system.html)
-
-[Tank](https://static.lockex1987.com/learn-threejs/chapter-02/tank.html)
-
-
-
-
-
-
-
 ## Chương 3 - Material
 
 Material: Lambert, Phong, smooth shading, texture
@@ -1417,3 +1401,21 @@ Từ phiên bản 128, CDN bắt đầu sửa lại kiểu `import { ... } from 
 ## Chương 7 - Load model
 
 Data loader: binary, image, JSON, scene
+
+Định dạng glTF, có đuôi là glb
+
+glTF files come in standard and binary form. These have different extensions:
+
+- Standard .glt files are uncompressed and may come with an extra .bin data file.
+- Binary .glb files include all data in one single file.
+
+## Chương 8 - Các ví dụ lẻ
+
+Tự tạo hình lập phương bằng các điểm và các mặt (tạo hình tam giác cho đơn giản).
+
+[Example 02.05 - Custom geometry](https://static.lockex1987.com/learn-threejs/old/02-05-custom-geometry.html)
+
+[Solar system](https://static.lockex1987.com/learn-threejs/old/solar-system.html)
+
+[Tank](https://static.lockex1987.com/learn-threejs/old/tank.html)
+
