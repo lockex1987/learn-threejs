@@ -85,11 +85,13 @@ examples
 │   │   controls
 │   │   └── OrbitControls.js
 │   ├── loaders
+│       └── GLTFLoader.js
 │       ...
 └── jsm
     ├── controls
     │   └── OrbitControls.js
     ├── loaders
+        └── GLTFLoader.js
         ...
 
 src
@@ -1402,7 +1404,7 @@ Từ phiên bản 128, CDN bắt đầu sửa lại kiểu `import { ... } from 
 
 Data loader: binary, image, JSON, scene
 
-Định dạng glTF, có đuôi là glb
+Định dạng glTF (GL Transmission Format), có đuôi là glb hoặc gltf.
 
 glTF files come in standard and binary form. These have different extensions:
 
@@ -1412,6 +1414,8 @@ glTF files come in standard and binary form. These have different extensions:
 ## Chương 8 - Các ví dụ lẻ
 
 Tự tạo hình lập phương bằng các điểm và các mặt (tạo hình tam giác cho đơn giản).
+
+3D text
 
 [Example 02.05 - Custom geometry](https://static.lockex1987.com/learn-threejs/old/02-05-custom-geometry.html)
 
