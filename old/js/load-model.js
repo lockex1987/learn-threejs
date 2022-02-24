@@ -5,10 +5,12 @@ import {
     Color,
     SpotLight,
     AmbientLight,
-    Vector2
+    Vector2,
+    Mesh
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
 import { GLTFLoader } from 'https://unpkg.com/three@0.137.5/examples/jsm/loaders/GLTFLoader.js';
+import { OBJLoader } from 'https://unpkg.com/three@0.137.5/examples/jsm/loaders/OBJLoader.js';
 import { OrbitControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/OrbitControls.js';
 
 
@@ -57,18 +59,44 @@ class ThreejsExample {
 
     loadModels() {
         // const url = '../models/watermelon/scene.gltf';
-        const url = '../models/bank_of_china_tower/scene.gltf';
-        const onLoad = gltf => {
-            const mesh = gltf.scene;
-            const scale = 0.1;
+        // const url = '../models/bank_of_china_tower/scene.gltf';
+        // const url = '../models/fighter_jet_russian/fighter_jet_russian.obj';
+        const url = '../models/cat/cat.obj';
+
+        const onLoad = model => {
+            console.log(model);
+
+            // gltf.scene.children[0].geometry.center();
+
+            /*
+            gltf.scene.traverse(function (node) {
+                if (node instanceof Mesh) {
+                    node.castShadow = true;
+                    // node.material.side = DoubleSide;
+                    node.geometry.center();
+                }
+            });
+            */
+
+            // GLTF
+            // const mesh = model.scene;
+            // const tower = model.scene.children[0];
+            // const mesh = tower;
+
+            // OBJ
+            const mesh = model;
+
+            const scale = 0.5;
             mesh.scale.set(scale, scale, scale);
             this.scene.add(mesh);
+            console.log(mesh.position);
             this.render();
         };
         const onError = error => {
             console.error(error);
         };
-        const loader = new GLTFLoader();
+        // const loader = new GLTFLoader();
+        const loader = new OBJLoader();
         loader.load(url, onLoad, undefined, onError);
     }
 
