@@ -1317,6 +1317,8 @@ Bạn có thể xem trực quan các Geometry qua ví dụ sau:
 
 [Ví dụ 02.02 - Geometry Browser](https://static.lockex1987.com/learn-threejs/chapter-02/02-02-geometry-browser.html)
 
+[Ví dụ 02.03 - Primitives](https://static.lockex1987.com/learn-threejs/chapter-02/02-03-primitives.html)
+
 Chúng ta sẽ không đi sâu vào từng Geometry ở đây. Bạn có thể tham khảo từng cái ở Documentation của Three.js.
 
 ## Chương 3 - Material
@@ -1410,6 +1412,10 @@ glTF files come in standard and binary form. These have different extensions:
 
 - Standard .glt files are uncompressed and may come with an extra .bin data file.
 - Binary .glb files include all data in one single file.
+
+Định dạng OBJ cũng rất phổ biến.
+
+
 
 ## Chương 8 - Các ví dụ lẻ
 
