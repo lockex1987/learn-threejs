@@ -1108,6 +1108,8 @@ render(ms = 0) {
 
 ## Chương 2 - Các thành phần cơ bản tạo nên một cảnh 3D trong Three.js
 
+Trong chương này, chúng ta sẽ cùng tìm hiểu về các thành phần như Scene, Camera, Renderer, Mesh, Geometry. Trước đó, chúng ta cũng tìm hiểu về hệ tọa độ trong Three.js.
+
 ### Hệ tọa độ
 
 ![Coordinate](images/coordinate_system_screen.svg)
@@ -1126,8 +1128,6 @@ Chúng ta có thể sử dụng AxesHelper để hiện thị 3 trục tọa đ�
 const axesHelper = new AxesHelper(5);
 scene.add(axesHelper);
 ```
-
-
 
 ### Scene
 
@@ -1319,7 +1319,7 @@ Bạn có thể xem trực quan các Geometry qua ví dụ sau:
 
 [Ví dụ 02.03 - Primitives](https://static.lockex1987.com/learn-threejs/chapter-02/02-03-primitives.html)
 
-Chúng ta sẽ không đi sâu vào từng Geometry ở đây. Bạn có thể tham khảo từng cái ở Documentation của Three.js.
+Chúng ta sẽ không đi sâu vào từng Geometry ở đây. Bạn có thể tham khảo từng cái qua ví dụ và ở Documentation của Three.js.
 
 ## Chương 3 - Material
 
