@@ -1118,9 +1118,7 @@ Các đối tượng trong cảnh của Three.js nằm trong một không gian 3
 
 - Trục X: từ trái sang phải
 - Trục Y: từ dưới lên trên
-
 - Trục Z: từ xa về gần màn hình
-
 
 Chúng ta có thể sử dụng AxesHelper để hiện thị ba trục tọa độ trên cảnh của mình. Code như sau:
 
