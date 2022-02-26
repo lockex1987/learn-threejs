@@ -50,6 +50,8 @@ class ThreejsExample {
         camera.lookAt(this.scene.position);
 
         camera.tick = ms => {
+            // Tính góc xoay theo thời gian
+            // Xoay một vòng hết 16 giây
             const seconds = ms / 1000;
             const angle = seconds * Math.PI / 8;
 
@@ -57,10 +59,8 @@ class ThreejsExample {
             camera.position.x = 30 * Math.sin(angle);
             camera.position.z = 30 * Math.cos(angle);
 
-            // Luôn nhìn vào điểm trung tâm (nhìn vào cảnh)
+            // Luôn nhìn vào điểm trung tâm
             camera.lookAt(this.scene.position);
-
-            // console.log(30 * Math.sin(angle), Math.cos(angle));
         };
 
         return camera;
@@ -85,7 +85,7 @@ class ThreejsExample {
         const cubeMaterial = new MeshNormalMaterial();
         const cube = new Mesh(cubeGeometry, cubeMaterial);
 
-        // Position the cube randomly in the scene
+        // Thiết lập vị trí ngẫu nhiên
         cube.position.x = -15 + Math.round((Math.random() * 30));
         cube.position.y = 5 + Math.round((Math.random() * 5));
         cube.position.z = -10 + Math.round((Math.random() * 20));
@@ -103,13 +103,16 @@ class ThreejsExample {
             // color: 0xDDDDDDD
             color: new Color('rgb(106, 193, 116)')
         });
-        planeMaterial.opacity = 0.4; // không ăn
-        const plane = new Mesh(planeGeometry, planeMaterial);
-        plane.rotation.x = -0.5 * Math.PI;
-        plane.position.x = 0;
-        plane.position.y = -1;
-        plane.position.z = 0;
-        return plane;
+
+        planeMaterial.opacity = 0.4; // không ăn, phải thêm transparent bằng true
+        planeMaterial.transparent = true;
+
+        const planeMesh = new Mesh(planeGeometry, planeMaterial);
+        planeMesh.rotation.x = -0.5 * Math.PI;
+        planeMesh.position.x = 0;
+        planeMesh.position.y = -1;
+        planeMesh.position.z = 0;
+        return planeMesh;
     }
 
     createControls(scene, createCubeFunc) {
