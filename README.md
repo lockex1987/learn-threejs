@@ -1331,7 +1331,11 @@ Bạn có thể xem trực quan các Geometry qua hai ví dụ sau:
 
 [Ví dụ 02.02 - Geometry Browser](https://static.lockex1987.com/learn-threejs/chapter-02/02-02-geometry-browser.html)
 
+![02-02](screenshots/02-02.png)
+
 [Ví dụ 02.03 - Primitives](https://static.lockex1987.com/learn-threejs/chapter-02/02-03-primitives.html)
+
+![02-03](screenshots/02-03.png)
 
 Chúng ta sẽ không đi sâu vào từng Geometry ở đây. Bạn có thể tham khảo từng cái qua ví dụ và ở Documentation của Three.js.
 
