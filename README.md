@@ -1337,11 +1337,42 @@ Chúng ta sẽ không đi sâu vào từng Geometry ở đây. Bạn có thể t
 
 ## Chương 3 - Material
 
+Trong Three.js, Material xác định màu của một điểm trên đối tượng (Mesh). Material quyết định đối tượng trông như thế nào: trong suốt, wireframe, bóng láng, sần sùi,... Chúng ta sẽ lần lượt tìm hiểu từng loại Material từ đơn giản đến phức tạp.
+
+| Tên                  | Mô tả                                                        |
+| -------------------- | ------------------------------------------------------------ |
+| MeshBasicMaterial    | Đây là Material cơ bản để tạo cho đối tượng một màu sắc đơn giản hoặc hiển thị wireframe. Material này không bị ảnh hưởng bởi ánh sáng. |
+| MeshDeptMaterial     | Sử dụng khoảng cách từ Camera đến đối tượng để quyết định màu sắc. |
+| MeshNormalMaterial   | Material đơn giản quyết định màu sắc của một mặt dựa vào normal vector của nó. |
+| MeshMatcapMaterial   |                                                              |
+| MeshLambertMaterial  | Material này có sử dụng ánh sáng và tạo ra đối tượng trông mờ, không sáng bóng. |
+| MeshPhongMaterial    | Material này cũng sử dụng ánh sáng và có thể tạo các đối tượng sáng bóng. |
+| MeshStandardMaterial |                                                              |
+| MeshPhysicalMaterial |                                                              |
+| MeshToonMaterial     |                                                              |
+|                      |                                                              |
+
+
+
+- PointsMaterial
+- SpriteMaterial
+- LineBasicMaterial
+- LineDashMaterial
+- ShadowMaterial
+- ShaderMaterial
+- RawShaderMaterial
+
+### MeshBasicMaterial
+
+
+
+
+
 Material: Lambert, Phong, smooth shading, texture
 
 wireframe
 
-MeshBasicMaterial
+
 
 MeshNormalMaterial
 
