@@ -1341,6 +1341,32 @@ Material: Lambert, Phong, smooth shading, texture
 
 wireframe
 
+MeshBasicMaterial
+
+MeshNormalMaterial
+
+MeshMatcapMaterial
+
+MeshDeptMaterial
+
+MeshLambertMaterial
+
+MeshPhongMaterial
+
+MeshToonMaterial
+
+MeshStandardMaterial
+
+MeshPhysicalMaterial
+
+PointsMaterial
+
+ShaderMaterial
+
+RawShaderMaterial
+
+
+
 
 
 ### Một số Material cần Light
@@ -1361,7 +1387,7 @@ We also need to change the material. The MeshBasicMaterial is not affected by li
 
 
 
-#### Hiệu ứng sương mù (Để sau Light và Material)
+### Hiệu ứng sương mù (Để sau Light và Material)
 
  (có cần ánh sáng không?)
 
