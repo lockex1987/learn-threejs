@@ -11,7 +11,7 @@ document.body.appendChild(renderer.domElement);
 const geometry = new THREE.SphereGeometry(1, 8, 5);
 const material = new THREE.MeshBasicMaterial({
     color: 0xffffff,
-    wireframe: true // wireframe false will not show wireframe
+    wireframe: true
 });
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
@@ -19,22 +19,11 @@ scene.add(mesh);
 const controls = new THREE.TrackballControls(camera, renderer.domElement);
 
 
-function update() {
-
-}
-
-
 function render() {
-    renderer.render(scene, camera);
-}
-
-
-function animate() {
     controls.update();
-    update();
-    render();
-    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
 }
 
 
-animate();
+render();

@@ -1410,6 +1410,8 @@ plane.receiveShadow = true;
 
 OrbitControls và TrackballControls thôi.
 
+Ngoài ra còn có DragControls, PointerLockControls.
+
 Ở phiên bản 127, CDN vẫn load kiểu tương đối:
 
 https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js

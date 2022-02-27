@@ -1,43 +1,36 @@
 const scene = new THREE.Scene();
+scene.background = new THREE.Color('skyblue');
+
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 3;
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// create the shape
-const geometry = new THREE.SphereGeometry(1, 8, 5); // size of box
-
-// create material, color or image
-const material = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true }); // wireframe false will not show wireframe
+const geometry = new THREE.SphereGeometry(1, 8, 5);
+const material = new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    wireframe: true
+});
 const sphere = new THREE.Mesh(geometry, material);
 scene.add(sphere);
 
-camera.position.z = 3;
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.update();
 
-// game login
-const update = function () {
-    // Just for fun
+function update() {
     sphere.rotation.x += 0.01;
     sphere.rotation.y += 0.005;
-};
+}
 
-// draw scene
-const render = function () {
-    renderer.render(scene, camera);
-};
+function render() {
+    // Required if controls.enableDamping or controls.autoRotate are set to true
+    controls.update();
 
-// run gameloop (update, render, repeat)
-const GameLoop = function () {
-    requestAnimationFrame(GameLoop);
     update();
-    render();
-};
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+}
 
-GameLoop();
-
-// Just for fun
-scene.background = new THREE.Color('skyblue');
-
-// orbit control:
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
+render();
