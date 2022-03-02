@@ -1,34 +1,4 @@
-function init() {
-    // use the defaults
-    const stats = initStats();
-    const renderer = initRenderer();
-    const camera = initCamera();
-    // create a scene, that will hold all our elements such as objects, cameras and lights.
-    const scene = new THREE.Scene();
-
-
-    const cubeGeometry = new THREE.BoxGeometry(20, 20, 20);
-
-    const meshMaterial1 = createMaterial('vertex-shader',
-        'fragment-shader-1');
-    const meshMaterial2 = createMaterial('vertex-shader',
-        'fragment-shader-2');
-    const meshMaterial3 = createMaterial('vertex-shader',
-        'fragment-shader-3');
-    const meshMaterial4 = createMaterial('vertex-shader',
-        'fragment-shader-4');
-    const meshMaterial5 = createMaterial('vertex-shader',
-        'fragment-shader-5');
-    const meshMaterial6 = createMaterial('vertex-shader',
-        'fragment-shader-6');
-
-
-    const material = [meshMaterial1, meshMaterial2, meshMaterial3, meshMaterial4, meshMaterial5, meshMaterial6];
-    const cube = new THREE.Mesh(cubeGeometry, material);
-
-    // add the sphere to the scene
-    scene.add(cube);
-
+function addLights(scene) {
     // add subtle ambient lighting
     const ambientLight = new THREE.AmbientLight(0x0c0c0c);
     scene.add(ambientLight);
@@ -38,35 +8,33 @@ function init() {
     spotLight.position.set(-40, 60, -10);
     spotLight.castShadow = true;
     scene.add(spotLight);
+}
 
-    // call the render function
+
+function init() {
+    const scene = new THREE.Scene();
+    const camera = initCamera();
+    const renderer = initRenderer();
+
+    const cubeGeometry = new THREE.BoxGeometry(20, 20, 20);
+
+    const meshMaterial1 = createMaterial('vertex-shader', 'fragment-shader-1');
+    const meshMaterial2 = createMaterial('vertex-shader', 'fragment-shader-2');
+    const meshMaterial3 = createMaterial('vertex-shader', 'fragment-shader-3');
+    const meshMaterial4 = createMaterial('vertex-shader', 'fragment-shader-4');
+    const meshMaterial5 = createMaterial('vertex-shader', 'fragment-shader-5');
+    const meshMaterial6 = createMaterial('vertex-shader', 'fragment-shader-6');
+
+    const material = [meshMaterial1, meshMaterial2, meshMaterial3, meshMaterial4, meshMaterial5, meshMaterial6];
+    const cube = new THREE.Mesh(cubeGeometry, material);
+
+    scene.add(cube);
+
+    addLights(scene);
+
     let step = 0;
-    const oldContext = null;
-
-    const controls = new function () {
-        this.rotationSpeed = 0.02;
-        this.bouncingSpeed = 0.03;
-
-        this.opacity = meshMaterial1.opacity;
-        this.transparent = meshMaterial1.transparent;
-
-        this.visible = meshMaterial1.visible;
-        this.side = 'front';
-
-        this.wireframe = meshMaterial1.wireframe;
-        this.wireframeLinewidth = meshMaterial1.wireframeLinewidth;
-
-        this.selectedMesh = 'cube';
-
-        this.shadow = 'flat';
-    }();
-
-
-    render();
 
     function render() {
-        stats.update();
-
         cube.rotation.y = step += 0.01;
         cube.rotation.x = step;
         cube.rotation.z = step;
@@ -75,17 +43,14 @@ function init() {
             e.uniforms.time.value += 0.01;
         });
 
-
-        // render using requestAnimationFrame
-        requestAnimationFrame(render);
         renderer.render(scene, camera);
+        requestAnimationFrame(render);
     }
 
     function createMaterial(vertexShader, fragmentShader) {
         const vertShader = document.getElementById(vertexShader).innerHTML;
         const fragShader = document.getElementById(fragmentShader).innerHTML;
 
-        const attributes = {};
         const uniforms = {
             time: {
                 type: 'f',
@@ -104,10 +69,8 @@ function init() {
                 value: new THREE.Vector2()
             }
         };
-
         uniforms.resolution.value.x = window.innerWidth;
         uniforms.resolution.value.y = window.innerHeight;
-
         const meshMaterial = new THREE.ShaderMaterial({
             uniforms: uniforms,
             vertexShader: vertShader,
@@ -115,10 +78,10 @@ function init() {
             transparent: true
 
         });
-
-
         return meshMaterial;
     }
+
+    render();
 }
 
 

@@ -1,23 +1,24 @@
-function init() {
-    // use the defaults
-    const stats = initStats();
-    const renderer = initRenderer();
-    const camera = initCamera();
-
-    // create a scene, that will hold all our elements such as objects, cameras and lights.
-    const scene = new THREE.Scene();
-    addLargeGroundPlane(scene);
-
-    // add spotlight for the shadows
+function addLights(scene) {
     const spotLight = new THREE.SpotLight(0xffffff);
     spotLight.position.set(-0, 30, 60);
     spotLight.castShadow = true;
     spotLight.intensity = 0.6;
     scene.add(spotLight);
+}
+
+
+function init() {
+    const scene = new THREE.Scene();
+    const camera = initCamera();
+    const renderer = initRenderer();
+    addLargeGroundPlane(scene);
+    addLights(scene);
 
     // call the render function
     let step = 0;
-    const material = new THREE.MeshToonMaterial({ color: 0x7777ff });
+    const material = new THREE.MeshToonMaterial({ 
+        color: 0x7777ff
+    });
     const controls = new function () {
         this.color = material.color.getStyle();
         this.emissive = material.emissive.getStyle();
@@ -43,17 +44,14 @@ function init() {
     spGui.add(material, 'wireframeLinewidth', 0, 20);
 
     camera.lookAt(controls.selected.position);
-    render();
 
     function render() {
-        stats.update();
-
         if (controls.selected) controls.selected.rotation.y = step += 0.01;
-
-        // render using requestAnimationFrame
-        requestAnimationFrame(render);
         renderer.render(scene, camera);
+        requestAnimationFrame(render);
     }
+
+    render();
 }
 
 

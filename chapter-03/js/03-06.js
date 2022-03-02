@@ -1,11 +1,23 @@
+function addLights(scene) {
+// add subtle ambient lighting
+    const ambientLight = new THREE.AmbientLight(0x0c0c0c);
+    scene.add(ambientLight);
+
+    // add spotlight for the shadows
+    const spotLight = new THREE.SpotLight(0xffffff);
+    spotLight.position.set(-30, 60, 60);
+    spotLight.castShadow = true;
+    scene.add(spotLight);
+}
+
+
+
 function init() {
-    // use the defaults
-    const stats = initStats();
-    const renderer = initRenderer();
+    const scene = new THREE.Scene();
+
     const camera = initCamera();
 
-    // create a scene, that will hold all our elements such as objects, cameras and lights.
-    const scene = new THREE.Scene();
+    const renderer = initRenderer();
 
     const groundGeom = new THREE.PlaneGeometry(100, 100, 4, 4);
     const groundMesh = new THREE.Mesh(groundGeom, new THREE.MeshBasicMaterial({
@@ -40,17 +52,9 @@ function init() {
     // add the sphere to the scene
     scene.add(cube);
 
-    // add subtle ambient lighting
-    const ambientLight = new THREE.AmbientLight(0x0c0c0c);
-    scene.add(ambientLight);
+    addLights(scene);
 
-    // add spotlight for the shadows
-    const spotLight = new THREE.SpotLight(0xffffff);
-    spotLight.position.set(-30, 60, 60);
-    spotLight.castShadow = true;
-    scene.add(spotLight);
 
-    // call the render function
     let step = 0;
 
     const controls = new function () {
@@ -86,50 +90,34 @@ function init() {
     });
     spGui.add(meshMaterial, 'wireframe');
     spGui.add(meshMaterial, 'wireframeLinewidth', 0, 20);
+    gui.add(controls, 'selectedMesh', ['cube', 'sphere', 'plane']).onChange(function (e) {
+        scene.remove(plane);
+        scene.remove(cube);
+        scene.remove(sphere);
 
-
-    loadGopher(meshMaterial).then(function (gopher) {
-        gopher.scale.x = 4;
-        gopher.scale.y = 4;
-        gopher.scale.z = 4;
-        gui.add(controls, 'selectedMesh', ['cube', 'sphere', 'plane', 'gopher']).onChange(function (e) {
-            scene.remove(plane);
-            scene.remove(cube);
-            scene.remove(sphere);
-            scene.remove(gopher);
-
-            switch (e) {
-            case 'cube':
-                scene.add(cube);
-                selectedMesh = cube;
-                break;
-            case 'sphere':
-                scene.add(sphere);
-                selectedMesh = sphere;
-                break;
-            case 'plane':
-                scene.add(plane);
-                selectedMesh = plane;
-                break;
-            case 'gopher':
-                scene.add(gopher);
-                selectedMesh = gopher;
-                break;
-            }
-        });
+        switch (e) {
+        case 'cube':
+            scene.add(cube);
+            selectedMesh = cube;
+            break;
+        case 'sphere':
+            scene.add(sphere);
+            selectedMesh = sphere;
+            break;
+        case 'plane':
+            scene.add(plane);
+            selectedMesh = plane;
+            break;
+        }
     });
 
-    render();
-
     function render() {
-        stats.update();
-
         selectedMesh.rotation.y = step += 0.01;
-
-        // render using requestAnimationFrame
-        requestAnimationFrame(render);
         renderer.render(scene, camera);
+        requestAnimationFrame(render);
     }
+
+    render();
 }
 
 

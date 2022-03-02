@@ -1,19 +1,25 @@
-function init() {
-    // use the defaults
-    const stats = initStats();
-    const renderer = initRenderer();
-    const camera = initCamera();
-
-    // create a scene, that will hold all our elements such as objects, cameras and lights.
-    const scene = new THREE.Scene();
-    addLargeGroundPlane(scene);
-
-    // add spotlight for the shadows
+function addLights(scene) {
+// add spotlight for the shadows
     const spotLight = new THREE.SpotLight(0xffffff);
     spotLight.position.set(-0, 30, 60);
     spotLight.castShadow = true;
     spotLight.intensity = 0.6;
     scene.add(spotLight);
+}
+
+
+function init() {
+    const scene = new THREE.Scene();
+
+    const camera = initCamera();
+
+    const renderer = initRenderer();
+
+
+    addLargeGroundPlane(scene);
+
+    addLights(scene);
+
 
     // call the render function
     let step = 0;
@@ -25,7 +31,6 @@ function init() {
     }();
 
     const gui = new dat.GUI();
-
     addBasicMaterialSettings(gui, controls, material);
     addMeshSelection(gui, controls, material, scene);
     const spGui = gui.addFolder('THREE.MeshPhongMaterial');
@@ -43,17 +48,16 @@ function init() {
     spGui.add(material, 'wireframeLinewidth', 0, 20);
 
     camera.lookAt(controls.selected.position);
-    render();
 
     function render() {
-        stats.update();
-
-        if (controls.selected) controls.selected.rotation.y = step += 0.01;
-
-        // render using requestAnimationFrame
-        requestAnimationFrame(render);
+        if (controls.selected) {
+            controls.selected.rotation.y = step += 0.01;
+        }
         renderer.render(scene, camera);
+        requestAnimationFrame(render);
     }
+
+    render();
 }
 
 

@@ -1,25 +1,26 @@
-function init() {
-    // use the defaults
-    const stats = initStats();
-    // var camera = initCamera();
+function addLights(scene) {
+    // add subtle ambient lighting
+    const ambientLight = new THREE.AmbientLight(0x0c0c0c);
+    scene.add(ambientLight);
 
-    // create a scene, that will hold all our elements such as objects, cameras and lights.
+    // add spotlight for the shadows
+    const spotLight = new THREE.SpotLight(0xffffff);
+    spotLight.position.set(-40, 60, -10);
+    spotLight.castShadow = true;
+    scene.add(spotLight);
+}
+
+
+function init() {
     const scene = new THREE.Scene();
 
-    // create a camera, which defines where we're looking at.
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(-20, 30, 40);
     camera.lookAt(new THREE.Vector3(10, 0, 0));
 
-    // create a render and set the size
-
-    const webGLRenderer = new THREE.WebGLRenderer();
-    webGLRenderer.setClearColor(new THREE.Color(0x000000));
-    webGLRenderer.setSize(window.innerWidth, window.innerHeight);
-
-    const canvasRenderer = new THREE.CanvasRenderer();
-    canvasRenderer.setSize(window.innerWidth, window.innerHeight);
-    const renderer = webGLRenderer;
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setClearColor(new THREE.Color(0x000000));
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
     const groundGeom = new THREE.PlaneGeometry(100, 100, 4, 4);
     const groundMesh = new THREE.Mesh(groundGeom, new THREE.MeshBasicMaterial({
@@ -61,87 +62,54 @@ function init() {
             0x3333FF,
             0.5,
             0.5);
-    // sphere.add(arrow);
+        sphere.add(arrow);
     }
 
 
     cube.position = sphere.position;
     plane.position = sphere.position;
 
-
-    // add the sphere to the scene
     scene.add(cube);
 
-
-
-    // add subtle ambient lighting
-    const ambientLight = new THREE.AmbientLight(0x0c0c0c);
-    scene.add(ambientLight);
-
-    // add spotlight for the shadows
-    const spotLight = new THREE.SpotLight(0xffffff);
-    spotLight.position.set(-40, 60, -10);
-    spotLight.castShadow = true;
-    scene.add(spotLight);
-
-    // add the output of the renderer to the html element
     document.getElementById('webgl-output').appendChild(renderer.domElement);
 
     // call the render function
     let step = 0;
-    const oldContext = null;
 
     const controls = new function () {
-        this.rotationSpeed = 0.02;
-        this.bouncingSpeed = 0.03;
         this.selectedMesh = 'cube';
     }();
 
     const gui = new dat.GUI();
-    addBasicMaterialSettings(gui, controls, meshMaterial);
+    // addBasicMaterialSettings(gui, controls, meshMaterial);
+    gui.add(controls, 'selectedMesh', ['cube', 'sphere', 'plane']).onChange(function (e) {
+        scene.remove(plane);
+        scene.remove(cube);
+        scene.remove(sphere);
 
-    loadGopher(meshMaterial).then(function (gopher) {
-        gopher.scale.x = 4;
-        gopher.scale.y = 4;
-        gopher.scale.z = 4;
-        gui.add(controls, 'selectedMesh', ['cube', 'sphere', 'plane', 'gopher']).onChange(function (e) {
-            scene.remove(plane);
-            scene.remove(cube);
-            scene.remove(sphere);
-            scene.remove(gopher);
-
-            switch (e) {
-            case 'cube':
-                scene.add(cube);
-                selectedMesh = cube;
-                break;
-            case 'sphere':
-                scene.add(sphere);
-                selectedMesh = sphere;
-                break;
-            case 'plane':
-                scene.add(plane);
-                selectedMesh = plane;
-                break;
-            case 'gopher':
-                scene.add(gopher);
-                selectedMesh = gopher;
-                break;
-            }
-        });
+        switch (e) {
+        case 'cube':
+            scene.add(cube);
+            selectedMesh = cube;
+            break;
+        case 'sphere':
+            scene.add(sphere);
+            selectedMesh = sphere;
+            break;
+        case 'plane':
+            scene.add(plane);
+            selectedMesh = plane;
+            break;
+        }
     });
 
+    function render() {
+        selectedMesh.rotation.y = step += 0.01;
+        renderer.render(scene, camera);
+        requestAnimationFrame(render);
+    }
 
     render();
-
-    function render() {
-        stats.update();
-
-        selectedMesh.rotation.y = step += 0.01;
-        // render using requestAnimationFrame
-        requestAnimationFrame(render);
-        renderer.render(scene, camera);
-    }
 }
 
 

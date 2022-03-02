@@ -25,7 +25,6 @@ function init() {
     const cubeGeometry = new THREE.BoxGeometry(15, 15, 15);
     const meshMaterial = new THREE.MeshBasicMaterial({
         color: 0x7777ff,
-        name: 'Basic Material',
         flatShading: true
     });
 
@@ -40,9 +39,6 @@ function init() {
 
     document.getElementById('webgl-output').appendChild(renderer.domElement);
 
-    // call the render function
-    let step = 0;
-
     const controls = new function () {
         this.color = meshMaterial.color.getStyle();
     }();
@@ -50,20 +46,13 @@ function init() {
     const gui = new dat.GUI();
     // addBasicMaterialSettings(gui, controls, meshMaterial);
     const spGui = gui.addFolder('THREE.MeshBasicMaterial');
-    spGui.addColor(controls, 'color').onChange(function (e) {
-        meshMaterial.color.setStyle(e);
+    spGui.addColor(controls, 'color').onChange(function (value) {
+        meshMaterial.color.setStyle(value);
     });
     spGui.add(meshMaterial, 'wireframe');
-    spGui.add(meshMaterial, 'wireframeLinewidth', 0, 20);
-    spGui.add(meshMaterial, 'wireframeLinejoin', ['round', 'bevel', 'miter']).onChange(function (e) {
-        meshMaterial.wireframeLinejoin = e;
-    });
-    spGui.add(meshMaterial, 'wireframeLinecap', ['butt', 'round', 'square']).onChange(function (e) {
-        meshMaterial.wireframeLinecap = e;
-    });
 
     function render() {
-        cube.rotation.y = step += 0.01;
+        cube.rotation.y += 0.01;
         renderer.render(scene, camera);
         requestAnimationFrame(render);
     }
