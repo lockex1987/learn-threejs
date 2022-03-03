@@ -1434,6 +1434,49 @@ const material = new MeshBasicMaterial({
 
 [Ví dụ MeshBasicMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/material-browser.html#MeshBasicMaterial)
 
+### MeshDeptMaterial
+
+Với Material này, cách các đối tượng trông không được định nghĩa bởi ánh sáng hay một thuộc tính nào đó của Material; nó được định nghĩa bằng khoảng cách của đối tượng tới Camera. Điểm ở gần Camera sẽ có màu trắng, còn điểm ở xa Camera sẽ có màu đen. Trông cảnh sẽ như có hiệu ứng fading.
+
+MeshDeptMaterial không có nhiều các thuộc tính để chúng ta điều chỉnh cách một đối tượng được render. Tuy nhiên, chúng ta có thể điều chỉnh hiệu ứng fading nhanh hay chậm bằng các khoảng cách `near` và `far` của Camera. Khi tìm hiểu về Camera ở chương trước, chúng ta đã biết hai khoảng cách này thiết lập không gian nhìn thấy của Camera.
+
+Khoảng cách giữa `near` và `far` định nghĩa độ sáng và tần suất các đối tượng fade out. Nếu khoảng cách là rất lớn, các đối tượng chỉ fade out một chút khi di chuyển ra xa Camera. Khi khoảng cách là nhỏ, việc fade out sẽ rõ ràng hơn.
+
+Tạo MeshDeptMaterial rất dễ và không yêu cầu tham số nào:
+
+```javascript
+const material = new MeshDeptMaterial();
+```
+
+![Depth](images/material-depth.png)
+
+[Ví dụ MeshDepthMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/material-browser.html#MeshDepthMaterial)
+
+MeshDepthMaterial không có thuộc tính để thiết lập màu sắc của đối tượng. Tuy nhiên, bạn có thể kết hợp các Material để tạo hiệu ứng mới (blend). Đoạn code sau chỉ cách chúng ta kết hợp các Material:
+
+```javascript
+const depthMaterial = new THREE.MeshDepthMaterial();
+const basicMaterial = new THREE.MeshBasicMaterial({
+    color: 0x00ff00,
+    transparent: true,
+    blending: THREE.MultiplyBlending
+});
+const materials = [
+    basicMaterial,
+    depthMaterial
+];
+
+// Tham khảo THREE.SceneUtils.createMultiMaterialObject
+const mesh = new THREE.Group();
+materials.forEach(material => {
+    mesh.add(new THREE.Mesh(geometry, material));
+});
+```
+
+![Combine](images/material-combine.png)
+
+[Ví dụ Combine](https://static.lockex1987.com/learn-threejs/chapter-03/material-browser.html#Combine)
+
 ### MeshNormalMaterial
 
 MeshNormal sẽ chỉ các vector pháp tuyến của Geometry. Các vector pháp tuyến là các hướng của một tam giác hoặc một mặt. MeshNormalMaterial sẽ vẽ các không gian pháp tuyến (tương đối với Camera). Ta có x là đỏ, y là lục, z là lam. Do đó các vật hướng về phải sẽ có màu hồng, hướng về trái có màu aqua, hướng lên trên có màu lục nhẹ, hướng xuống dưới có màu tím, và hướng về màn hình có mà lavender.
@@ -1462,13 +1505,6 @@ Thuộc tính là `matcap`.
 
 
 
-### MeshDeptMaterial
-
-MeshDepthMaterial render độ sâu của mỗi pixel (cách xa Camera bao nhiêu). Pixel ở âm near của Camera là 0 và âm far là 1.
-
-![Depth](images/material-depth.png)
-
-x
 
 ### MeshLambertMaterial
 
