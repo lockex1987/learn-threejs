@@ -18,8 +18,9 @@ function init() {
             const cubeMaterial = new THREE.MeshLambertMaterial({
                 color: Math.random() * 0xffffff
             });
+            // const cubeMaterial = new THREE.MeshDepthMaterial();
             const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-            cube.castShadow = true;
+            // cube.castShadow = true;
 
             // position the cube randomly in the scene
             cube.position.x = -60 + Math.round((Math.random() * 100));

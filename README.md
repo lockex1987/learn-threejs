@@ -400,6 +400,12 @@ Hoặc bạn cũng có thể import như sau:
 import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
 ```
 
+Ở các hướng dẫn trên trang chủ của Three.js thường sử dụng lil-gui thay cho dat.GUI. Tuy nhiên cách sử dụng cũng khá giống nhau:
+
+```javascript
+import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.16/+esm';
+```
+
 Chúng ta khởi tạo một đối tượng dat.GUI như sau:
 
 ```javascript
@@ -1321,7 +1327,7 @@ Danh sách các Geometry mà Three.js cung cấp là (có thể bạn chỉ cầ
 
 ![Geometry specialized](images/geometries_specialized.svg)
 
-Các Geometry trên đều có phiên bản Buffer tương ứng, ví dụ với BoxGeometry chúng ta sẽ có BoxBufferGeometry. Các phiên bản Buffer mới hơn và được xử lý nhanh hơn so với phiên bản không Buffer. Dữ liệu của chúng được lưu trong các mảng một chiều. Bạn nên luôn luôn sử dụng phiên bản Buffer của từng Geometry. Phiên bản không Buffer được giữ lại chỉ để tương thích ngược với các phiên bản Three.js cũ.
+Các Geometry trên đều có phiên bản Buffer tương ứng, ví dụ với BoxGeometry chúng ta sẽ có BoxBufferGeometry. Các phiên bản Buffer mới hơn và được xử lý nhanh hơn so với phiên bản không Buffer. Dữ liệu của chúng được lưu trong các mảng một chiều. Bạn nên luôn luôn sử dụng phiên bản Buffer của từng Geometry. Phiên bản không Buffer được giữ lại chỉ để tương thích ngược với các phiên bản Three.js cũ. Từ phiên bản r125, Geometry (không Buffer) đã bị loại bỏ khỏi core của thư viện. Nó giờ lưu ở `examples/jsm/deprecated/Geometry.js`. Các khởi tạo Geometry như BoxGeometry giờ sẽ tạo ra BufferGeometry luôn.
 
 Bạn có thể xem trực quan các Geometry qua hai ví dụ sau:
 
@@ -1337,22 +1343,24 @@ Chúng ta sẽ không đi sâu vào từng Geometry ở đây. Bạn có thể t
 
 ## Chương 3 - Material
 
-Trong Three.js, Material xác định màu của một điểm trên đối tượng (Mesh). Material quyết định đối tượng trông như thế nào: trong suốt, wireframe, bóng láng, sần sùi,... Chúng ta sẽ lần lượt tìm hiểu từng loại Material từ đơn giản đến phức tạp.
+### Giới thiệu chung
+
+Trong Three.js, Material xác định màu của một điểm trên đối tượng (Mesh). Material quyết định đối tượng trông như thế nào: trong suốt, wireframe, bóng láng, sáng bóng, sần sùi, thô ráp,... Chúng ta sẽ lần lượt tìm hiểu từng loại Material từ đơn giản đến phức tạp.
 
 | Tên                  | Mô tả                                                        |
 | -------------------- | ------------------------------------------------------------ |
 | MeshBasicMaterial    | Đây là Material cơ bản để tạo cho đối tượng một màu sắc đơn giản hoặc hiển thị wireframe. Material này không bị ảnh hưởng bởi ánh sáng. |
 | MeshDeptMaterial     | Sử dụng khoảng cách từ Camera đến đối tượng để quyết định màu sắc. |
-| MeshNormalMaterial   | Material đơn giản quyết định màu sắc của một mặt dựa vào normal vector của nó. |
+| MeshNormalMaterial   | Material đơn giản quyết định màu sắc của một mặt dựa vào normal vector của nó. Không bị ảnh hưởng bởi ánh sáng. |
 | MeshMatcapMaterial   |                                                              |
-| MeshLambertMaterial  | Material này có sử dụng ánh sáng và tạo ra đối tượng trông mờ, không sáng bóng. |
-| MeshPhongMaterial    | Material này cũng sử dụng ánh sáng và có thể tạo các đối tượng sáng bóng. |
+| MeshLambertMaterial  | Material này có sử dụng ánh sáng và tạo ra đối tượng trông mờ, không sáng bóng. Chỉ tính toán ánh sáng ở các đỉnh. |
+| MeshPhongMaterial    | Material này cũng sử dụng ánh sáng và có thể tạo các đối tượng sáng bóng. Tính toán ánh sáng ở tất cả pixel. Hỗ trợ specular highlight. |
 | MeshStandardMaterial |                                                              |
 | MeshPhysicalMaterial |                                                              |
 | MeshToonMaterial     |                                                              |
 |                      |                                                              |
 
-
+Chúng ta sẽ không tìm hiểu các Material sau:
 
 - PointsMaterial
 - SpriteMaterial
@@ -1362,39 +1370,161 @@ Trong Three.js, Material xác định màu của một điểm trên đối tư�
 - ShaderMaterial
 - RawShaderMaterial
 
+Chúng ta cũng chưa tìm hiểu Texture (thuộc tính `map`, `bumpMap`, `envMap`, `alphaMap`, `matcap`, `displacementMap`, `aoMap`,...). Chúng ta sẽ có chương về Texture riêng.
+
+Có hai cách để thiết lập các thuộc tính cho Material. Cách đầu tiên ở thời điểm khởi tạo, ví dụ:
+
+```javascript
+const material = new MeshPhongMaterial({
+    color: 0xFF0000, // màu đỏ (cũng có thể sử dụng xâu màu CSS ở đây)
+    flatShading: true
+});
+```
+
+Cách khác là sau khi khởi tạo:
+
+```javascript
+const material = new MeshPhongMaterial();
+material.color.setHSL(0, 1, 0.5); // màu đỏ
+material.flatShading = true;
+```
+
+Chú ý rằng kiểu `Color` trong Three.js có nhiều cách để thiết lập:
+
+```javascript
+material.color.set(0x00FFFF); // giống như kiểu CSS #RRGGBB
+material.color.set(cssString); // bất kỳ CSS color nào, ví dụ 'purple',
+                               // '#F32',
+                               // 'rgb(255, 127, 64)'
+                               // 'hsl(180, 50%, 25%)'
+material.color.set(someColor); // tham số là đối tượng Color khác
+material.color.setHSL(h, s, l); // trong đó h, s, l từ 0 đến 1
+material.color.setRGB(r, b, b); // trong đó r, g, b từ 0 đến 1
+```
+
+Các Material cùng chia sẻ các thuộc tính được định nghĩa ở lớp THREE.Material. Các thuộc tính chung hay dùng nhất là `flatShading`, `side`, `needsUpdate`, `transparent`, `opacity`,...
+
+Thuộc tính `flatShading` chỉ định đối tượng trông giống các khối hay trông mượt. Giá trị mặc định là `false`.
+
+![flatShading](images/material-flatShading.png)
+
+Thuộc tính `side` chỉ định các mặt của tam giác được hiển thị. Mặc định là THREE.FrontSide. Các giá trị khác là THREE.BackSide và THREE.DoubleSide. Hầu hết các đối tượng 3D được vẽ thường là các vật đặc nên back side - các mặt ở bên trong vật thường không cần phải vẽ. Lý do thông thưởng để thiết lập thuộc tính side là cho các mặt phẳng mà có thể nhìn thấy cả back side.
+
+![side](images/material-side.png)
+
+Bạn cần thiết lập thuộc tính `needsUpdate` bằng `true` khi bạn thay đổi cấu hình `flatShading`, thay đổi cấu hình `transparent`, hoặc thêm / loại bỏ Texture.
+
+Để tạo các đối tượng không phải phải đục mà có độ trong suốt nào đó, chúng ta cần thiết lập thuộc tính `opacity` từ 0 đến 1 và đồng thời thiết lập thuộc tính `transparent` bằng `true`.
+
 ### MeshBasicMaterial
 
+![Basic vs Lambert vs Phong](images/material-basic-lambert-phong.png)
 
-
-
+x
 
 Material: Lambert, Phong, smooth shading, texture
 
-wireframe
+MeshBasicMaterial (cùng các Material khác như Normal, Phong, Toon, Standard, Physical,...) có đều có thuộc tính `wireframe`. Bạn có thể chỉ định `wireframe` bằng true để nhìn thấy khung của đối tượng.
 
 
 
-MeshNormalMaterial
+### MeshNormalMaterial
 
-MeshMatcapMaterial
+MeshNormal sẽ chỉ các vector pháp tuyến của Geometry. Các vector pháp tuyến là các hướng của một tam giác hoặc một mặt. MeshNormalMaterial sẽ vẽ các không gian pháp tuyến (tương đối với Camera). Ta có x là đỏ, y là lục, z là lam. Do đó các vật hướng về phải sẽ có màu hồng, hướng về trái có màu aqua, hướng lên trên có màu lục nhẹ, hướng xuống dưới có màu tím, và hướng về màn hình có mà lavender.
 
-MeshDeptMaterial
+![Normal](images/material-normal.png)
 
-MeshLambertMaterial
+Sử dụng MeshNormalMaterial rất đơn giản:
 
-MeshPhongMaterial
+```javascript
+const material = new MeshNormalMaterial();
+```
 
-MeshToonMaterial
 
-MeshStandardMaterial
 
-MeshPhysicalMaterial
 
-PointsMaterial
 
-ShaderMaterial
+### MeshMatcapMaterial
 
-RawShaderMaterial
+Trông không đơn sắc mà không cần ánh sáng. MatCap (Material Capture) shader sử dụng một ảnh của một hình cầu như là một view-space environment map. Ảnh chứa các màu sắc và shading đã tạo sẵn.
+
+Thuộc tính là `matcap`.
+
+
+
+
+
+### MeshDeptMaterial
+
+MeshDepthMaterial render độ sâu của mỗi pixel (cách xa Camera bao nhiêu). Pixel ở âm near của Camera là 0 và âm far là 1.
+
+![Depth](images/material-depth.png)
+
+x
+
+### MeshLambertMaterial
+
+MeshLambertMaterial là Material không sáng bóng, để tạo các đối tượng như gỗ, đá,...
+
+Tạo một MeshLambertMaterial cùng một màu:
+
+```javascript
+const material = new MeshLambertMaterial({
+    color: '#7833aa'
+});
+```
+
+
+
+
+
+### MeshPhongMaterial
+
+Thuộc tính `shininess` của MeshPhongMaterial quyết định độ shininess của specular highlight (thanh kiếm, đồ nhựa, đồ sứ,...). Giá trị mặc định là 30.
+
+![shininess](images/material-shininess.png)
+
+Thiết lập thuộc tính `emissive` bằng một màu nào đó trên MeshLambertMaterial hoặc MeshPhongMaterial và thiết lập thuộc tính `color` bằng màu đen (và thiết lập thuộc tính `shininess` của MeshPhongMaterial bằng 0) sẽ cho ra kết quả giống như MeshBasicMaterial.
+
+![Basic giống Lambert giống Phong](images/material-basic-lambert-phong-same.png)
+
+Tại sao chúng ta có cả MeshBasicMaterial và MeshLambertMaterial trong khi MeshPhongMaterial có thể làm cùng một việc cho cả ba? Lý do là các Material phức tạp cần nhiều sức mạnh GPU để vẽ. Trên các thiết bị có GPU chậm như điện thoại bạn có thể muốn giảm tải cho GPU bằng cách sử dụng Material ít phức tạp hơn. Nếu bạn không cần các tính năng thêm thì hãy sử dụng Material đơn giản nhất. Nếu bạn không cần Light và specular highlight thì hãy sử dụng MeshBasicMaterial.
+
+
+
+### MeshToonMaterial
+
+MeshToonMaterial tương tự như MeshPhongMaterial với một khác biệt lớn. Thay vì shading mượt sử dụng gradient map, MeshToonMaterial mặc định sử dụng gradientMap mà 70% độ sáng cho 70% đầu tiên và 100% sau đó. Kết quả là hai tông màu khác nhau giống như cartoon.
+
+![Toon](images/material-toon.png)
+
+
+
+### MeshStandardMaterial
+
+MeshStandardMaterial và MeshPhysicalMaterial sử dụng Physically Based Rendering (PBR). Các Material trước sử dụng toán học đơn giản để làm các Material trông giống 3D nhưng chúng không thực sự xảy ra như vậy trong thế giới thực. PBR sử dụng toán học phức tạp hơn nhiều để gần với cái thực sự xảy ra trong thế giới thực.
+
+Sự khác nhau lớn nhất giữa MeshPhongMaterial và MeshStandardMaterial là các tham số khác nhau. MeshPhongMaterial sử dụng thuộc tính `shininess` (sáng bóng) còn MeshStandardMaterial sử dụng hai thuộc tính `roughness` (thô ráp) và `metalness` (tính kim loại).
+
+Ở mức cơ bản, `roughness` là đối nghịch với `shininess`. Cái gì đó mà có `roughness` cao, như một quả bóng chày mà không có relection. Cái gì đó mà có `roughness` thấp, không sần sùi thô ráp, như một quả bóng bi da, thì rất shiny sáng bóng. Giá trị của `roughness` từ 0 đến 1.
+
+Thuộc tính còn lại, metalness, chỉ định Material giống kim loại bao nhiêu. Kim loại cư xử khác với không phải kim loại. Giá trị của metalness từ 0 cho không kim loại và 1 cho kim loại.
+
+Hình sau thể hiện `roughness` từ 0 đến 1 (từ trái sang phải) và `metalness` từ 0 đến 1 (từ trên xuống dưới).
+
+![roughness và metalness](images/material-roughness-metalness.png)
+
+### MeshPhysicalMaterial
+
+MeshPhysicalMaterial giống như MeshStandardMaterial nhưng nó thêm thuộc tính `clearcoat` có giá trị từ 0 đến 1 để chỉ định clearcoat gloss layer và thuộc tính `clearCoatRoughness` chỉ định độ thô ráp của gloss layer.
+
+Hình sau thể hiện cùng `roughness` và `metalness` như hình trước cùng với cấu hình `clearcoat` và `clearCoatRoughness`.
+
+![roughness và metalness và clearcoat](images/material-roughness-metalness-clearcoat.png)
+
+
+
+
 
 
 
@@ -1446,6 +1576,14 @@ Các đối tượng mà có khoảng cách nhỏ hơn `near` hoặc lớn hơn 
 Để có thể xem được hiệu ứng, chúng ta cần có ánh sáng và không sử dụng MeshNormalMaterial hoặc MeshBasicMaterial. Có thể sử dụng MeshLambertMaterial.
 
 this.scene.fog = new Fog(0xffffff, 1, 100);
+
+
+
+### Kết luận
+
+Các Material xử lý nhanh và chậm khác nhau: MeshBasicMaterial < MeshLambertMaterial < MeshPhongMaterial < MeshStandardMaterial < MeshPhysicalMaterial. Các Material xử lý chậm có thể tạo các cảnh trông giống thật, chân thực hơn nhưng bạn có thể cần thiết kế code của bạn sử dụng các Material nhanh hơn trên các thiết bị yếu.
+
+
 
 ## Chương 4 - Light
 

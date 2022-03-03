@@ -31,9 +31,6 @@ function init() {
     const ambientLight = new THREE.AmbientLight(0x494949);
     scene.add(ambientLight);
 
-    
-
-
     const vertices = [
         new THREE.Vector3(1, 3, 1),
         new THREE.Vector3(1, 3, -1),
@@ -44,6 +41,7 @@ function init() {
         new THREE.Vector3(-1, -1, -1),
         new THREE.Vector3(-1, -1, 1)
     ];
+    // Index của 3 đỉnh
     const faces = [
         new THREE.Face3(0, 2, 1),
         new THREE.Face3(2, 3, 1),

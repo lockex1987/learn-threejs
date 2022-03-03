@@ -10,14 +10,9 @@ function addLights(scene) {
 
 function init() {
     const scene = new THREE.Scene();
-
     const camera = initCamera();
-
     const renderer = initRenderer();
-
-
-    addLargeGroundPlane(scene);
-
+    // addLargeGroundPlane(scene);
     addLights(scene);
 
 

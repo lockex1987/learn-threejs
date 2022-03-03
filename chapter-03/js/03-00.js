@@ -3,13 +3,12 @@ import {
     PerspectiveCamera,
     WebGLRenderer,
     Color,
-    BoxGeometry,
-    BoxBufferGeometry,
+    TorusGeometry,
     PlaneGeometry,
     MeshNormalMaterial,
     MeshBasicMaterial,
-    Mesh,
-    AxesHelper
+    MeshDepthMaterial,
+    Mesh
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
 import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
@@ -18,22 +17,23 @@ import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
 class ThreejsExample {
     constructor(canvas) {
         this.scene = this.createScene();
+        this.scene.overrideMaterial = new MeshDepthMaterial();
         this.camera = this.createCamera(canvas);
         this.renderer = this.createRenderer(canvas);
 
         this.plane = this.createPlane();
         this.scene.add(this.plane);
 
-        const axesHelper = new AxesHelper(15);
-        this.scene.add(axesHelper);
-
-        const cube = this.createCube();
-        this.scene.add(cube);
+        const numberOfTorus = 10;
+        for (let i = 0; i < numberOfTorus; i++) {
+            const torus = this.createTorus();
+            this.scene.add(torus);
+        }
 
         requestAnimationFrame(this.render.bind(this));
         this.handleResize();
 
-        this.controls = this.createControls(this.scene, this.createCube);
+        this.controls = this.createControls(this.scene, this.createTorus);
         this.createControlsGui();
     }
 
@@ -49,20 +49,6 @@ class ThreejsExample {
         const camera = new PerspectiveCamera(45, aspect, 0.1, 1000);
         camera.position.set(-30, 40, 30);
         camera.lookAt(this.scene.position);
-
-        camera.tick = ms => {
-            // Tính góc xoay theo thời gian
-            // Xoay một vòng hết 16 giây
-            const seconds = ms / 1000;
-            const angle = seconds * Math.PI / 8;
-
-            // Sử dụng các hàm sin và cos để di chuyển vòng tròn
-            camera.position.x = 30 * Math.sin(angle);
-            camera.position.z = 30 * Math.cos(angle);
-
-            // Luôn nhìn vào điểm trung tâm
-            camera.lookAt(this.scene.position);
-        };
 
         return camera;
     }
@@ -80,28 +66,27 @@ class ThreejsExample {
         return renderer;
     }
 
-    createCube() {
-        const cubeSize = Math.ceil((Math.random() * 3));
+    createTorus() {
+        const scale = 0.2 + (Math.random() - 0.5) * 0.1;
+        const torusGeometry = new TorusGeometry(10, 3, 16, 100);
 
-        // BoxBufferGeometry giống BoxGeometry ở phiên bản mới
-        // const cubeGeometry = new BoxGeometry(cubeSize, cubeSize, cubeSize);
-        const cubeGeometry = new BoxBufferGeometry(cubeSize, cubeSize, cubeSize);
-        console.log(BoxBufferGeometry);
-        console.log(BoxGeometry);
-
-        const cubeMaterial = new MeshNormalMaterial();
-        const cube = new Mesh(cubeGeometry, cubeMaterial);
+        // const torusMaterial = new MeshNormalMaterial();
+        const torusMaterial = new MeshDepthMaterial();
+        const torus = new Mesh(torusGeometry, torusMaterial);
 
         // Thiết lập vị trí ngẫu nhiên
-        cube.position.x = -15 + Math.round((Math.random() * 30));
-        cube.position.y = 5 + Math.round((Math.random() * 5));
-        cube.position.z = -10 + Math.round((Math.random() * 20));
+        torus.position.x = -15 + Math.round((Math.random() * 30));
+        torus.position.y = 5 + Math.round((Math.random() * 5));
+        torus.position.z = -10 + Math.round((Math.random() * 20));
+        torus.scale.set(scale, scale, scale);
 
-        cube.tick = ms => {
-            cube.rotation.y = ms * Math.PI / 1000;
+        torus.castShadow = true;
+
+        torus.tick = ms => {
+            torus.rotation.y = ms * Math.PI / 1000;
         };
 
-        return cube;
+        return torus;
     }
 
     createPlane() {
@@ -122,44 +107,13 @@ class ThreejsExample {
         return planeMesh;
     }
 
-    createControls(scene, createCubeFunc) {
-        // Chú ý đối tượng this ở đây
-        const controls = {
-            numberOfObjects: scene.children.length,
-
-            rotateCamera: false,
-
-            removeCube() {
-                const allObjects = scene.children;
-                const lastObject = allObjects[allObjects.length - 1];
-                if (lastObject instanceof Mesh) {
-                    scene.remove(lastObject);
-                    this.numberOfObjects = scene.children.length;
-                }
-            },
-
-            addCube() {
-                const cube = createCubeFunc();
-                scene.add(cube);
-                this.numberOfObjects = scene.children.length;
-            }
-        };
+    createControls() {
+        const controls = {};
         return controls;
     }
 
     createControlsGui() {
-        const gui = new dat.GUI({
-            // width: 500
-        });
-        gui.add(this.controls, 'addCube');
-        gui.add(this.controls, 'removeCube');
-        gui.add(this.controls, 'numberOfObjects')
-            .listen()
-            .name('Số đối tượng');
-        gui.add(this.controls, 'rotateCamera');
-
-        gui.add(this.plane.rotation, 'x', -2 * Math.PI, 2 * Math.PI, 0.01)
-            .name('Mặt phẳng');
+        const gui = new dat.GUI();
 
         // Camera
         const size = 100;
@@ -183,10 +137,6 @@ class ThreejsExample {
                 obj.tick(ms);
             }
         });
-
-        if (this.controls.rotateCamera) {
-            this.camera.tick(ms);
-        }
     }
 
     render(ms) {
