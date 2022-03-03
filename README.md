@@ -1432,7 +1432,7 @@ const material = new MeshBasicMaterial({
 
 ![material-basic](images/material-basic.png)
 
-[Ví dụ MeshBasicMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/material-browser.html#MeshBasicMaterial)
+[Ví dụ MeshBasicMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshBasicMaterial)
 
 ### MeshDeptMaterial
 
@@ -1450,7 +1450,7 @@ const material = new MeshDeptMaterial();
 
 ![Depth](images/material-depth.png)
 
-[Ví dụ MeshDepthMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/material-browser.html#MeshDepthMaterial)
+[Ví dụ MeshDepthMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshDepthMaterial)
 
 MeshDepthMaterial không có thuộc tính để thiết lập màu sắc của đối tượng. Tuy nhiên, bạn có thể kết hợp các Material để tạo hiệu ứng mới (blend). Đoạn code sau chỉ cách chúng ta kết hợp các Material:
 
@@ -1475,7 +1475,7 @@ materials.forEach(material => {
 
 ![Combine](images/material-combine.png)
 
-[Ví dụ Combine](https://static.lockex1987.com/learn-threejs/chapter-03/material-browser.html#Combine)
+[Ví dụ Combine](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#Combine)
 
 ### MeshNormalMaterial
 

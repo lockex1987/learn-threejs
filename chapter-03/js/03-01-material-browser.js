@@ -615,6 +615,7 @@ generateVertexColors(geometry);
 let mesh;
 const selectedMaterial = window.location.hash.substring(1) || 'MeshBasicMaterial';
 if (selectedMaterial == 'Combine') {
+    // Kết hợp nhiều Material
     const depthMaterial = new THREE.MeshDepthMaterial();
     const basicMaterial = new THREE.MeshBasicMaterial({
         color: 0x00ff00,
