@@ -585,7 +585,7 @@ document.body.appendChild(renderer.domElement);
 const pmremGenerator = new THREE.PMREMGenerator(renderer);
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x444444);
+scene.background = new THREE.Color(0xDDDDDD);
 scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 
 const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 10, 100);
