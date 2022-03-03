@@ -5,7 +5,6 @@ import {
     Color,
     TorusGeometry,
     PlaneGeometry,
-    MeshNormalMaterial,
     MeshBasicMaterial,
     MeshDepthMaterial,
     Mesh
@@ -17,7 +16,6 @@ import * as dat from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
 class ThreejsExample {
     constructor(canvas) {
         this.scene = this.createScene();
-        this.scene.overrideMaterial = new MeshDepthMaterial();
         this.camera = this.createCamera(canvas);
         this.renderer = this.createRenderer(canvas);
 
@@ -46,7 +44,12 @@ class ThreejsExample {
         const width = canvas.clientWidth;
         const height = canvas.clientHeight;
         const aspect = width / height;
-        const camera = new PerspectiveCamera(45, aspect, 0.1, 1000);
+        // Nếu để near quá nhỏ, far quá lớn thì các đối tượng sẽ có màu đen và không nhìn thấy gì luôn
+        // Cần thiết lập near và far của Camera cho hợp lý
+        // const near = 0.1;
+        const near = 30;
+        const far = 90;
+        const camera = new PerspectiveCamera(45, aspect, near, far);
         camera.position.set(-30, 40, 30);
         camera.lookAt(this.scene.position);
 
@@ -58,7 +61,7 @@ class ThreejsExample {
             canvas,
             antialias: true
         });
-        renderer.setClearColor(new Color(0x000000));
+        renderer.setClearColor(new Color(0xAAAAAA)); // để khác màu đen khi dùng với MeshDepthMaterial, không lẫn với đối tượng màu đen
         const pixelRatio = window.devicePixelRatio;
         const width = canvas.clientWidth * pixelRatio;
         const height = canvas.clientHeight * pixelRatio;
@@ -69,8 +72,6 @@ class ThreejsExample {
     createTorus() {
         const scale = 0.2 + (Math.random() - 0.5) * 0.1;
         const torusGeometry = new TorusGeometry(10, 3, 16, 100);
-
-        // const torusMaterial = new MeshNormalMaterial();
         const torusMaterial = new MeshDepthMaterial();
         const torus = new Mesh(torusGeometry, torusMaterial);
 

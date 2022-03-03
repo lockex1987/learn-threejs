@@ -1345,20 +1345,19 @@ Chúng ta sẽ không đi sâu vào từng Geometry ở đây. Bạn có thể t
 
 ### Giới thiệu chung
 
-Trong Three.js, Material xác định màu của một điểm trên đối tượng (Mesh). Material quyết định đối tượng trông như thế nào: trong suốt, wireframe, bóng láng, sáng bóng, sần sùi, thô ráp,... Chúng ta sẽ lần lượt tìm hiểu từng loại Material từ đơn giản đến phức tạp.
+Trong Three.js, Material xác định màu của một điểm trên đối tượng (Mesh). Material quyết định đối tượng trông như thế nào: trong suốt, wireframe, bóng láng - sáng bóng, sần sùi - thô ráp, giống kim loại,... Chúng ta sẽ lần lượt tìm hiểu từng loại Material từ đơn giản đến phức tạp.
 
 | Tên                  | Mô tả                                                        |
 | -------------------- | ------------------------------------------------------------ |
 | MeshBasicMaterial    | Đây là Material cơ bản để tạo cho đối tượng một màu sắc đơn giản hoặc hiển thị wireframe. Material này không bị ảnh hưởng bởi ánh sáng. |
-| MeshDeptMaterial     | Sử dụng khoảng cách từ Camera đến đối tượng để quyết định màu sắc. |
-| MeshNormalMaterial   | Material đơn giản quyết định màu sắc của một mặt dựa vào normal vector của nó. Không bị ảnh hưởng bởi ánh sáng. |
-| MeshMatcapMaterial   |                                                              |
+| MeshDeptMaterial     | Sử dụng khoảng cách từ Camera đến đối tượng để quyết định màu sắc. Càng gần thì màu trắng, càng xa thì màu đen. Sự thay đổi giữa màu trắng và màu đen dựa vào các giá trị khoảng cách near và far của Camera. |
+| MeshNormalMaterial   | Material đơn giản quyết định màu sắc của một mặt dựa vào normal vector (vector pháp tuyến) của nó. Không bị ảnh hưởng bởi ánh sáng. |
+| MeshMatcapMaterial   | Sử dụng Texture với các màu sắc và shading đã tính toán trước. |
 | MeshLambertMaterial  | Material này có sử dụng ánh sáng và tạo ra đối tượng trông mờ, không sáng bóng. Chỉ tính toán ánh sáng ở các đỉnh. |
 | MeshPhongMaterial    | Material này cũng sử dụng ánh sáng và có thể tạo các đối tượng sáng bóng. Tính toán ánh sáng ở tất cả pixel. Hỗ trợ specular highlight. |
-| MeshStandardMaterial |                                                              |
-| MeshPhysicalMaterial |                                                              |
-| MeshToonMaterial     |                                                              |
-|                      |                                                              |
+| MeshToonMaterial     | Một mở rộng của MeshPhongMaterial để làm các đối tượng trông giống như cartoon (hoạt hình). |
+| MeshStandardMaterial | Material này sử dụng physically-based rendering. Một model vật ký được sử dụng để quyết định cách ánh sáng tương tác với các bề mặt. Điều này cho phép bạn tạo các đối tượng chính xác và chân thật hơn. |
+| MeshPhysicalMaterial | Một mở rộng của MeshStandardMaterial cho phép nhiều điểu chỉnh hơn về reflection. |
 
 Chúng ta sẽ không tìm hiểu các Material sau:
 
@@ -1370,7 +1369,7 @@ Chúng ta sẽ không tìm hiểu các Material sau:
 - ShaderMaterial
 - RawShaderMaterial
 
-Chúng ta cũng chưa tìm hiểu Texture (thuộc tính `map`, `bumpMap`, `envMap`, `alphaMap`, `matcap`, `displacementMap`, `aoMap`,...). Chúng ta sẽ có chương về Texture riêng.
+Chúng ta cũng chưa tìm hiểu Texture (thuộc tính `map`, `bumpMap`, `envMaps`, `alphaMap`, `matcap`, `displacementMap`, `aoMap`,...). Chúng ta sẽ có chương về Texture riêng.
 
 Có hai cách để thiết lập các thuộc tính cho Material. Cách đầu tiên ở thời điểm khởi tạo, ví dụ:
 
@@ -1418,15 +1417,22 @@ Bạn cần thiết lập thuộc tính `needsUpdate` bằng `true` khi bạn th
 
 ### MeshBasicMaterial
 
+MeshBasicMaterial là một Material rất đơn giản, không phụ thuộc vào ánh sáng. Các đối tượng với Material này sẽ trông đơn sắc, các vị trí đều có màu giống nhau.
+
 ![Basic vs Lambert vs Phong](images/material-basic-lambert-phong.png)
 
-x
+MeshBasicMaterial (cùng các Material khác như Normal, Phong, Toon, Standard, Physical,...) có đều có thuộc tính `color` và `wireframe`. Bạn có thể chỉ định `color` bằng màu sắc bằng muốn, chỉ định `wireframe` bằng `true` để nhìn thấy khung của đối tượng (rất tốt để debug). Ví dụ:
 
-Material: Lambert, Phong, smooth shading, texture
+```javascript
+const material = new MeshBasicMaterial({
+    color: 0x7777ff,
+    wireframe: false
+});
+```
 
-MeshBasicMaterial (cùng các Material khác như Normal, Phong, Toon, Standard, Physical,...) có đều có thuộc tính `wireframe`. Bạn có thể chỉ định `wireframe` bằng true để nhìn thấy khung của đối tượng.
+![material-basic](images/material-basic.png)
 
-
+[Ví dụ MeshBasicMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/material-browser.html#MeshBasicMaterial)
 
 ### MeshNormalMaterial
 
@@ -1446,7 +1452,9 @@ const material = new MeshNormalMaterial();
 
 ### MeshMatcapMaterial
 
-Trông không đơn sắc mà không cần ánh sáng. MatCap (Material Capture) shader sử dụng một ảnh của một hình cầu như là một view-space environment map. Ảnh chứa các màu sắc và shading đã tạo sẵn.
+Trông không đơn sắc mà không cần ánh sáng. MatCap (Material Capture) shader sử dụng một ảnh của một hình cầu như là một view-space environment map. Ảnh chứa các màu sắc và shading đã tạo sẵn, tính toán trước.
+
+Để ở Texture, hay một ví dụ Texture cơ bản ở đây luôn?
 
 Thuộc tính là `matcap`.
 
@@ -1465,6 +1473,20 @@ x
 ### MeshLambertMaterial
 
 MeshLambertMaterial là Material không sáng bóng, để tạo các đối tượng như gỗ, đá,...
+
+Với MeshLambertMaterial, chúng ta sẽ cần thêm ánh sáng vào trong cảnh. Chúng ta sẽ tìm hiểu kỹ về ánh sáng (Light) ở chương sau. Còn hiện tại, chúng ta hãy sử dụng đoạn code sau để thêm ánh sáng:
+
+```javascript
+function addLights(scene) {
+    const ambientLight = new AmbientLight(0x0c0c0c);
+    scene.add(ambientLight);
+
+    const spotLight = new SpotLight(0xffffff);
+    spotLight.position.set(-40, 60, -10);
+    spotLight.castShadow = true;
+    scene.add(spotLight);
+}
+```
 
 Tạo một MeshLambertMaterial cùng một màu:
 

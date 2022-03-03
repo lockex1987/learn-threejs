@@ -170,6 +170,11 @@ function generateVertexColors(geometry) {
 }
 
 
+/**
+ * Xử lý khi người dùng chọn lại màu sắc trên GUI.
+ * @param {THREE.Color} color Đối tượng màu sắc
+ * @returns {Function} Hàm để truyền vào onChange của GUI
+ */
 function handleColorChange(color) {
     return function (value) {
         if (typeof value === 'string') {
@@ -260,25 +265,25 @@ function guiMaterial(gui, mesh, material, geometry) {
 }
 
 
-function guiMeshBasicMaterial(gui, mesh, material, geometry) {
+function guiMeshBasicMaterial(gui, material, geometry) {
     const data = {
-        color: material.color.getHex(),
-        envMaps: envMapKeys[0],
-        map: diffuseMapKeys[0],
-        alphaMap: alphaMapKeys[0]
+        color: material.color.getHex()
+        // envMaps: envMapKeys[0],
+        // map: diffuseMapKeys[0],
+        // alphaMap: alphaMapKeys[0]
     };
-
-    const folder = gui.addFolder('THREE.MeshBasicMaterial');
-    folder.addColor(data, 'color').onChange(handleColorChange(material.color));
+    const folder = gui.addFolder('MeshBasicMaterial');
+    folder.addColor(data, 'color')
+        .onChange(handleColorChange(material.color));
     folder.add(material, 'wireframe');
-    folder.add(material, 'vertexColors').onChange(needsUpdate(material, geometry));
-    folder.add(material, 'fog');
-    folder.add(data, 'envMaps', envMapKeys).onChange(updateTexture(material, 'envMap', envMaps));
-    folder.add(data, 'map', diffuseMapKeys).onChange(updateTexture(material, 'map', diffuseMaps));
-    folder.add(data, 'alphaMap', alphaMapKeys).onChange(updateTexture(material, 'alphaMap', alphaMaps));
-    folder.add(material, 'combine', constants.combine).onChange(updateCombine(material));
-    folder.add(material, 'reflectivity', 0, 1);
-    folder.add(material, 'refractionRatio', 0, 1);
+    // folder.add(material, 'vertexColors').onChange(needsUpdate(material, geometry));
+    // folder.add(material, 'fog');
+    // folder.add(data, 'envMaps', envMapKeys).onChange(updateTexture(material, 'envMap', envMaps));
+    // folder.add(data, 'map', diffuseMapKeys).onChange(updateTexture(material, 'map', diffuseMaps));
+    // folder.add(data, 'alphaMap', alphaMapKeys).onChange(updateTexture(material, 'alphaMap', alphaMaps));
+    // folder.add(material, 'combine', constants.combine).onChange(updateCombine(material));
+    // folder.add(material, 'reflectivity', 0, 1);
+    // folder.add(material, 'refractionRatio', 0, 1);
 }
 
 
@@ -450,24 +455,36 @@ function guiMeshPhysicalMaterial(gui, mesh, material, geometry) {
 }
 
 
+/**
+ * Chọn Material.
+ */
 function chooseFromHash(gui, mesh, geometry) {
     const selectedMaterial = window.location.hash.substring(1) || 'MeshBasicMaterial';
+    document.title = 'Ví dụ ' + selectedMaterial;
     let material;
+    const defaultColor = 0x049EF4;
+
     switch (selectedMaterial) {
     case 'MeshBasicMaterial':
-        material = new THREE.MeshBasicMaterial({ color: 0x049EF4 });
-        guiMaterial(gui, mesh, material, geometry);
-        guiMeshBasicMaterial(gui, mesh, material, geometry);
+        material = new THREE.MeshBasicMaterial({
+            color: defaultColor
+        });
+        // guiMaterial(gui, mesh, material, geometry);
+        guiMeshBasicMaterial(gui, material, geometry);
         return material;
 
     case 'MeshLambertMaterial':
-        material = new THREE.MeshLambertMaterial({ color: 0x049EF4 });
+        material = new THREE.MeshLambertMaterial({
+            color: defaultColor
+        });
         guiMaterial(gui, mesh, material, geometry);
         guiMeshLambertMaterial(gui, mesh, material, geometry);
         return material;
 
     case 'MeshMatcapMaterial' :
-        material = new THREE.MeshMatcapMaterial({ matcap: matcaps.porcelainWhite });
+        material = new THREE.MeshMatcapMaterial({
+            matcap: matcaps.porcelainWhite
+        });
         guiMaterial(gui, mesh, material, geometry);
         guiMeshMatcapMaterial(gui, mesh, material, geometry);
         // no need for lights
@@ -477,13 +494,18 @@ function chooseFromHash(gui, mesh, geometry) {
         return material;
 
     case 'MeshPhongMaterial':
-        material = new THREE.MeshPhongMaterial({ color: 0x049EF4 });
+        material = new THREE.MeshPhongMaterial({
+            color: defaultColor
+        });
         guiMaterial(gui, mesh, material, geometry);
         guiMeshPhongMaterial(gui, mesh, material, geometry);
         return material;
 
     case 'MeshToonMaterial':
-        material = new THREE.MeshToonMaterial({ color: 0x049EF4, gradientMap: gradientMaps.threeTone });
+        material = new THREE.MeshToonMaterial({
+            color: defaultColor,
+            gradientMap: gradientMaps.threeTone
+        });
         guiMaterial(gui, mesh, material, geometry);
         guiMeshToonMaterial(gui, mesh, material);
         // only use a single point light
@@ -492,7 +514,9 @@ function chooseFromHash(gui, mesh, geometry) {
         return material;
 
     case 'MeshStandardMaterial':
-        material = new THREE.MeshStandardMaterial({ color: 0x049EF4 });
+        material = new THREE.MeshStandardMaterial({
+            color: defaultColor
+        });
         guiMaterial(gui, mesh, material, geometry);
         guiMeshStandardMaterial(gui, mesh, material, geometry);
         // only use scene environment
@@ -502,7 +526,9 @@ function chooseFromHash(gui, mesh, geometry) {
         return material;
 
     case 'MeshPhysicalMaterial':
-        material = new THREE.MeshPhysicalMaterial({ color: 0x049EF4 });
+        material = new THREE.MeshPhysicalMaterial({
+            color: defaultColor
+        });
         guiMaterial(gui, mesh, material, geometry);
         guiMeshPhysicalMaterial(gui, mesh, material, geometry);
         // only use scene environment
@@ -524,7 +550,9 @@ function chooseFromHash(gui, mesh, geometry) {
         return material;
 
     case 'LineBasicMaterial':
-        material = new THREE.LineBasicMaterial({ color: 0x2194CE });
+        material = new THREE.LineBasicMaterial({
+            color: 0x2194CE
+        });
         guiMaterial(gui, mesh, material, geometry);
         guiLineBasicMaterial(gui, mesh, material, geometry);
         return material;
@@ -567,9 +595,9 @@ const light3 = new THREE.PointLight(0xffffff, 1, 0);
 light3.position.set(-100, -200, -100);
 scene.add(light3);
 
-guiScene(gui, scene);
+// guiScene(gui, scene);
 
-const geometry = new THREE.TorusKnotGeometry(10, 3, 200, 32).toNonIndexed();
+const geometry = new THREE.TorusKnotGeometry(7, 1, 200, 32).toNonIndexed();
 
 generateVertexColors(geometry);
 
