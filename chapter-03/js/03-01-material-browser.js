@@ -156,7 +156,8 @@ function createMaterial(selectedMaterial, camera, lights) {
     switch (selectedMaterial) {
     case 'MeshBasicMaterial':
         material = new THREE.MeshBasicMaterial({
-            color: defaultColor
+            color: defaultColor,
+            wireframe: true
         });
         guiMeshBasicMaterial(gui, material);
         return material;
@@ -249,7 +250,7 @@ function addLights(scene) {
 
 function init() {
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xDDDDDD);
+    scene.background = new THREE.Color(0xFFFFFF);
 
     const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 10, 100);
     camera.position.z = 35;
