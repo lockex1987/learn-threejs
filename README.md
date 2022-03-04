@@ -1510,19 +1510,15 @@ materials.forEach(material => {
 
 Chúng ta hãy thiết lập thuộc tính `flatShading` bằng `true` để dễ hình dung:
 
-IMAGE
-
 Với MeshNormalMaterial, mỗi mặt (pixel) của đối tượng được render với màu sắc hơi khác nhau. Mặc dù đối tượng có xoay, các màu sắc có vẻ vẫn gần như giữ nguyên vị trí. Điều này là do màu của mỗi mặt (pixel) dựa vào vector pháp tuyến của mặt đó. Vector pháp tuyến là vector vuông góc với mặt và hướng ra ngoài. Chúng ta có trục x là màu đỏ, trục y là màu lục, trục z là màu lam. Do đó các mặt hướng về phải sẽ có màu hồng, hướng về trái sẽ có màu aqua, hướng lên trên sẽ có màu lục nhẹ, hướng xuống dưới sẽ có màu tím, hướng về màn hình sẽ có màu lavender.
-
-TODO: IMAGE
-
-![Normal](images/material-normal.png)
 
 Sử dụng MeshNormalMaterial rất đơn giản:
 
 ```javascript
 const material = new MeshNormalMaterial();
 ```
+
+![Normal](images/material-normal.png)
 
 [Ví dụ MeshNormalMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshNormalMaterial)
 
@@ -1577,9 +1573,9 @@ const material = new MeshLambertMaterial({
 });
 ```
 
-IMAGE
-
 [Ví dụ MeshLambertMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshLambertMaterial)
+
+![Lambert](images/material-lambert.png)
 
 ### MeshPhongMaterial
 
@@ -1597,17 +1593,17 @@ Thiết lập thuộc tính `emissive` bằng một màu nào đó trên MeshLam
 
 Tại sao chúng ta có cả MeshBasicMaterial và MeshLambertMaterial trong khi MeshPhongMaterial có thể làm cùng một việc cho cả ba? Lý do là các Material phức tạp cần nhiều sức mạnh GPU để vẽ. Trên các thiết bị có GPU chậm như điện thoại bạn có thể muốn giảm tải cho GPU bằng cách sử dụng Material ít phức tạp hơn. Nếu bạn không cần các tính năng thêm thì hãy sử dụng Material đơn giản nhất. Nếu bạn không cần Light và specular highlight thì hãy sử dụng MeshBasicMaterial.
 
-IMAGE
-
 [Ví dụ MeshPhongMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshPhongMaterial)
+
+![Phong](images/material-phong.png)
 
 ### MeshToonMaterial
 
 MeshToonMaterial tương tự như MeshPhongMaterial với một khác biệt lớn. Thay vì shading mượt sử dụng gradient map, MeshToonMaterial mặc định sử dụng gradientMap mà 70% độ sáng cho 70% đầu tiên và 100% sau đó. Kết quả là hai tông màu khác nhau giống như cartoon.
 
-![Toon](images/material-toon.png)
-
 [Ví dụ MeshToonMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshToonMaterial)
+
+![Toon](images/material-toon.png)
 
 ### MeshStandardMaterial
 
@@ -1625,7 +1621,7 @@ Hình sau thể hiện `roughness` từ 0 đến 1 (từ trái sang phải) và 
 
 [Ví dụ MeshStandardMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshStandardMaterial)
 
-IMAGE
+![Standard](images/material-standard.png)
 
 ### MeshPhysicalMaterial
 
@@ -1637,7 +1633,7 @@ Hình sau thể hiện cùng `roughness` và `metalness` như hình trước cù
 
 [Ví dụ MeshPhysicalMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshPhysicalMaterial)
 
-IMAGE
+![Physical](images/material-physical.png)
 
 ### Nhiều Material cho một Mesh
 
@@ -1667,7 +1663,7 @@ Bạn có thể chú ý là chúng ta chỉ tạo 6 Material, trong khi hình l�
 
 [Ví dụ 03.02 - Multiple Materials](https://static.lockex1987.com/learn-threejs/chapter-03/03-02-multiple-materials.html)
 
-IMAGE
+![Multiple Materials](screenshots/03-02-multiple-materials.png)
 
 ### Kết luận
 
