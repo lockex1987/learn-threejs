@@ -418,17 +418,19 @@ function guiMeshPhongMaterial(gui, material, geometry) {
 
 function guiMeshToonMaterial(gui, material) {
     const data = {
-        color: material.color.getHex(),
+        color: material.color.getHex()
+        // gradientMap: gradientMapKeys[1]
         // map: diffuseMapKeys[0],
-        gradientMap: gradientMapKeys[1]
         // alphaMap: alphaMapKeys[0]
     };
     const folder = gui.addFolder('MeshToonMaterial');
     folder.addColor(data, 'color')
         .onChange(handleColorChange(material.color));
-    // folder.add(data, 'map', diffuseMapKeys).onChange(updateTexture(material, 'map', diffuseMaps));
+    /*
     folder.add(data, 'gradientMap', gradientMapKeys)
         .onChange(updateTexture(material, 'gradientMap', gradientMaps));
+    */
+    // folder.add(data, 'map', diffuseMapKeys).onChange(updateTexture(material, 'map', diffuseMaps));
     // folder.add(data, 'alphaMap', alphaMapKeys).onChange(updateTexture(material, 'alphaMap', alphaMaps));
 }
 
@@ -437,17 +439,20 @@ function guiMeshStandardMaterial(gui, material, geometry) {
     const data = {
         color: material.color.getHex(),
         emissive: material.emissive.getHex(),
-        envMaps: envMapKeys[0],
-        map: diffuseMapKeys[0],
-        roughnessMap: roughnessMapKeys[0],
-        alphaMap: alphaMapKeys[0]
+        // envMaps: envMapKeys[0],
+        // map: diffuseMapKeys[0],
+        // roughnessMap: roughnessMapKeys[0],
+        // alphaMap: alphaMapKeys[0]
     };
 
     const folder = gui.addFolder('MeshStandardMaterial');
-    folder.addColor(data, 'color').onChange(handleColorChange(material.color));
-    folder.addColor(data, 'emissive').onChange(handleColorChange(material.emissive));
+    folder.addColor(data, 'color')
+        .onChange(handleColorChange(material.color));
+    folder.addColor(data, 'emissive')
+        .onChange(handleColorChange(material.emissive));
     folder.add(material, 'roughness', 0, 1);
     folder.add(material, 'metalness', 0, 1);
+    /*
     folder.add(material, 'flatShading').onChange(needsUpdate(material, geometry));
     folder.add(material, 'wireframe');
     folder.add(material, 'vertexColors').onChange(needsUpdate(material, geometry));
@@ -456,6 +461,7 @@ function guiMeshStandardMaterial(gui, material, geometry) {
     folder.add(data, 'map', diffuseMapKeys).onChange(updateTexture(material, 'map', diffuseMaps));
     folder.add(data, 'roughnessMap', roughnessMapKeys).onChange(updateTexture(material, 'roughnessMap', roughnessMaps));
     folder.add(data, 'alphaMap', alphaMapKeys).onChange(updateTexture(material, 'alphaMap', alphaMaps));
+    */
 
     // TODO metalnessMap
 }
@@ -464,20 +470,27 @@ function guiMeshStandardMaterial(gui, material, geometry) {
 function guiMeshPhysicalMaterial(gui, material, geometry) {
     const data = {
         color: material.color.getHex(),
-        emissive: material.emissive.getHex(),
+        emissive: material.emissive.getHex()
+        /*
         envMaps: envMapKeys[0],
         map: diffuseMapKeys[0],
         roughnessMap: roughnessMapKeys[0],
         alphaMap: alphaMapKeys[0]
+        */
     };
     const folder = gui.addFolder('MeshPhysicalMaterial');
-    folder.addColor(data, 'color').onChange(handleColorChange(material.color));
-    folder.addColor(data, 'emissive').onChange(handleColorChange(material.emissive));
+    folder.addColor(data, 'color')
+        .onChange(handleColorChange(material.color));
+    folder.addColor(data, 'emissive')
+        .onChange(handleColorChange(material.emissive));
     folder.add(material, 'roughness', 0, 1);
     folder.add(material, 'metalness', 0, 1);
     folder.add(material, 'reflectivity', 0, 1);
-    folder.add(material, 'clearcoat', 0, 1).step(0.01);
-    folder.add(material, 'clearcoatRoughness', 0, 1).step(0.01);
+    folder.add(material, 'clearcoat', 0, 1)
+        .step(0.01);
+    folder.add(material, 'clearcoatRoughness', 0, 1)
+        .step(0.01);
+    /*
     folder.add(material, 'flatShading').onChange(needsUpdate(material, geometry));
     folder.add(material, 'wireframe');
     folder.add(material, 'vertexColors').onChange(needsUpdate(material, geometry));
@@ -486,6 +499,7 @@ function guiMeshPhysicalMaterial(gui, material, geometry) {
     folder.add(data, 'map', diffuseMapKeys).onChange(updateTexture(material, 'map', diffuseMaps));
     folder.add(data, 'roughnessMap', roughnessMapKeys).onChange(updateTexture(material, 'roughnessMap', roughnessMaps));
     folder.add(data, 'alphaMap', alphaMapKeys).onChange(updateTexture(material, 'alphaMap', alphaMaps));
+    */
 
     // TODO metalnessMap
 }
@@ -547,8 +561,8 @@ function createMaterial(selectedMaterial, gui, mesh, geometry, camera, lights) {
 
     case 'MeshToonMaterial':
         material = new THREE.MeshToonMaterial({
-            color: defaultColor,
-            gradientMap: gradientMaps.threeTone
+            color: defaultColor
+            // gradientMap: gradientMaps.threeTone
         });
         // guiMaterial(gui, material, geometry);
         guiMeshToonMaterial(gui, material);
@@ -561,26 +575,34 @@ function createMaterial(selectedMaterial, gui, mesh, geometry, camera, lights) {
 
     case 'MeshStandardMaterial':
         material = new THREE.MeshStandardMaterial({
-            color: defaultColor
+            color: defaultColor,
+            roughness: 0,
+            metalness: 1
         });
-        guiMaterial(gui, material, geometry);
+        // guiMaterial(gui, material, geometry);
         guiMeshStandardMaterial(gui, material, geometry);
-        // only use scene environment
-        pointLight1.visible = false;
-        pointLight2.visible = false;
-        pointLight3.visible = false;
+
+        // Chỉ sử dụng AmbientLight
+        // pointLight1.visible = false;
+        // pointLight2.visible = false;
+        // pointLight3.visible = false;
+
         return material;
 
     case 'MeshPhysicalMaterial':
         material = new THREE.MeshPhysicalMaterial({
-            color: defaultColor
+            color: defaultColor,
+            roughness: 0,
+            metalness: 1
         });
-        guiMaterial(gui, material, geometry);
+        // guiMaterial(gui, material, geometry);
         guiMeshPhysicalMaterial(gui, material, geometry);
-        // only use scene environment
-        pointLight1.visible = false;
-        pointLight2.visible = false;
-        pointLight3.visible = false;
+
+        // Chỉ sử dụng AmbientLight
+        // pointLight1.visible = false;
+        // pointLight2.visible = false;
+        // pointLight3.visible = false;
+
         return material;
 
     case 'MeshMatcapMaterial':

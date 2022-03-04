@@ -1585,29 +1585,29 @@ MeshStandardMaterial và MeshPhysicalMaterial sử dụng Physically Based Rende
 
 Sự khác nhau lớn nhất giữa MeshPhongMaterial và MeshStandardMaterial là các tham số khác nhau. MeshPhongMaterial sử dụng thuộc tính `shininess` (sáng bóng) còn MeshStandardMaterial sử dụng hai thuộc tính `roughness` (thô ráp) và `metalness` (tính kim loại).
 
-Ở mức cơ bản, `roughness` là đối nghịch với `shininess`. Cái gì đó mà có `roughness` cao, như một quả bóng chày mà không có relection. Cái gì đó mà có `roughness` thấp, không sần sùi thô ráp, như một quả bóng bi da, thì rất shiny sáng bóng. Giá trị của `roughness` từ 0 đến 1.
+Ở mức cơ bản, `roughness` là đối nghịch với `shininess`. Cái gì đó mà có `roughness` cao, như một quả bóng chày thì không có relection. Cái gì đó mà có `roughness` thấp, không sần sùi thô ráp, như một quả bóng bi da, thì rất sáng bóng. Thuộc tính này quyết định cách ánh sáng chạm vào bề mặt được khuyếch tán như thế nào. Giá trị của `roughness` từ 0 đến 1. Giá trị mặc định là 0.5, giá trị 0 thì relection như gương, và giá trị 1 thì khuyếch tán toàn bộ ánh sáng.
 
-Thuộc tính còn lại, metalness, chỉ định Material giống kim loại bao nhiêu. Kim loại cư xử khác với không phải kim loại. Giá trị của metalness từ 0 cho không kim loại và 1 cho kim loại.
+Thuộc tính còn lại, `metalness`, chỉ định Material giống kim loại bao nhiêu. Kim loại cư xử khác với không phải kim loại. Giá trị của `metalness` từ 0 cho không kim loại và 1 cho kim loại. Giá trị mặc định là 0.5.
 
 Hình sau thể hiện `roughness` từ 0 đến 1 (từ trái sang phải) và `metalness` từ 0 đến 1 (từ trên xuống dưới).
 
 ![roughness và metalness](images/material-roughness-metalness.png)
 
+Ví dụ MeshStandardMaterial
+
+IMAGE
+
 ### MeshPhysicalMaterial
 
-MeshPhysicalMaterial giống như MeshStandardMaterial nhưng nó thêm thuộc tính `clearcoat` có giá trị từ 0 đến 1 để chỉ định clearcoat gloss layer và thuộc tính `clearCoatRoughness` chỉ định độ thô ráp của gloss layer.
+MeshPhysicalMaterial giống như MeshStandardMaterial nhưng nó thêm thuộc tính `clearcoat` có giá trị từ 0 đến 1 để chỉ định clearcoat gloss layer và thuộc tính `clearCoatRoughness` chỉ định độ thô ráp của gloss layer. Với Material này, chúng ta có nhiều điều khiển hơn về reflection.
 
 Hình sau thể hiện cùng `roughness` và `metalness` như hình trước cùng với cấu hình `clearcoat` và `clearCoatRoughness`.
 
 ![roughness và metalness và clearcoat](images/material-roughness-metalness-clearcoat.png)
 
+Ví dụ MeshPhysicalMaterial
 
-
-
-
-
-
-
+IMAGE
 
 ### Một số Material cần Light
 
