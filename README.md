@@ -1551,11 +1551,13 @@ IMAGE
 
 Ví dụ MeshLambertMaterial
 
-
-
 ### MeshPhongMaterial
 
-Thuộc tính `shininess` của MeshPhongMaterial quyết định độ shininess của specular highlight (thanh kiếm, đồ nhựa, đồ sứ,...). Giá trị mặc định là 30.
+Với MeshPhongMaterial, chúng ta có thể tạo các bề mặt sáng bóng như nhựa hoặc kim loại. MeshPhongMaterial cũng có các thuộc tính `color`, `emissive` như MeshLambertMaterial; ngoài ra còn có các thuộc tính `specular` và `shininess`.
+
+Thuộc tính `specular` chỉ định màu sắc của specular highlight. Nếu bạn thiết lập `specular` cùng màu với `color`, bạn sẽ được kết quả trông giống như kim loại. Nếu bạn thiết lập `specular` màu xám, kết quả sẽ trông giống nhựa.
+
+Thuộc tính `shininess` của MeshPhongMaterial quyết định độ sáng bóng của specular highlight (thanh kiếm, đồ nhựa, đồ sứ,...). Giá trị mặc định là 30.
 
 ![shininess](images/material-shininess.png)
 
@@ -1565,7 +1567,9 @@ Thiết lập thuộc tính `emissive` bằng một màu nào đó trên MeshLam
 
 Tại sao chúng ta có cả MeshBasicMaterial và MeshLambertMaterial trong khi MeshPhongMaterial có thể làm cùng một việc cho cả ba? Lý do là các Material phức tạp cần nhiều sức mạnh GPU để vẽ. Trên các thiết bị có GPU chậm như điện thoại bạn có thể muốn giảm tải cho GPU bằng cách sử dụng Material ít phức tạp hơn. Nếu bạn không cần các tính năng thêm thì hãy sử dụng Material đơn giản nhất. Nếu bạn không cần Light và specular highlight thì hãy sử dụng MeshBasicMaterial.
 
+IMAGE
 
+Ví dụ MeshPhongMaterial
 
 ### MeshToonMaterial
 
@@ -1573,7 +1577,7 @@ MeshToonMaterial tương tự như MeshPhongMaterial với một khác biệt l�
 
 ![Toon](images/material-toon.png)
 
-
+Ví dụ MeshToonMaterial
 
 ### MeshStandardMaterial
 

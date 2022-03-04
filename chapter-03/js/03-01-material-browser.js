@@ -227,11 +227,11 @@ function guiSceneFog(folder, scene) {
     const fog = new THREE.Fog(0x3f7b9d, 0, 60);
     const data = {
         fog: {
-            'THREE.Fog()': false,
+            'Fog()': false,
             'scene.fog.color': fog.color.getHex()
         }
     };
-    fogFolder.add(data.fog, 'THREE.Fog()')
+    fogFolder.add(data.fog, 'Fog()')
         .onChange(function (useFog) {
             if (useFog) {
                 scene.fog = fog;
@@ -330,7 +330,7 @@ function guiLineBasicMaterial(gui, material, geometry) {
     const data = {
         color: material.color.getHex()
     };
-    const folder = gui.addFolder('THREE.LineBasicMaterial');
+    const folder = gui.addFolder('LineBasicMaterial');
     folder.addColor(data, 'color').onChange(handleColorChange(material.color));
     folder.add(material, 'linewidth', 0, 10);
     folder.add(material, 'linecap', ['butt', 'round', 'square']);
@@ -372,13 +372,13 @@ function guiMeshLambertMaterial(gui, material, geometry, lights) {
 }
 
 
-function guiMeshMatcapMaterial(gui, mesh, material, geometry) {
+function guiMeshMatcapMaterial(gui, material, geometry) {
     const data = {
         color: material.color.getHex(),
         matcap: matcapKeys[1],
         alphaMap: alphaMapKeys[0]
     };
-    const folder = gui.addFolder('THREE.MeshMatcapMaterial');
+    const folder = gui.addFolder('MeshMatcapMaterial');
     folder.addColor(data, 'color').onChange(handleColorChange(material.color));
     folder.add(material, 'flatShading').onChange(needsUpdate(material, geometry));
     folder.add(data, 'matcap', matcapKeys).onChange(updateTexture(material, 'matcap', matcaps));
@@ -386,49 +386,54 @@ function guiMeshMatcapMaterial(gui, mesh, material, geometry) {
 }
 
 
-function guiMeshPhongMaterial(gui, mesh, material, geometry) {
+function guiMeshPhongMaterial(gui, material, geometry) {
     const data = {
         color: material.color.getHex(),
         emissive: material.emissive.getHex(),
-        specular: material.specular.getHex(),
-        envMaps: envMapKeys[0],
-        map: diffuseMapKeys[0],
-        alphaMap: alphaMapKeys[0]
+        specular: material.specular.getHex()
+        // envMaps: envMapKeys[0],
+        // map: diffuseMapKeys[0],
+        // alphaMap: alphaMapKeys[0]
     };
-    const folder = gui.addFolder('THREE.MeshPhongMaterial');
-    folder.addColor(data, 'color').onChange(handleColorChange(material.color));
-    folder.addColor(data, 'emissive').onChange(handleColorChange(material.emissive));
-    folder.addColor(data, 'specular').onChange(handleColorChange(material.specular));
+    const folder = gui.addFolder('MeshPhongMaterial');
+    folder.addColor(data, 'color')
+        .onChange(handleColorChange(material.color));
+    folder.addColor(data, 'emissive')
+        .onChange(handleColorChange(material.emissive));
+    folder.addColor(data, 'specular')
+        .onChange(handleColorChange(material.specular));
     folder.add(material, 'shininess', 0, 100);
-    folder.add(material, 'flatShading').onChange(needsUpdate(material, geometry));
-    folder.add(material, 'wireframe');
-    folder.add(material, 'vertexColors').onChange(needsUpdate(material, geometry));
-    folder.add(material, 'fog');
-    folder.add(data, 'envMaps', envMapKeys).onChange(updateTexture(material, 'envMap', envMaps));
-    folder.add(data, 'map', diffuseMapKeys).onChange(updateTexture(material, 'map', diffuseMaps));
-    folder.add(data, 'alphaMap', alphaMapKeys).onChange(updateTexture(material, 'alphaMap', alphaMaps));
-    folder.add(material, 'combine', constants.combine).onChange(updateCombine(material));
-    folder.add(material, 'reflectivity', 0, 1);
-    folder.add(material, 'refractionRatio', 0, 1);
+    // folder.add(material, 'flatShading').onChange(needsUpdate(material, geometry));
+    // folder.add(material, 'wireframe');
+    // folder.add(material, 'vertexColors').onChange(needsUpdate(material, geometry));
+    // folder.add(material, 'fog');
+    // folder.add(data, 'envMaps', envMapKeys).onChange(updateTexture(material, 'envMap', envMaps));
+    // folder.add(data, 'map', diffuseMapKeys).onChange(updateTexture(material, 'map', diffuseMaps));
+    // folder.add(data, 'alphaMap', alphaMapKeys).onChange(updateTexture(material, 'alphaMap', alphaMaps));
+    // folder.add(material, 'combine', constants.combine).onChange(updateCombine(material));
+    // folder.add(material, 'reflectivity', 0, 1);
+    // folder.add(material, 'refractionRatio', 0, 1);
 }
 
 
-function guiMeshToonMaterial(gui, mesh, material) {
+function guiMeshToonMaterial(gui, material) {
     const data = {
         color: material.color.getHex(),
-        map: diffuseMapKeys[0],
-        gradientMap: gradientMapKeys[1],
-        alphaMap: alphaMapKeys[0]
+        // map: diffuseMapKeys[0],
+        gradientMap: gradientMapKeys[1]
+        // alphaMap: alphaMapKeys[0]
     };
-    const folder = gui.addFolder('THREE.MeshToonMaterial');
-    folder.addColor(data, 'color').onChange(handleColorChange(material.color));
-    folder.add(data, 'map', diffuseMapKeys).onChange(updateTexture(material, 'map', diffuseMaps));
-    folder.add(data, 'gradientMap', gradientMapKeys).onChange(updateTexture(material, 'gradientMap', gradientMaps));
-    folder.add(data, 'alphaMap', alphaMapKeys).onChange(updateTexture(material, 'alphaMap', alphaMaps));
+    const folder = gui.addFolder('MeshToonMaterial');
+    folder.addColor(data, 'color')
+        .onChange(handleColorChange(material.color));
+    // folder.add(data, 'map', diffuseMapKeys).onChange(updateTexture(material, 'map', diffuseMaps));
+    folder.add(data, 'gradientMap', gradientMapKeys)
+        .onChange(updateTexture(material, 'gradientMap', gradientMaps));
+    // folder.add(data, 'alphaMap', alphaMapKeys).onChange(updateTexture(material, 'alphaMap', alphaMaps));
 }
 
 
-function guiMeshStandardMaterial(gui, mesh, material, geometry) {
+function guiMeshStandardMaterial(gui, material, geometry) {
     const data = {
         color: material.color.getHex(),
         emissive: material.emissive.getHex(),
@@ -438,7 +443,7 @@ function guiMeshStandardMaterial(gui, mesh, material, geometry) {
         alphaMap: alphaMapKeys[0]
     };
 
-    const folder = gui.addFolder('THREE.MeshStandardMaterial');
+    const folder = gui.addFolder('MeshStandardMaterial');
     folder.addColor(data, 'color').onChange(handleColorChange(material.color));
     folder.addColor(data, 'emissive').onChange(handleColorChange(material.emissive));
     folder.add(material, 'roughness', 0, 1);
@@ -456,7 +461,7 @@ function guiMeshStandardMaterial(gui, mesh, material, geometry) {
 }
 
 
-function guiMeshPhysicalMaterial(gui, mesh, material, geometry) {
+function guiMeshPhysicalMaterial(gui, material, geometry) {
     const data = {
         color: material.color.getHex(),
         emissive: material.emissive.getHex(),
@@ -465,7 +470,7 @@ function guiMeshPhysicalMaterial(gui, mesh, material, geometry) {
         roughnessMap: roughnessMapKeys[0],
         alphaMap: alphaMapKeys[0]
     };
-    const folder = gui.addFolder('THREE.MeshPhysicalMaterial');
+    const folder = gui.addFolder('MeshPhysicalMaterial');
     folder.addColor(data, 'color').onChange(handleColorChange(material.color));
     folder.addColor(data, 'emissive').onChange(handleColorChange(material.emissive));
     folder.add(material, 'roughness', 0, 1);
@@ -491,7 +496,7 @@ function guiMeshPhysicalMaterial(gui, mesh, material, geometry) {
  */
 function createMaterial(selectedMaterial, gui, mesh, geometry, camera, lights) {
     const [
-        ambientLight,
+        ,
         pointLight1,
         pointLight2,
         pointLight3
@@ -532,10 +537,12 @@ function createMaterial(selectedMaterial, gui, mesh, geometry, camera, lights) {
 
     case 'MeshPhongMaterial':
         material = new THREE.MeshPhongMaterial({
-            color: defaultColor
+            color: defaultColor,
+            specular: defaultColor
+            // specular: 0x444444
         });
-        guiMaterial(gui, material, geometry);
-        guiMeshPhongMaterial(gui, mesh, material, geometry);
+        // guiMaterial(gui, material, geometry);
+        guiMeshPhongMaterial(gui, material, geometry);
         return material;
 
     case 'MeshToonMaterial':
@@ -543,11 +550,13 @@ function createMaterial(selectedMaterial, gui, mesh, geometry, camera, lights) {
             color: defaultColor,
             gradientMap: gradientMaps.threeTone
         });
-        guiMaterial(gui, material, geometry);
-        guiMeshToonMaterial(gui, mesh, material);
-        // only use a single point light
+        // guiMaterial(gui, material, geometry);
+        guiMeshToonMaterial(gui, material);
+
+        // Chỉ sử dụng một PointLight
         pointLight1.visible = false;
         pointLight3.visible = false;
+
         return material;
 
     case 'MeshStandardMaterial':
@@ -555,7 +564,7 @@ function createMaterial(selectedMaterial, gui, mesh, geometry, camera, lights) {
             color: defaultColor
         });
         guiMaterial(gui, material, geometry);
-        guiMeshStandardMaterial(gui, mesh, material, geometry);
+        guiMeshStandardMaterial(gui, material, geometry);
         // only use scene environment
         pointLight1.visible = false;
         pointLight2.visible = false;
@@ -567,7 +576,7 @@ function createMaterial(selectedMaterial, gui, mesh, geometry, camera, lights) {
             color: defaultColor
         });
         guiMaterial(gui, material, geometry);
-        guiMeshPhysicalMaterial(gui, mesh, material, geometry);
+        guiMeshPhysicalMaterial(gui, material, geometry);
         // only use scene environment
         pointLight1.visible = false;
         pointLight2.visible = false;
@@ -579,7 +588,7 @@ function createMaterial(selectedMaterial, gui, mesh, geometry, camera, lights) {
             matcap: matcaps.porcelainWhite
         });
         guiMaterial(gui, material, geometry);
-        guiMeshMatcapMaterial(gui, mesh, material, geometry);
+        guiMeshMatcapMaterial(gui, material, geometry);
         // no need for lights
         pointLight1.visible = false;
         pointLight2.visible = false;
