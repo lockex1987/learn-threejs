@@ -1401,11 +1401,15 @@ material.color.setHSL(h, s, l); // trong đó h, s, l từ 0 đến 1
 material.color.setRGB(r, b, b); // trong đó r, g, b từ 0 đến 1
 ```
 
-Các Material cùng chia sẻ các thuộc tính được định nghĩa ở lớp THREE.Material. Các thuộc tính chung hay dùng nhất là `flatShading`, `side`, `needsUpdate`, `transparent`, `opacity`,...
+Các Material cùng chia sẻ các thuộc tính được định nghĩa ở lớp THREE.Material. Các thuộc tính chung hay dùng nhất là `side`, `needsUpdate`, `transparent`, `opacity`,... Ngoài ra, một số Material cũng có các thuộc tính giống nhau như `color`, `flatShading`, `wireframe`,...
+
+Thuộc tính `color` chỉ định màu sắc của Material.
 
 Thuộc tính `flatShading` chỉ định đối tượng trông giống các khối hay trông mượt. Giá trị mặc định là `false`.
 
 ![flatShading](images/material-flatShading.png)
+
+Nếu thiết lập thuộc tính `wireframe` bằng true thì đối tượng chỉ được render dưới dạng khung với các đường thẳng nối các đỉnh.
 
 Thuộc tính `side` chỉ định các mặt của tam giác được hiển thị. Mặc định là THREE.FrontSide. Các giá trị khác là THREE.BackSide và THREE.DoubleSide. Hầu hết các đối tượng 3D được vẽ thường là các vật đặc nên back side - các mặt ở bên trong vật thường không cần phải vẽ. Lý do thông thưởng để thiết lập thuộc tính side là cho các mặt phẳng mà có thể nhìn thấy cả back side.
 
@@ -1479,7 +1483,13 @@ materials.forEach(material => {
 
 ### MeshNormalMaterial
 
-MeshNormal sẽ chỉ các vector pháp tuyến của Geometry. Các vector pháp tuyến là các hướng của một tam giác hoặc một mặt. MeshNormalMaterial sẽ vẽ các không gian pháp tuyến (tương đối với Camera). Ta có x là đỏ, y là lục, z là lam. Do đó các vật hướng về phải sẽ có màu hồng, hướng về trái có màu aqua, hướng lên trên có màu lục nhẹ, hướng xuống dưới có màu tím, và hướng về màn hình có mà lavender.
+Chúng ta hãy thiết lập thuộc tính `flatShading` bằng `true` để dễ hình dung:
+
+IMAGE
+
+Với MeshNormalMaterial, mỗi mặt (pixel) của đối tượng được render với màu sắc hơi khác nhau. Mặc dù đối tượng có xoay, các màu sắc có vẻ vẫn gần như giữ nguyên vị trí. Điều này là do màu của mỗi mặt (pixel) dựa vào vector pháp tuyến của mặt đó. Vector pháp tuyến là vector vuông góc với mặt và hướng ra ngoài. Chúng ta có trục x là màu đỏ, trục y là màu lục, trục z là màu lam. Do đó các mặt hướng về phải sẽ có màu hồng, hướng về trái sẽ có màu aqua, hướng lên trên sẽ có màu lục nhẹ, hướng xuống dưới sẽ có màu tím, hướng về màn hình sẽ có màu lavender.
+
+TODO: IMAGE
 
 ![Normal](images/material-normal.png)
 
@@ -1493,13 +1503,7 @@ const material = new MeshNormalMaterial();
 
 
 
-### MeshMatcapMaterial
 
-Trông không đơn sắc mà không cần ánh sáng. MatCap (Material Capture) shader sử dụng một ảnh của một hình cầu như là một view-space environment map. Ảnh chứa các màu sắc và shading đã tạo sẵn, tính toán trước.
-
-Để ở Texture, hay một ví dụ Texture cơ bản ở đây luôn?
-
-Thuộc tính là `matcap`.
 
 
 
@@ -1634,6 +1638,20 @@ Các đối tượng mà có khoảng cách nhỏ hơn `near` hoặc lớn hơn 
 Để có thể xem được hiệu ứng, chúng ta cần có ánh sáng và không sử dụng MeshNormalMaterial hoặc MeshBasicMaterial. Có thể sử dụng MeshLambertMaterial.
 
 this.scene.fog = new Fog(0xffffff, 1, 100);
+
+### Thiết lập nhiều Material cho một Mesh
+
+Hình lập phương
+
+
+
+### MeshMatcapMaterial
+
+Trông không đơn sắc mà không cần ánh sáng. MatCap (Material Capture) shader sử dụng một ảnh của một hình cầu như là một view-space environment map. Ảnh chứa các màu sắc và shading đã tạo sẵn, tính toán trước.
+
+Để ở Texture, hay một ví dụ Texture cơ bản ở đây luôn?
+
+Thuộc tính là `matcap`.
 
 
 

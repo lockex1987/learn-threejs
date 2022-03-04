@@ -1,7 +1,6 @@
 import * as THREE from 'three';
-// import { GUI } from 'https://threejs.org/examples/jsm/libs/lil-gui.module.min.js';
+import { RoomEnvironment } from 'https://unpkg.com/three@0.137.5/examples/jsm/environments/RoomEnvironment.js';
 import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.16/+esm';
-import { RoomEnvironment } from 'https://threejs.org/examples/jsm/environments/RoomEnvironment.js';
 
 
 const constants = {
@@ -249,7 +248,8 @@ function guiMaterial(gui, material, geometry) {
     const folder = gui.addFolder('Material');
 
     folder.add(material, 'transparent');
-    folder.add(material, 'opacity', 0, 1).step(0.01);
+    folder.add(material, 'opacity', 0, 1)
+        .step(0.01);
     // folder.add( material, 'blending', constants.blendingMode );
     // folder.add( material, 'blendSrc', constants.destinationFactors );
     // folder.add( material, 'blendDst', constants.destinationFactors );
@@ -259,9 +259,12 @@ function guiMaterial(gui, material, geometry) {
     // folder.add( material, 'polygonOffset' );
     // folder.add( material, 'polygonOffsetFactor' );
     // folder.add( material, 'polygonOffsetUnits' );
-    folder.add(material, 'alphaTest', 0, 1).step(0.01).onChange(needsUpdate(material, geometry));
+    folder.add(material, 'alphaTest', 0, 1)
+        .step(0.01)
+        .onChange(needsUpdate(material, geometry));
     folder.add(material, 'visible');
-    folder.add(material, 'side', constants.side).onChange(needsUpdate(material, geometry));
+    folder.add(material, 'side', constants.side)
+        .onChange(needsUpdate(material, geometry));
 }
 
 
@@ -309,14 +312,21 @@ function guiMeshDepthMaterial(gui, material, camera) {
 }
 
 
-function guiMeshNormalMaterial(gui, mesh, material, geometry) {
-    const folder = gui.addFolder('THREE.MeshNormalMaterial');
-    folder.add(material, 'flatShading').onChange(needsUpdate(material, geometry));
-    folder.add(material, 'wireframe');
+function guiMeshNormalMaterial(gui, material, geometry) {
+    const folder = gui.addFolder('MeshNormalMaterial');
+    /*
+    folder.add(material, 'flatShading')
+        .onChange(needsUpdate(material, geometry));
+    */
+    folder.add(material, 'flatShading')
+        .onChange(() => {
+            material.needsUpdate = true;
+        });
+    // folder.add(material, 'wireframe');
 }
 
 
-function guiLineBasicMaterial(gui, mesh, material, geometry) {
+function guiLineBasicMaterial(gui, material, geometry) {
     const data = {
         color: material.color.getHex()
     };
@@ -330,26 +340,26 @@ function guiLineBasicMaterial(gui, mesh, material, geometry) {
 }
 
 
-function guiMeshLambertMaterial(gui, mesh, material, geometry) {
+function guiMeshLambertMaterial(gui, material, geometry) {
     const data = {
         color: material.color.getHex(),
-        emissive: material.emissive.getHex(),
-        envMaps: envMapKeys[0],
-        map: diffuseMapKeys[0],
-        alphaMap: alphaMapKeys[0]
+        emissive: material.emissive.getHex()
+        // envMaps: envMapKeys[0],
+        // map: diffuseMapKeys[0],
+        // alphaMap: alphaMapKeys[0]
     };
-    const folder = gui.addFolder('THREE.MeshLambertMaterial');
+    const folder = gui.addFolder('MeshLambertMaterial');
     folder.addColor(data, 'color').onChange(handleColorChange(material.color));
     folder.addColor(data, 'emissive').onChange(handleColorChange(material.emissive));
-    folder.add(material, 'wireframe');
-    folder.add(material, 'vertexColors').onChange(needsUpdate(material, geometry));
-    folder.add(material, 'fog');
-    folder.add(data, 'envMaps', envMapKeys).onChange(updateTexture(material, 'envMap', envMaps));
-    folder.add(data, 'map', diffuseMapKeys).onChange(updateTexture(material, 'map', diffuseMaps));
-    folder.add(data, 'alphaMap', alphaMapKeys).onChange(updateTexture(material, 'alphaMap', alphaMaps));
-    folder.add(material, 'combine', constants.combine).onChange(updateCombine(material));
-    folder.add(material, 'reflectivity', 0, 1);
-    folder.add(material, 'refractionRatio', 0, 1);
+    // folder.add(material, 'wireframe');
+    // folder.add(material, 'vertexColors').onChange(needsUpdate(material, geometry));
+    // folder.add(material, 'fog');
+    // folder.add(data, 'envMaps', envMapKeys).onChange(updateTexture(material, 'envMap', envMaps));
+    // folder.add(data, 'map', diffuseMapKeys).onChange(updateTexture(material, 'map', diffuseMaps));
+    // folder.add(data, 'alphaMap', alphaMapKeys).onChange(updateTexture(material, 'alphaMap', alphaMaps));
+    // folder.add(material, 'combine', constants.combine).onChange(updateCombine(material));
+    // folder.add(material, 'reflectivity', 0, 1);
+    // folder.add(material, 'refractionRatio', 0, 1);
 }
 
 
@@ -468,10 +478,15 @@ function guiMeshPhysicalMaterial(gui, mesh, material, geometry) {
 
 
 /**
- * Chọn Material.
+ * Tạo Material.
  */
-function chooseFromHash(selectedMaterial, gui, mesh, geometry) {
-    document.title = 'Ví dụ ' + selectedMaterial;
+function createMaterial(selectedMaterial, gui, mesh, geometry, camera, lights) {
+    const [
+        ambientLight,
+        pointLight1,
+        pointLight2,
+        pointLight3
+    ] = lights ?? [null, null, null, null];
     let material;
     const defaultColor = 0x049EF4;
 
@@ -490,12 +505,20 @@ function chooseFromHash(selectedMaterial, gui, mesh, geometry) {
         guiMeshDepthMaterial(gui, material, camera);
         return material;
 
+    case 'MeshNormalMaterial':
+        material = new THREE.MeshNormalMaterial({
+            flatShading: true
+        });
+        // guiMaterial(gui, material, geometry);
+        guiMeshNormalMaterial(gui, material, geometry);
+        return material;
+
     case 'MeshLambertMaterial':
         material = new THREE.MeshLambertMaterial({
             color: defaultColor
         });
-        guiMaterial(gui, material, geometry);
-        guiMeshLambertMaterial(gui, mesh, material, geometry);
+        // guiMaterial(gui, material, geometry);
+        guiMeshLambertMaterial(gui, material, geometry);
         return material;
 
     case 'MeshMatcapMaterial' :
@@ -505,9 +528,9 @@ function chooseFromHash(selectedMaterial, gui, mesh, geometry) {
         guiMaterial(gui, material, geometry);
         guiMeshMatcapMaterial(gui, mesh, material, geometry);
         // no need for lights
-        light1.visible = false;
-        light2.visible = false;
-        light3.visible = false;
+        pointLight1.visible = false;
+        pointLight2.visible = false;
+        pointLight3.visible = false;
         return material;
 
     case 'MeshPhongMaterial':
@@ -526,8 +549,8 @@ function chooseFromHash(selectedMaterial, gui, mesh, geometry) {
         guiMaterial(gui, material, geometry);
         guiMeshToonMaterial(gui, mesh, material);
         // only use a single point light
-        light1.visible = false;
-        light3.visible = false;
+        pointLight1.visible = false;
+        pointLight3.visible = false;
         return material;
 
     case 'MeshStandardMaterial':
@@ -537,9 +560,9 @@ function chooseFromHash(selectedMaterial, gui, mesh, geometry) {
         guiMaterial(gui, material, geometry);
         guiMeshStandardMaterial(gui, mesh, material, geometry);
         // only use scene environment
-        light1.visible = false;
-        light2.visible = false;
-        light3.visible = false;
+        pointLight1.visible = false;
+        pointLight2.visible = false;
+        pointLight3.visible = false;
         return material;
 
     case 'MeshPhysicalMaterial':
@@ -549,15 +572,9 @@ function chooseFromHash(selectedMaterial, gui, mesh, geometry) {
         guiMaterial(gui, material, geometry);
         guiMeshPhysicalMaterial(gui, mesh, material, geometry);
         // only use scene environment
-        light1.visible = false;
-        light2.visible = false;
-        light3.visible = false;
-        return material;
-
-    case 'MeshNormalMaterial':
-        material = new THREE.MeshNormalMaterial();
-        guiMaterial(gui, material, geometry);
-        guiMeshNormalMaterial(gui, mesh, material, geometry);
+        pointLight1.visible = false;
+        pointLight2.visible = false;
+        pointLight3.visible = false;
         return material;
 
     case 'LineBasicMaterial':
@@ -565,106 +582,132 @@ function chooseFromHash(selectedMaterial, gui, mesh, geometry) {
             color: 0x2194CE
         });
         guiMaterial(gui, material, geometry);
-        guiLineBasicMaterial(gui, mesh, material, geometry);
+        guiLineBasicMaterial(gui, material, geometry);
         return material;
     }
 }
 
-//
 
-const gui = new GUI();
+function addLights(scene) {
+    const ambientLight = new THREE.AmbientLight(0x000000);
+    scene.add(ambientLight);
 
-const renderer = new THREE.WebGLRenderer({
-    antialias: true
-});
-renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.outputEncoding = THREE.sRGBEncoding;
-document.body.appendChild(renderer.domElement);
+    const pointLight1 = new THREE.PointLight(0xffffff, 1, 0);
+    pointLight1.position.set(0, 200, 0);
+    scene.add(pointLight1);
 
-const pmremGenerator = new THREE.PMREMGenerator(renderer);
+    const pointLight2 = new THREE.PointLight(0xffffff, 1, 0);
+    pointLight2.position.set(100, 200, 100);
+    scene.add(pointLight2);
 
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xDDDDDD);
-scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+    const pointLight3 = new THREE.PointLight(0xffffff, 1, 0);
+    pointLight3.position.set(-100, -200, -100);
+    scene.add(pointLight3);
 
-const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 10, 100);
-camera.position.z = 35;
-
-const ambientLight = new THREE.AmbientLight(0x000000);
-scene.add(ambientLight);
-
-const light1 = new THREE.PointLight(0xffffff, 1, 0);
-light1.position.set(0, 200, 0);
-scene.add(light1);
-
-const light2 = new THREE.PointLight(0xffffff, 1, 0);
-light2.position.set(100, 200, 100);
-scene.add(light2);
-
-const light3 = new THREE.PointLight(0xffffff, 1, 0);
-light3.position.set(-100, -200, -100);
-scene.add(light3);
-
-// guiScene(gui, scene);
-
-const geometry = new THREE.TorusKnotGeometry(7, 1, 200, 32).toNonIndexed();
-
-generateVertexColors(geometry);
-
-let mesh;
-const selectedMaterial = window.location.hash.substring(1) || 'MeshBasicMaterial';
-if (selectedMaterial == 'Combine') {
-    // Kết hợp nhiều Material
-    const depthMaterial = new THREE.MeshDepthMaterial();
-    const basicMaterial = new THREE.MeshBasicMaterial({
-        color: 0x00ff00,
-        transparent: true,
-        blending: THREE.MultiplyBlending
-    });
-    const materials = [
-        basicMaterial,
-        depthMaterial
+    return [
+        ambientLight,
+        pointLight1,
+        pointLight2,
+        pointLight3
     ];
-
-    // Tham khảo THREE.SceneUtils.createMultiMaterialObject
-    mesh = new THREE.Group();
-    materials.forEach(material => {
-        mesh.add(new THREE.Mesh(geometry, material));
-    });
-} else {
-    mesh = new THREE.Mesh(geometry);
-    mesh.material = chooseFromHash(selectedMaterial, gui, mesh, geometry);
 }
 
 
-scene.add(mesh);
+function init() {
+    const renderer = new THREE.WebGLRenderer({
+        canvas: document.querySelector('#webglOutput'),
+        antialias: true
+    });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputEncoding = THREE.sRGBEncoding;
 
-let prevFog = false;
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
 
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xDDDDDD);
+    scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 
-function render() {
-    mesh.rotation.x += 0.005;
-    mesh.rotation.y += 0.005;
+    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 10, 100);
+    camera.position.z = 35;
 
-    if (prevFog !== scene.fog) {
-        // Trong trường hợp selectedMaterial bằng Combine thì mesh.material bằng undefined
-        if (mesh.material) {
-            mesh.material.needsUpdate = true;
-        }
-        prevFog = scene.fog;
+    const gui = new GUI();
+    // guiScene(gui, scene);
+
+    const geometry = new THREE.TorusKnotGeometry(7, 1, 50, 8).toNonIndexed();
+
+    generateVertexColors(geometry);
+
+    let mesh;
+    const selectedMaterial = window.location.hash.substring(1) || 'MeshBasicMaterial';
+
+    document.title = 'Ví dụ ' + selectedMaterial;
+
+    let lights;
+    if (!['MeshBasicMaterial', 'MeshDepthMaterial', 'MeshNormalMaterial'].includes(selectedMaterial)) {
+        console.log('Thêm ánh sáng');
+        lights = addLights(scene);
     }
 
-    renderer.render(scene, camera);
-    requestAnimationFrame(render);
+    if (selectedMaterial == 'Combine') {
+        // Kết hợp nhiều Material
+        const depthMaterial = new THREE.MeshDepthMaterial();
+        const basicMaterial = new THREE.MeshBasicMaterial({
+            color: 0x00ff00,
+            transparent: true,
+            blending: THREE.MultiplyBlending
+        });
+        const materials = [
+            basicMaterial,
+            depthMaterial
+        ];
+
+        // Tham khảo THREE.SceneUtils.createMultiMaterialObject
+        mesh = new THREE.Group();
+        materials.forEach(material => {
+            mesh.add(new THREE.Mesh(geometry, material));
+        });
+    } else {
+        mesh = new THREE.Mesh(geometry);
+        mesh.material = createMaterial(selectedMaterial, gui, mesh, geometry, camera, lights);
+    }
+
+
+    scene.add(mesh);
+
+    let prevFog = false;
+
+    function update() {
+        mesh.rotation.x += 0.005;
+        mesh.rotation.y += 0.005;
+
+        if (prevFog !== scene.fog) {
+            // Trong trường hợp selectedMaterial bằng Combine thì mesh.material bằng undefined
+            if (mesh.material) {
+                mesh.material.needsUpdate = true;
+            }
+            prevFog = scene.fog;
+        }
+    }
+
+    function render() {
+        update();
+        renderer.render(scene, camera);
+        requestAnimationFrame(render);
+    }
+
+    function onResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    render();
+
+    window.addEventListener('resize', () => {
+        onResize();
+    });
 }
 
 
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
-
-render();
+init();
