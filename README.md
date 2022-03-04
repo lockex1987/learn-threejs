@@ -1352,7 +1352,6 @@ Trong Three.js, Material xác định màu của một điểm trên đối tư�
 | MeshBasicMaterial    | Đây là Material cơ bản để tạo cho đối tượng một màu sắc đơn giản hoặc hiển thị wireframe. Material này không bị ảnh hưởng bởi ánh sáng. |
 | MeshDeptMaterial     | Sử dụng khoảng cách từ Camera đến đối tượng để quyết định màu sắc. Càng gần thì màu trắng, càng xa thì màu đen. Sự thay đổi giữa màu trắng và màu đen dựa vào các giá trị khoảng cách near và far của Camera. |
 | MeshNormalMaterial   | Material đơn giản quyết định màu sắc của một mặt dựa vào normal vector (vector pháp tuyến) của nó. Không bị ảnh hưởng bởi ánh sáng. |
-| MeshMatcapMaterial   | Sử dụng Texture với các màu sắc và shading đã tính toán trước. |
 | MeshLambertMaterial  | Material này có sử dụng ánh sáng và tạo ra đối tượng trông mờ, không sáng bóng. Chỉ tính toán ánh sáng ở các đỉnh. |
 | MeshPhongMaterial    | Material này cũng sử dụng ánh sáng và có thể tạo các đối tượng sáng bóng. Tính toán ánh sáng ở tất cả pixel. Hỗ trợ specular highlight. |
 | MeshToonMaterial     | Một mở rộng của MeshPhongMaterial để làm các đối tượng trông giống như cartoon (hoạt hình). |
@@ -1361,6 +1360,7 @@ Trong Three.js, Material xác định màu của một điểm trên đối tư�
 
 Chúng ta sẽ không tìm hiểu các Material sau:
 
+- MeshMatcapMaterial
 - PointsMaterial
 - SpriteMaterial
 - LineBasicMaterial
@@ -1524,6 +1524,12 @@ function addLights(scene) {
     const pointLight3 = new THREE.PointLight(0xffffff, 1, 0);
     pointLight3.position.set(-100, -200, -100);
     scene.add(pointLight3);
+    
+    /*
+    const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1);
+    directionalLight.position.set(-1, 2, 4);
+    scene.add(directionalLight);
+    */
 
     return [
         ambientLight,
@@ -1609,23 +1615,35 @@ Ví dụ MeshPhysicalMaterial
 
 IMAGE
 
-### Một số Material cần Light
+### Nhiều Material cho một Mesh
 
-It's a little better but it's still hard to see the 3d. What would help is to add some lighting so let's add a light. There are many kinds of lights in three.js which we'll go over in a future article. For now let's create a directional light.
+Cho đến lúc này, chúng ta chỉ sử dụng một Material cho một Mesh. Chúng ta có thể định nghĩa một Material nào đó cho từng mặt của một Geometry. Ví dụ, nếu chúng ta có một hình lập phương gồm 12 mặt, chúng ta có thể thiết lập các Material khác nhau (màu khác nhau) với từng side. Bạn có thể làm như sau:
 
-{
-  const color = 0xFFFFFF;
-  const intensity = 1;
-  const light = new THREE.DirectionalLight(color, intensity);
-  light.position.set(-1, 2, 4);
-  scene.add(light);
-}
+```javascript
+// Danh sách màu sắc
+const colors = [
+    0x009e60,
+    0x0051ba,
+    0xffd500,
+    0xff5800,
+    0xC41E3A,
+    0xffffff
+];
 
-Directional lights have a position and a target. Both default to 0, 0, 0. In our case we're setting the light's position to -1, 2, 4 so it's slightly on the left, above, and behind our camera. The target is still 0, 0, 0 so it will shine toward the origin.
+// Danh sách các Material
+const cubeMaterials = colors.map(color => (new THREE.MeshBasicMaterial({ color: color })));
 
-We also need to change the material. The MeshBasicMaterial is not affected by lights. Let's change it to a MeshPhongMaterial which is affected by lights.
+const cubeGeometry = new THREE.BoxGeometry(10, 10, 10);
+const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterials);
+```
 
+Khi khởi tạo Mesh, thay vì truyền vào một đối tượng Material, chúng ta sẽ truyền vào một mảng các Material.
 
+Bạn có thể chú ý là chúng ta chỉ tạo 6 Material, trong khi hình lập phương có 12 mặt. Đó là do Three.js tự động phân bổ các Material với các mặt tương ứng.
+
+Ví dụ 03.02 - Multiple Materials
+
+IMAGE
 
 ### Hiệu ứng sương mù (Để sau Light và Material)
 
@@ -1656,19 +1674,7 @@ Các đối tượng mà có khoảng cách nhỏ hơn `near` hoặc lớn hơn 
 
 this.scene.fog = new Fog(0xffffff, 1, 100);
 
-### Thiết lập nhiều Material cho một Mesh
 
-Hình lập phương
-
-
-
-### MeshMatcapMaterial
-
-Trông không đơn sắc mà không cần ánh sáng. MatCap (Material Capture) shader sử dụng một ảnh của một hình cầu như là một view-space environment map. Ảnh chứa các màu sắc và shading đã tạo sẵn, tính toán trước.
-
-Để ở Texture, hay một ví dụ Texture cơ bản ở đây luôn?
-
-Thuộc tính là `matcap`.
 
 
 
@@ -1676,7 +1682,7 @@ Thuộc tính là `matcap`.
 
 Các Material xử lý nhanh và chậm khác nhau: MeshBasicMaterial < MeshLambertMaterial < MeshPhongMaterial < MeshStandardMaterial < MeshPhysicalMaterial. Các Material xử lý chậm có thể tạo các cảnh trông giống thật, chân thực hơn nhưng bạn có thể cần thiết kế code của bạn sử dụng các Material nhanh hơn trên các thiết bị yếu.
 
-
+Quyết định giá trị cho các thuộc tính của Material rất khó. Giải pháp tốt đó là sử dụng dat.GUI để điều chỉnh các thuộc tính và quan sát luôn kết quả.
 
 ## Chương 4 - Light
 
@@ -1693,6 +1699,20 @@ plane.receiveShadow = true;
 ## Chương 5 - Texture
 
  Từ canvas
+
+### Texture đơn giản
+
+Thuộc tính map.
+
+### MeshMatcapMaterial
+
+Sử dụng Texture với các màu sắc và shading đã tính toán trước.
+
+Trông không đơn sắc mà không cần ánh sáng. MatCap (Material Capture) shader sử dụng một ảnh của một hình cầu như là một view-space environment map. Ảnh chứa các màu sắc và shading đã tạo sẵn, tính toán trước.
+
+Để ở Texture, hay một ví dụ Texture cơ bản ở đây luôn?
+
+Thuộc tính là `matcap`.
 
 ## Chương 6 - Camera Controls
 
