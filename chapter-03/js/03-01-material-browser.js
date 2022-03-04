@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { RoomEnvironment } from 'https://unpkg.com/three@0.137.5/examples/jsm/environments/RoomEnvironment.js';
 import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.16/+esm';
 
 
@@ -225,6 +224,7 @@ function createMaterial(selectedMaterial, camera, lights) {
     case 'MeshStandardMaterial':
         material = new THREE.MeshStandardMaterial({
             color: defaultColor,
+            emissive: defaultColor,
             roughness: 0,
             metalness: 1
         });
@@ -234,6 +234,7 @@ function createMaterial(selectedMaterial, camera, lights) {
     case 'MeshPhysicalMaterial':
         material = new THREE.MeshPhysicalMaterial({
             color: defaultColor,
+            emissive: defaultColor,
             roughness: 0,
             metalness: 1
         });
@@ -248,15 +249,15 @@ function addLights(scene) {
     scene.add(ambientLight);
 
     const pointLight1 = new THREE.PointLight(0xffffff, 1, 0);
-    pointLight1.position.set(0, 200, 0);
+    pointLight1.position.set(0, 100, 0);
     scene.add(pointLight1);
 
     const pointLight2 = new THREE.PointLight(0xffffff, 1, 0);
-    pointLight2.position.set(100, 200, 100);
+    pointLight2.position.set(50, 100, 50);
     scene.add(pointLight2);
 
     const pointLight3 = new THREE.PointLight(0xffffff, 1, 0);
-    pointLight3.position.set(-100, -200, -100);
+    pointLight3.position.set(-50, -100, -50);
     scene.add(pointLight3);
 
     return [
@@ -269,36 +270,33 @@ function addLights(scene) {
 
 
 function init() {
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xDDDDDD);
+
+    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 10, 100);
+    camera.position.z = 35;
+
     const renderer = new THREE.WebGLRenderer({
         canvas: document.querySelector('#webglOutput'),
         antialias: true
     });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.outputEncoding = THREE.sRGBEncoding; // không có thì trông tối
 
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xDDDDDD);
-    const pmremGenerator = new THREE.PMREMGenerator(renderer);
-    scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture; // không có thì trông tối
+    const geometry = new THREE.TorusKnotGeometry(7, 1, 50, 8);
+    const selectedMaterialName = window.location.hash.substring(1) || 'MeshBasicMaterial';
 
-    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 10, 100);
-    camera.position.z = 35;
-
-    const geometry = new THREE.TorusKnotGeometry(7, 1, 50, 8).toNonIndexed();
-    const selectedMaterial = window.location.hash.substring(1) || 'MeshBasicMaterial';
-
-    document.title = 'Ví dụ ' + selectedMaterial;
+    document.title = 'Ví dụ ' + selectedMaterialName;
 
     let lights;
-    if (!['MeshBasicMaterial', 'MeshDepthMaterial', 'MeshNormalMaterial'].includes(selectedMaterial)) {
+    if (!['MeshBasicMaterial', 'MeshDepthMaterial', 'MeshNormalMaterial'].includes(selectedMaterialName)) {
         console.log('Thêm ánh sáng');
         lights = addLights(scene);
     }
 
     let mesh;
 
-    if (selectedMaterial == 'Combine') {
+    if (selectedMaterialName == 'Combine') {
         // Kết hợp nhiều Material
         const depthMaterial = new THREE.MeshDepthMaterial();
         const basicMaterial = new THREE.MeshBasicMaterial({
@@ -318,7 +316,7 @@ function init() {
         });
     } else {
         mesh = new THREE.Mesh(geometry);
-        mesh.material = createMaterial(selectedMaterial, camera, lights);
+        mesh.material = createMaterial(selectedMaterialName, camera, lights);
     }
 
     scene.add(mesh);
