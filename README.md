@@ -1194,7 +1194,32 @@ Nhìn vào code JS của ví dụ này (`02-01.js`), bạn có thể thấy chú
 
 [Ví dụ 02.01 - Scene](https://static.lockex1987.com/learn-threejs/chapter-02/02-01-scene.html)
 
-Scene có thuộc tính `fog` để thêm hiệu ứng sương mù vào cảnh. Tuy nhiên, để có thể xem được hiệu ứng, chúng ta không được sử dụng MeshNormalMaterial hoặc MeshBasicMaterial. Có thể sử dụng các Material như MeshLambertMaterial, MeshPhongMaterial. Vậy hãy để hiệu ứng này ở các bài sau.
+Đối tượng Scene có thuộc tính `fog` để thêm hiệu ứng sương mù vào cảnh. Nếu đối tượng ở xa Camera thì sẽ bị mờ, nếu đối tượng ở gần Camera thì sẽ rõ hơn. Mặc định thuộc tính `fog` có giá trị `null`.
+
+Chúng ta định nghĩa một đối tượng Fog mới như sau:
+
+```javascript
+new Fog(color: Integer, near: Float, far: Float)
+```
+
+Các tham số:
+
+- `color` (Integer): màu của sương mù.
+
+- `near` (Float): khoảng cách tối thiểu để áp dụng sương mù. Mặc định là 1.
+
+- `far` (Float): khoảng cách tối đa để áp dụng sương mù. Mặc định là 1000.
+
+Các đối tượng mà có khoảng cách nhỏ hơn `near` hoặc lớn hơn `far` thì sẽ không bị ảnh hưởng bởi sương mù. Mật độ sương mù sẽ tăng tuyến tính từ `near` đến `far`.
+
+Tạo sương mà và gán vào cảnh như sau:
+
+```javascript
+const fog = new Fog(0xffffff, 1, 100);
+this.scene.fog = fog;
+```
+
+[Ví dụ 02.04 - Fog](https://static.lockex1987.com/learn-threejs/chapter-02/02-04-fog.html)
 
 ### Camera
 
@@ -1644,39 +1669,6 @@ Bạn có thể chú ý là chúng ta chỉ tạo 6 Material, trong khi hình l�
 Ví dụ 03.02 - Multiple Materials
 
 IMAGE
-
-### Hiệu ứng sương mù (Để sau Light và Material)
-
- (có cần ánh sáng không?)
-
-Scene có thuộc tính `fog` để thêm hiệu ứng sương mù vào cảnh. Nếu đối tượng ở xa Camera thì sẽ bị mờ, nếu đối tượng ở gần Camera thì sẽ rõ hơn. Mặc định thuộc tính `fog` có giá trị `null`.
-
-Chúng ta định nghĩa một đối tượng Fog mới như sau:
-
-```javascript
-new Fog(color: Integer, near: Float, far: Float)
-```
-
-Các tham số:
-
-- `color` (Integer): màu của sương mù.
-
-- `near` (Float): khoảng cách tối thiểu để áp dụng sương mù. Mặc định là 1.
-
-- `far` (Float): khoảng cách tối đa để áp dụng sương mù. Mặc định là 1000.
-
-
-Các đối tượng mà có khoảng cách nhỏ hơn `near` hoặc lớn hơn `far` thì sẽ không bị ảnh hưởng bởi sương mù. Mật độ sương mù sẽ tăng tuyến tính từ `near` đến `far`.
-
-[Example 02.02 - Foggy Scene](https://static.lockex1987.com/learn-threejs/chapter-02/02-foggy-scene.html)
-
-Để có thể xem được hiệu ứng, chúng ta cần có ánh sáng và không sử dụng MeshNormalMaterial hoặc MeshBasicMaterial. Có thể sử dụng MeshLambertMaterial.
-
-this.scene.fog = new Fog(0xffffff, 1, 100);
-
-
-
-
 
 ### Kết luận
 

@@ -17,28 +17,6 @@ function handleColorChange(color) {
 }
 
 
-function guiSceneFog(folder, scene) {
-    const fogFolder = folder.addFolder('scene.fog');
-    const fog = new THREE.Fog(0x3f7b9d, 0, 60);
-    const data = {
-        fog: {
-            'Fog()': false,
-            'scene.fog.color': fog.color.getHex()
-        }
-    };
-    fogFolder.add(data.fog, 'Fog()')
-        .onChange(function (useFog) {
-            if (useFog) {
-                scene.fog = fog;
-            } else {
-                scene.fog = null;
-            }
-        });
-    fogFolder.addColor(data.fog, 'scene.fog.color')
-        .onChange(handleColorChange(fog.color));
-}
-
-
 function guiMeshBasicMaterial(gui, material) {
     const data = {
         color: material.color.getHex()
