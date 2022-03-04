@@ -1676,37 +1676,7 @@ Các Material xử lý nhanh và chậm khác nhau: MeshBasicMaterial < MeshLamb
 
 Quyết định giá trị cho các thuộc tính của Material rất khó. Giải pháp tốt đó là sử dụng dat.GUI để điều chỉnh các thuộc tính và quan sát luôn kết quả.
 
-## Chương 4 - Light
-
-Light: ambient, direction, point, spot; bóng: cast và receive
-
-Shadow
-
-spotLight.castShadow = true;
-
-cube.castShadow = true;
-
-plane.receiveShadow = true;
-
-## Chương 5 - Texture
-
- Từ canvas
-
-### Texture đơn giản
-
-Thuộc tính map.
-
-### MeshMatcapMaterial
-
-Sử dụng Texture với các màu sắc và shading đã tính toán trước.
-
-Trông không đơn sắc mà không cần ánh sáng. MatCap (Material Capture) shader sử dụng một ảnh của một hình cầu như là một view-space environment map. Ảnh chứa các màu sắc và shading đã tạo sẵn, tính toán trước.
-
-Để ở Texture, hay một ví dụ Texture cơ bản ở đây luôn?
-
-Thuộc tính là `matcap`.
-
-## Chương 6 - Camera Controls
+## Chương 4 - Camera Controls
 
 OrbitControls và TrackballControls thôi.
 
@@ -1730,7 +1700,35 @@ import {
 
 Từ phiên bản 128, CDN bắt đầu sửa lại kiểu `import { ... } from 'three'` thôi.
 
+## Chương 5 - Light
 
+Light: ambient, direction, point, spot; bóng: cast và receive
+
+Shadow
+
+spotLight.castShadow = true;
+
+cube.castShadow = true;
+
+plane.receiveShadow = true;
+
+## Chương 6 - Texture
+
+ Từ canvas
+
+### Texture đơn giản
+
+Thuộc tính map.
+
+### MeshMatcapMaterial
+
+Sử dụng Texture với các màu sắc và shading đã tính toán trước.
+
+Trông không đơn sắc mà không cần ánh sáng. MatCap (Material Capture) shader sử dụng một ảnh của một hình cầu như là một view-space environment map. Ảnh chứa các màu sắc và shading đã tạo sẵn, tính toán trước.
+
+Để ở Texture, hay một ví dụ Texture cơ bản ở đây luôn?
+
+Thuộc tính là `matcap`.
 
 ## Chương 7 - Load model
 
@@ -1744,8 +1742,6 @@ glTF files come in standard and binary form. These have different extensions:
 - Binary .glb files include all data in one single file.
 
 Định dạng OBJ cũng rất phổ biến.
-
-
 
 ## Chương 8 - Các ví dụ lẻ
 
