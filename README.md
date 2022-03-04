@@ -1499,36 +1499,47 @@ Sử dụng MeshNormalMaterial rất đơn giản:
 const material = new MeshNormalMaterial();
 ```
 
-
-
-
-
-
-
-
-
-
+Ví dụ MeshNormalMaterial (link)
 
 
 ### MeshLambertMaterial
 
-MeshLambertMaterial là Material không sáng bóng, để tạo các đối tượng như gỗ, đá,...
+MeshLambertMaterial có thể được sử dụng để tạo các bề mặt mờ, không sáng bóng như gỗ, đá.
 
-Với MeshLambertMaterial, chúng ta sẽ cần thêm ánh sáng vào trong cảnh. Chúng ta sẽ tìm hiểu kỹ về ánh sáng (Light) ở chương sau. Còn hiện tại, chúng ta hãy sử dụng đoạn code sau để thêm ánh sáng:
+Với MeshLambertMaterial, chúng ta sẽ cần thêm ánh sáng vào trong cảnh. Nếu không, đối tượng sẽ chỉ có màu đen. Chúng ta sẽ tìm hiểu kỹ về ánh sáng (Light) ở chương sau. Còn hiện tại, chúng ta hãy sử dụng đoạn code sau để thêm ánh sáng:
 
 ```javascript
 function addLights(scene) {
-    const ambientLight = new AmbientLight(0x0c0c0c);
+    const ambientLight = new THREE.AmbientLight(0x000000);
     scene.add(ambientLight);
 
-    const spotLight = new SpotLight(0xffffff);
-    spotLight.position.set(-40, 60, -10);
-    spotLight.castShadow = true;
-    scene.add(spotLight);
+    const pointLight1 = new THREE.PointLight(0xffffff, 1, 0);
+    pointLight1.position.set(0, 200, 0);
+    scene.add(pointLight1);
+
+    const pointLight2 = new THREE.PointLight(0xffffff, 1, 0);
+    pointLight2.position.set(100, 200, 100);
+    scene.add(pointLight2);
+
+    const pointLight3 = new THREE.PointLight(0xffffff, 1, 0);
+    pointLight3.position.set(-100, -200, -100);
+    scene.add(pointLight3);
+
+    return [
+        ambientLight,
+        pointLight1,
+        pointLight2,
+        pointLight3
+    ];
 }
 ```
 
-Tạo một MeshLambertMaterial cùng một màu:
+MeshLambertMaterial cũng có các thuộc tính như flatShading, wireframe mà chúng ta đã tìm hiểu trước đó, do đó chúng ta sẽ không đi vào chi tiết các thuộc tính này nữa. Chúng ta sẽ tập trung vào hai thuộc tính quan trọng của MeshLambertMaterial là:
+
+- `color`: Màu sắc của Material.
+- `emissive`: Màu mà Material phát ra. Nó không thực sự đóng vai trò như một nguồn sáng mà là màu không bị ảnh hưởng bởi ánh sáng khác. Giá trị mặc định là màu đen.
+
+Tạo một MeshLambertMaterial cùng một màu như sau:
 
 ```javascript
 const material = new MeshLambertMaterial({
@@ -1536,7 +1547,9 @@ const material = new MeshLambertMaterial({
 });
 ```
 
+IMAGE
 
+Ví dụ MeshLambertMaterial
 
 
 

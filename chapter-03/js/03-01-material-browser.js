@@ -340,17 +340,26 @@ function guiLineBasicMaterial(gui, material, geometry) {
 }
 
 
-function guiMeshLambertMaterial(gui, material, geometry) {
+function guiMeshLambertMaterial(gui, material, geometry, lights) {
     const data = {
         color: material.color.getHex(),
-        emissive: material.emissive.getHex()
+        emissive: material.emissive.getHex(),
+        light: true
         // envMaps: envMapKeys[0],
         // map: diffuseMapKeys[0],
         // alphaMap: alphaMapKeys[0]
     };
     const folder = gui.addFolder('MeshLambertMaterial');
-    folder.addColor(data, 'color').onChange(handleColorChange(material.color));
-    folder.addColor(data, 'emissive').onChange(handleColorChange(material.emissive));
+    folder.addColor(data, 'color')
+        .onChange(handleColorChange(material.color));
+    folder.addColor(data, 'emissive')
+        .onChange(handleColorChange(material.emissive));
+    folder.add(data, 'light')
+        .onChange((value) => {
+            lights.forEach(light => {
+                light.visible = value;
+            });
+        });
     // folder.add(material, 'wireframe');
     // folder.add(material, 'vertexColors').onChange(needsUpdate(material, geometry));
     // folder.add(material, 'fog');
@@ -518,19 +527,7 @@ function createMaterial(selectedMaterial, gui, mesh, geometry, camera, lights) {
             color: defaultColor
         });
         // guiMaterial(gui, material, geometry);
-        guiMeshLambertMaterial(gui, material, geometry);
-        return material;
-
-    case 'MeshMatcapMaterial' :
-        material = new THREE.MeshMatcapMaterial({
-            matcap: matcaps.porcelainWhite
-        });
-        guiMaterial(gui, material, geometry);
-        guiMeshMatcapMaterial(gui, mesh, material, geometry);
-        // no need for lights
-        pointLight1.visible = false;
-        pointLight2.visible = false;
-        pointLight3.visible = false;
+        guiMeshLambertMaterial(gui, material, geometry, lights);
         return material;
 
     case 'MeshPhongMaterial':
@@ -572,6 +569,18 @@ function createMaterial(selectedMaterial, gui, mesh, geometry, camera, lights) {
         guiMaterial(gui, material, geometry);
         guiMeshPhysicalMaterial(gui, mesh, material, geometry);
         // only use scene environment
+        pointLight1.visible = false;
+        pointLight2.visible = false;
+        pointLight3.visible = false;
+        return material;
+
+    case 'MeshMatcapMaterial':
+        material = new THREE.MeshMatcapMaterial({
+            matcap: matcaps.porcelainWhite
+        });
+        guiMaterial(gui, material, geometry);
+        guiMeshMatcapMaterial(gui, mesh, material, geometry);
+        // no need for lights
         pointLight1.visible = false;
         pointLight2.visible = false;
         pointLight3.visible = false;
