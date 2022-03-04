@@ -44,7 +44,7 @@ class ThreejsExample {
         });
         const pixelRatio = window.devicePixelRatio;
         renderer.setClearColor(new Color(0xFFFFFF));
-        renderer.setSize(window.innerWidth * pixelRatio, window.innerHeight * pixelRatio);
+        renderer.setSize(window.innerWidth * pixelRatio, window.innerHeight * pixelRatio, false);
         return renderer;
     }
 
@@ -94,5 +94,5 @@ class ThreejsExample {
     }
 }
 
-
+// window.addEventListener('load', () => {});
 new ThreejsExample(document.querySelector('#webglOutput'));
