@@ -1678,11 +1678,83 @@ Quyết định giá trị cho các thuộc tính của Material rất khó. Gi�
 
 ## Chương 4 - Camera Controls
 
-OrbitControls và TrackballControls thôi.
+Three.js có một số Camera Controls mà bạn có thể sử dụng để điều khiển Camera di chuyển bên trong cảnh. Các Controls này không nằm trong file thư viện core của Three.js ở thư mục `build` mà được để trong thư mục `examples/jsm/controls`. Thư viện core của Three.js tập trung vào render thôi.
 
-Ngoài ra còn có DragControls, PointerLockControls.
+Chúng ta sẽ tìm hiểu OrbitControls và TrackballControls. Bản thân tôi thấy hai cái đó là đã đáp ứng đủ nhu cầu. Còn một số khác như FirstPersonControls, FlyControls, DragControls, PointerLockControls,... khi sử dụng tôi thấy khá là chóng mặt, khó điều khiển.
 
-Ở phiên bản 127, CDN vẫn load kiểu tương đối:
+Khi sử dụng các Controls này, bạn không cần thiết lập `position` của Camera cũng như gọi phương thức `lookAt()` bằng tay nữa. Bạn có thể rotate, pan và xem cảnh từ tất cả các góc độ. Bạn có thể zoom in để kiểm tra một chi tiết nhỏ nào đó, hoặc zoom out để xem tổng quan của cảnh.
+
+### Load thư viện
+
+Chúng ta không thể sử dụng class THREE.OrbitControls từ core (không có class đó). Chúng ta sẽ load class OrbitControls từ file trong thư mục `examples` theo kiểu module như sau:
+
+```javascript
+import { OrbitControls } from './examples/jsm/controls/OrbitControls.js';
+```
+
+Bạn có thể load từ CDN từ địa chỉ:
+
+[https://unpkg.com/three@0.137.5/examples/jsm/controls/OrbitControls.js](https://unpkg.com/three@0.137.5/examples/jsm/controls/OrbitControls.js)
+
+Lần đầu tiên làm như vậy, bạn có thể bị lỗi JS như sau:
+
+```
+Uncaught TypeError: Failed to resolve module specifier "three". Relative references must start with either "/", "./", or "../".
+```
+
+Đó là do ở đầu file `OrbitControls.js` có đoạn import thư viện core như sau:
+
+```javascript
+import {
+    EventDispatcher,
+    MOUSE,
+    Quaternion,
+    Vector2,
+    Vector3
+} from 'three';
+```
+
+Ở vị trí bên trong của file đó, trình duyệt sẽ không hiểu 'three' là gì, ở đâu nên sẽ có lỗi trên.
+
+Chúng ta có thể download file về local và sửa lại câu lệnh import như sau:
+
+```javascript
+import {
+    EventDispatcher,
+    MOUSE,
+    Quaternion,
+    Vector2,
+    Vector3
+} from 'https://unpkg.com/three@0.137.5/build/three.module.js';
+```
+
+Sau đó, chúng ta sẽ import class OrbitControls từ file local chứ không phải file từ CDN.
+
+Có cách khác hiện đại hơn để khắc phục lỗi trên là sử dụng importmap. Đây là cách mà chúng ta sẽ sử dụng.
+
+Ở file HTML, chúng ta khai báo thẻ script như sau:
+
+```html
+<script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.137.5/build/three.module.js"
+        }
+    }
+</script>
+```
+
+Khi đó, ở trong file OrbitControls.js ở CDN, khi import từ 'three', trình duyệt sẽ hiểu đó là từ https://unpkg.com/three@0.137.5/build/three.module.js và sẽ không lỗi nữa.
+
+Bạn có thể tìm hiểu thêm về importmap ở các link sau:
+
+[How to Dynamically Import JavaScript with Import Maps | DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-dynamically-import-javascript-with-import-maps)
+
+[Using ES modules in browsers with import-maps - LogRocket Blog](https://blog.logrocket.com/es-modules-in-browsers-with-import-maps/)
+
+[Import maps | Can I use...](https://caniuse.com/import-maps)
+
+Ở phiên bản 127, file trên CDN vẫn load kiểu tương đối như sau:
 
 https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js
 
@@ -1698,7 +1770,113 @@ import {
 } from '../../../build/three.module.js';
 ```
 
-Từ phiên bản 128, CDN bắt đầu sửa lại kiểu `import { ... } from 'three'` thôi.
+Nếu bạn sử dụng phiên bản từ 127 trở về thì cứ import bình thường, không cần sử dụng importmap. Từ phiên bản 128 trở đi, file trên CDN bắt đầu sửa lại kiểu `import { ... } from 'three'` thôi. Khi đó hãy sử dụng importmap.
+
+### OrbitControls
+
+OribtControls là một cách tốt để rotate và pan một đối tượng ở giữa của cảnh. Để sử dụng nó, chúng ta cần load thư viện đúng, sau đó khởi tạo như sau:
+
+```javascript
+const orbitControls = new OrbitControls(camera, canvas);
+```
+
+Hàm khởi tạo có hai tham số. Ở tham số thứ nhất chúng ta truyền đối tượng Camera của Three.js. Ở tham số thứ hai, chúng ta truyền phần tử DOM canvas trong trang. Chúng ta có thể lấy phần tử này thông qua `renderer.domElement`.
+
+Bạn có thể điều khiển Camera như sau:
+
+- Giữ chuột trái và di chuyển: rotate (xoay) Camera xung quanh tâm của cảnh
+- Giữ chuột giữa và di chuyển, hoặc scroll chuột giữa: zoom
+- Giữ chuột phải và di chuyển: pan
+
+[Ví dụ 04.01 - Orbit Controls](learn three.js/src/chapter-04/04-01-orbit-controls.html)
+
+SCREENSHOT
+
+[Orbit Controls | Documentation](https://threejs.org/docs/#examples/en/controls/OrbitControls)
+
+Khi người dùng dừng thao tác với cảnh, Camera sẽ dừng đột ngột. Các đối tượng trong thế giới thật có quán tính và không bao giờ dừng đột ngột như vậy. Để cho việc điều khiển chân thực hơn, chúng ta có thể thiết lập thuộc tính `enableDamping` của đối tượng Controls bằng `true`. Khi đó, việc điều khiển sẽ chầm chậm lại và kết thúc sau một vài frame. Tuy nhiên, chúng ta sẽ phải gọi `orbitControls.update()` trong vòng lặp animation nếu bạn để `enableDamping` (hoặc `autoRotate`) bằng `true`.
+
+
+
+Rendering on Demand with OrbitControls
+
+
+
+A couple of chapters ago we set up the [animation loop](https://discoverthreejs.com/book/first-steps/animation-loop/), a powerful tool that allows us to create beautiful animations with ease. On the other hand, as we discussed at the end of that chapter, [the loop does have some downsides](https://discoverthreejs.com/book/first-steps/animation-loop/#to-loop-or-not-to-loop), such as increased battery use on mobile devices. As a result, sometime we’ll choose to render frames **on demand** instead of generating a constant stream of frames using the loop.
+
+Now that our app has orbit controls, whenever the user interacts with your scene, the controls will move the camera to a new position, and when this occurs you must draw a new frame, otherwise, you won’t be able to see that the camera has moved. If you’re using the animation loop, that’s not a problem. However, if we’re rendering on demand we’ll have to figure something else out.
+
+Fortunately, `OrbitControls` provides an easy way to generate new frames whenever the camera moves. The controls have a custom event called `change` which we can listen for using [`addEventListener`](https://discoverthreejs.com/book/appendix/dom-api-reference/#listening-for-events). This event will fire whenever a user interaction causes the controls to move the camera.
+
+To use rendering on demand with the orbit control, you must render a frame whenever this event fires:
+
+*Rendering on demand with `OrbitControls`*
+
+```js
+controls.addEventListener('change', () => {
+renderer.render(scene, camera);
+});
+```
+
+
+
+If we’re [rendering frames on demand](https://discoverthreejs.com/book/first-steps/camera-controls/#rendering-on-demand-with-orbitcontrols) instead of using the loop, we cannot use damping.
+
+
+
+### TrackballControls
+
+TrackballControls is similar to OrbitControls. However, it does not maintain a constant camera up vector. That means if the camera orbits over the “north” and “south” poles, it does not flip to stay "right side up".
+
+Chúng ta tạo TrackballControls với tham số Camera và canvas giống OrbitControls như sau:
+
+```javascript
+this.trackballControls = new TrackballControls(this.camera, this.renderer.domElement);
+this.trackballControls.rotateSpeed = 1;
+this.trackballControls.zoomSpeed = 1;
+this.trackballControls.panSpeed = 1;
+```
+
+Chúng ta cập nhật vị trí của Camera ở trong vòng lặp `render` như sau:
+
+```javascript
+constructor() {
+    this.clock = new Clock();
+}
+
+render() {
+    const delta = clock.getDelta();
+    trackballControls.update(delta);
+    this.renderer.render(this.scene, this.camera);
+    requestAnimationFrame(this.render.bind(this));
+}
+```
+
+Ở phiên bản mới không cần cập nhật?
+
+Bạn có thể điều khiển Camera như sau:
+
+- Giữ chuột trái và di chuyển: rotate (xoay)
+- Giữ chuột giữa và di chuyển, hoặc scroll chuột giữa: zoom
+- Giữ chuột phải và di chuyển: pan
+
+Có một số các thuộc tính mà bạn có thể điều chỉnh cho Controls như rotateSpeed, zoomSpeed, panSpeed, noZoom,...
+
+
+
+controls.handleResize(); Should be called if the application window is resized.
+
+
+
+PHải luôn sử dụng animation loop, không thể render bằng cách lắng nghe sự kiện change.
+
+
+
+[Ví dụ 04.02 - Trackball Controls](learn three.js/src/chapter-04/04-02-trackball-controls.html)
+
+SCREENSHOT
+
+[Trackball Controls | Documentation](https://threejs.org/docs/#examples/en/controls/TrackballControls)
 
 ## Chương 5 - Light
 
@@ -1711,6 +1889,50 @@ spotLight.castShadow = true;
 cube.castShadow = true;
 
 plane.receiveShadow = true;
+
+Ánh sáng
+
+Bạn có thể tưởng tượng khung cảnh của bạn giờ như một căn phòng với một        camera và không có ánh sáng nào. Nếu bạn đặt một đối tượng vào trong        phòng, bạn vẫn không thể nhìn thấy nó. Bạn sẽ cần chiếu một nguồn sáng        vào đối tượng để nó hiển thị lên camera. Có nhiều kiểu ánh sáng khác        nhau và chúng có các hiệu ứng khác nhau.
+
+- Direction: Một ánh sáng lớn từ rất xa mà chiếu theo một chiều (như          mặt trời)
+- Ambient: ánh sáng chiếu đều
+- Point: tương tự như bóng đèn, chiếu theo tất cả các chiều và có          khoảng giới hạn
+- Spot
+- Hemisphere: ánh sáng ambient (không direction) từ trần hoặc sàn
+
+Bạn sẽ không thể nhìn thấy gì nếu không có Light, trừ khi bạn sử dụng        Basic hoặc Wireframe Material.
+
+#### AmbientLight
+
+Thuộc tính intensity và ambientColor.
+
+THREE.Color.
+
+[Example           03.01 - Ambient Light](learn three.js/src/chapter-03/03-01-ambient-light.html)
+
+#### SpotLight
+
+[Example           03.03 - Spot Light](learn three.js/src/chapter-03/03-02-spot-light.html)
+
+#### PointLight
+
+[Example           03.02 - Point Light](learn three.js/src/chapter-03/03-03-point-light.html)
+
+#### DirectionalLight
+
+[Example 03.04 - Directional Light](learn three.js/src/chapter-03/03-04-directional-light.html)
+
+#### HemisphereLight
+
+[Example           03.05 - Hemisphere Light](learn three.js/src/chapter-03/03-05-hemisphere-light.html)
+
+#### AreaLight
+
+[Example           03.06 - Area Light](learn three.js/src/chapter-03/03-06-area-light.html)
+
+#### LensFlare
+
+[Example           03.07 - Lens Flare](learn three.js/src/chapter-03/03-07-lensflares.html)
 
 ## Chương 6 - Texture
 
@@ -1730,7 +1952,11 @@ Trông không đơn sắc mà không cần ánh sáng. MatCap (Material Capture)
 
 Thuộc tính là `matcap`.
 
-## Chương 7 - Load model
+## Chương 7 - 3D Text
+
+3D text
+
+## Chương 8 - Load model
 
 Data loader: binary, image, JSON, scene
 
@@ -1743,11 +1969,9 @@ glTF files come in standard and binary form. These have different extensions:
 
 Định dạng OBJ cũng rất phổ biến.
 
-## Chương 8 - Các ví dụ lẻ
+## Chương 9 - Các ví dụ lẻ
 
 Tự tạo hình lập phương bằng các điểm và các mặt (tạo hình tam giác cho đơn giản).
-
-3D text
 
 [Example 02.05 - Custom geometry](https://static.lockex1987.com/learn-threejs/old/02-05-custom-geometry.html)
 
