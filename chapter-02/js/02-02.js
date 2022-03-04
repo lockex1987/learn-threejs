@@ -683,7 +683,7 @@ function chooseFromHash(group) {
 
 function init() {
     const scene = new Scene();
-    scene.background = new Color(0x444444);
+    scene.background = new Color(0xFFFFFF);
 
     const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 50);
     camera.position.z = 30;

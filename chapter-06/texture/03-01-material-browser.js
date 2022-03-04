@@ -629,7 +629,7 @@ function createMaterial(selectedMaterial, gui, mesh, geometry, camera, lights) {
 
 
 function addLights(scene) {
-    const ambientLight = new THREE.AmbientLight(0x000000);
+    const ambientLight = new THREE.AmbientLight(0xFFFFFF);
     scene.add(ambientLight);
 
     const pointLight1 = new THREE.PointLight(0xffffff, 1, 0);

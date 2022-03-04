@@ -8,7 +8,7 @@ function init() {
     camera.lookAt(new THREE.Vector3(5, 0, 0));
 
     const renderer = new THREE.WebGLRenderer();
-    renderer.setClearColor(new THREE.Color(0x000000));
+    renderer.setClearColor(new THREE.Color(0xFFFFFF));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
     document.getElementById('webgl-output')

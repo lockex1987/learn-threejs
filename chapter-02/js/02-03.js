@@ -31,7 +31,7 @@ class ThreejsExample {
 
     createScene() {
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xAAAAAA);
+        scene.background = new THREE.Color(0xFFFFFF);
         return scene;
     }
 

@@ -236,7 +236,7 @@ constructor(canvas) {
 
 **Bước 3**: Tạo một Renderer để render. Chúng ta thường dùng WebGLRenderer. Ngoài ra còn có Renderer dựa vào CSS, SVG nhưng ít được sử dụng. Chúng ta sẽ truyền đối tượng thẻ canvas cho Renderer. Sau này, đối tượng canvas có thể lấy lại bằng thuộc tính `this.renderer.domElement`.
 
-Chúng ta thiết lập màu nền của là màu đen (`new Color(0x000000)`) bằng phương thức `setClearColor`. Chúng ta cũng thiết lập độ lớn của cảnh bằng phương thức `setSize`. Bằng cách truyền `window.innerWidth` và `window.innerHeight`, chúng ta sẽ sử dụng toàn bộ không gian của màn hình.
+Chúng ta thiết lập màu nền của là màu trắng (`new Color(0xFFFFFF)`) bằng phương thức `setClearColor`. Chúng ta cũng thiết lập độ lớn của cảnh bằng phương thức `setSize`. Bằng cách truyền `window.innerWidth` và `window.innerHeight`, chúng ta sẽ sử dụng toàn bộ không gian của màn hình.
 
 ```javascript
 createRenderer(canvas) {
@@ -244,7 +244,7 @@ createRenderer(canvas) {
         canvas,
         antialias: true
     });
-    renderer.setClearColor(new Color(0x000000));
+    renderer.setClearColor(new Color(0xFFFFFF));
     renderer.setSize(window.innerWidth, window.innerHeight);
     return renderer;
 }
@@ -331,7 +331,7 @@ class ThreejsExample {
             canvas,
             antialias: true
         });
-        renderer.setClearColor(new Color(0x000000));
+        renderer.setClearColor(new Color(0xFFFFFF));
         renderer.setSize(window.innerWidth, window.innerHeight);
         return renderer;
     }
@@ -563,7 +563,7 @@ class ThreejsExample {
             canvas,
             antialias: true
         });
-        renderer.setClearColor(new Color(0x000000));
+        renderer.setClearColor(new Color(0xFFFFFF));
         renderer.setSize(window.innerWidth, window.innerHeight);
         return renderer;
     }
@@ -699,7 +699,7 @@ class ThreejsExample {
             canvas,
             antialias: true
         });
-        renderer.setClearColor(new Color(0x000000));
+        renderer.setClearColor(new Color(0xFFFFFF));
         const width = window.innerWidth;
         const height = window.innerHeight;
         renderer.setSize(width, height);
@@ -850,7 +850,7 @@ class ThreejsExample {
             canvas,
             antialias: true
         });
-        renderer.setClearColor(new Color(0x000000));
+        renderer.setClearColor(new Color(0xFFFFFF));
         const width = canvas.clientWidth;
         const height = canvas.clientHeight;
         renderer.setSize(width, height, false);
@@ -1015,7 +1015,7 @@ class ThreejsExample {
             canvas,
             antialias: true
         });
-        renderer.setClearColor(new Color(0x000000));
+        renderer.setClearColor(new Color(0xFFFFFF));
         const pixelRatio = window.devicePixelRatio;
         const width = canvas.clientWidth * pixelRatio;
         const height = canvas.clientHeight * pixelRatio;
@@ -1285,7 +1285,7 @@ Trong các ví dụ trước, chúng ta hay sử dụng các phương thức sau
 Phương thức `setClearColor(color: Color, alpha: Float)` chỉ định màu để xóa (cũng là màu nền) và độ trong suốt. Chúng ta cần truyền vào tham số là một đối tượng Color của Three.js. Ví dụ:
 
 ```javascript
-renderer.setClearColor(new Color(0x000000));
+renderer.setClearColor(new Color(0xFFFFFF));
 ```
 
 Phương thức `setSize(width: Integer, height: Integer, updateStyle: Boolean)` chỉ định độ phân giải của phần tử canvas. Chúng ta nên để độ phân giải này bằng kích thước hiển thị của canvas nhân với pixel ratio của thiết bị. Thiết lập `updateStyle` bằng `false` sẽ ngăn việc thiết lập style cho phần tử canvas.

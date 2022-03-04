@@ -38,7 +38,7 @@ class ThreejsExample {
             canvas,
             antialias: true
         });
-        renderer.setClearColor(new Color(0x000000));
+        renderer.setClearColor(new Color(0xFFFFFF));
         const width = window.innerWidth;
         const height = window.innerHeight;
         renderer.setSize(width, height);

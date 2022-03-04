@@ -68,7 +68,7 @@ class ThreejsExample {
             canvas,
             antialias: true
         });
-        renderer.setClearColor(new Color(0x000000));
+        renderer.setClearColor(new Color(0xFFFFFF));
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.shadowMap.enabled = true;
         return renderer;

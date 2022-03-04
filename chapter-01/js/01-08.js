@@ -38,7 +38,7 @@ class ThreejsExample {
             canvas,
             antialias: true
         });
-        renderer.setClearColor(new Color(0x000000));
+        renderer.setClearColor(new Color(0xFFFFFF));
         const pixelRatio = window.devicePixelRatio;
         const width = canvas.clientWidth * pixelRatio;
         const height = canvas.clientHeight * pixelRatio;
