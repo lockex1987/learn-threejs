@@ -9,6 +9,7 @@ import {
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
 import { OrbitControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/OrbitControls.js';
+import { GUI } from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
 
 
 class ThreejsExample {
@@ -19,6 +20,7 @@ class ThreejsExample {
         const cube = this.createCube();
         this.scene.add(cube);
         this.createControls();
+        this.createControlsGui();
         requestAnimationFrame(this.render.bind(this));
     }
 
@@ -41,7 +43,7 @@ class ThreejsExample {
             antialias: true
         });
         const pixelRatio = window.devicePixelRatio;
-        renderer.setClearColor(new Color(0x000000));
+        renderer.setClearColor(new Color(0xFFFFFF));
         renderer.setSize(window.innerWidth * pixelRatio, window.innerHeight * pixelRatio);
         return renderer;
     }
@@ -56,24 +58,39 @@ class ThreejsExample {
 
     createControls() {
         this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
+        this.orbitControls.enableDamping = true;
+        this.orbitControls.autoRotate = false;
 
-        // TODO: Sử dụng GUI
-        // this.orbitControls.enableDamping = true;
-        // this.orbitControls.autoRotate = true;
-
-        // controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
-
+        // Call this only in static scenes, if there is no animation loop
         this.orbitControls.addEventListener('change', () => {
-            this.renderer.render(this.scene, this.camera);
+            if (!this.controls.useAnimationLoop) {
+                this.renderer.render(this.scene, this.camera);
+            }
         });
+    }
+
+    createControlsGui() {
+        this.controls = {
+            useAnimationLoop: true
+        };
+
+        const gui = new GUI();
+        gui.add(this.controls, 'useAnimationLoop');
+        gui.add(this.orbitControls, 'enableDamping');
+        gui.add(this.orbitControls, 'autoRotate');
     }
 
     render() {
         // OrbitControls nếu có enableDamping hoặc autoRotate thì phải update ở đây
-        // this.orbitControls.update();
+        if (this.orbitControls.enableDamping || this.orbitControls.autoRotate) {
+            this.orbitControls.update();
+        }
 
-        this.renderer.render(this.scene, this.camera);
-        // requestAnimationFrame(this.render.bind(this));
+        if (this.controls.useAnimationLoop) {
+            this.renderer.render(this.scene, this.camera);
+        }
+
+        requestAnimationFrame(this.render.bind(this));
     }
 }
 

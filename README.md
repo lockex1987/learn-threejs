@@ -1785,7 +1785,7 @@ Bạn có thể điều khiển Camera như sau:
 
 [Ví dụ 04.01 - Orbit Controls](https://static.lockex1987.com/learn-threejs/chapter-04/04-01-orbit-controls.html)
 
-SCREENSHOT
+![04.01 - Orbit Controls](screenshots/04-01-orbit-controls.png)
 
 [Orbit Controls | Documentation](https://threejs.org/docs/#examples/en/controls/OrbitControls)
 
@@ -1812,10 +1812,6 @@ controls.addEventListener('change', () => {
 renderer.render(scene, camera);
 });
 ```
-
-
-
-If we’re [rendering frames on demand](https://discoverthreejs.com/book/first-steps/camera-controls/#rendering-on-demand-with-orbitcontrols) instead of using the loop, we cannot use damping.
 
 
 
@@ -1863,13 +1859,11 @@ controls.handleResize(); Should be called if the application window is resized.
 
 
 
-PHải luôn sử dụng animation loop, không thể render bằng cách lắng nghe sự kiện change.
+Phải luôn sử dụng animation loop, không thể render bằng cách lắng nghe sự kiện change.
 
 
 
 [Ví dụ 04.02 - Trackball Controls](https://static.lockex1987.com/learn-threejs/chapter-04/04-02-trackball-controls.html)
-
-SCREENSHOT
 
 [Trackball Controls | Documentation](https://threejs.org/docs/#examples/en/controls/TrackballControls)
 
