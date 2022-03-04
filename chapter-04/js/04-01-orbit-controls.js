@@ -11,9 +11,6 @@ import {
 import { OrbitControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/OrbitControls.js';
 
 
-
-
-
 class ThreejsExample {
     constructor(canvas) {
         this.scene = this.createScene();
@@ -60,10 +57,11 @@ class ThreejsExample {
     createControls() {
         this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
 
+        // TODO: Sử dụng GUI
         // this.orbitControls.enableDamping = true;
         // this.orbitControls.autoRotate = true;
 
-        //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
+        // controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
 
         this.orbitControls.addEventListener('change', () => {
             this.renderer.render(this.scene, this.camera);

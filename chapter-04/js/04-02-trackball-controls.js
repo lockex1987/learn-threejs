@@ -14,12 +14,15 @@ import { TrackballControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/
 class ThreejsExample {
     constructor(canvas) {
         this.scene = this.createScene();
-        this.camera = this.createCamera();
+        this.camera = this.createCamera(canvas);
         this.renderer = this.createRenderer(canvas);
         const cube = this.createCube();
         this.scene.add(cube);
         this.createControls();
         requestAnimationFrame(this.render.bind(this));
+        window.addEventListener('resize', () => {
+            this.onResize();
+        });
     }
 
     createScene() {
@@ -27,8 +30,8 @@ class ThreejsExample {
         return scene;
     }
 
-    createCamera() {
-        const aspect = window.innerWidth / window.innerHeight;
+    createCamera(canvas) {
+        const aspect = canvas.clientWidth / canvas.clientHeight;
         const camera = new PerspectiveCamera(45, aspect, 1, 5);
         camera.position.z = 2;
         camera.lookAt(this.scene.position);
@@ -42,7 +45,7 @@ class ThreejsExample {
         });
         const pixelRatio = window.devicePixelRatio;
         renderer.setClearColor(new Color(0x000000));
-        renderer.setSize(window.innerWidth * pixelRatio, window.innerHeight * pixelRatio);
+        renderer.setSize(canvas.clientWidth * pixelRatio, canvas.clientHeight * pixelRatio, false);
         return renderer;
     }
 
@@ -77,23 +80,24 @@ class ThreejsExample {
         requestAnimationFrame(this.render.bind(this));
     }
 
-    onWindowResize() {
-        const aspect = window.innerWidth / window.innerHeight;
+    onResize() {
+        const canvas = this.renderer.domElement;
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        const aspect = width / height;
 
-        perspectiveCamera.aspect = aspect;
-        perspectiveCamera.updateProjectionMatrix();
+        this.camera.aspect = aspect;
+        this.camera.updateProjectionMatrix();
 
-        orthographicCamera.left = -frustumSize * aspect / 2;
-        orthographicCamera.right = frustumSize * aspect / 2;
-        orthographicCamera.top = frustumSize / 2;
-        orthographicCamera.bottom = -frustumSize / 2;
-        orthographicCamera.updateProjectionMatrix();
+        const pixelRatio = window.devicePixelRatio;
+        this.renderer.setSize(width * pixelRatio, height * pixelRatio, false);
 
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        controls.handleResize();
+        // Gọi khi resize
+        this.trackballControls.handleResize();
     }
 }
 
 
-new ThreejsExample(document.querySelector('#webglOutput'));
+window.addEventListener('load', () => {
+    new ThreejsExample(document.querySelector('#webglOutput'));
+});

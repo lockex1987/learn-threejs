@@ -1892,17 +1892,17 @@ plane.receiveShadow = true;
 
 Ánh sáng
 
-Bạn có thể tưởng tượng khung cảnh của bạn giờ như một căn phòng với một        camera và không có ánh sáng nào. Nếu bạn đặt một đối tượng vào trong        phòng, bạn vẫn không thể nhìn thấy nó. Bạn sẽ cần chiếu một nguồn sáng        vào đối tượng để nó hiển thị lên camera. Có nhiều kiểu ánh sáng khác        nhau và chúng có các hiệu ứng khác nhau.
+Bạn có thể tưởng tượng khung cảnh của bạn giờ như một căn phòng với một camera và không có ánh sáng nào. Nếu bạn đặt một đối tượng vào trong        phòng, bạn vẫn không thể nhìn thấy nó. Bạn sẽ cần chiếu một nguồn sáng vào đối tượng để nó hiển thị lên camera. Có nhiều kiểu ánh sáng khác        nhau và chúng có các hiệu ứng khác nhau.
 
-- Direction: Một ánh sáng lớn từ rất xa mà chiếu theo một chiều (như          mặt trời)
+- Direction: Một ánh sáng lớn từ rất xa mà chiếu theo một chiều (như mặt trời)
 - Ambient: ánh sáng chiếu đều
-- Point: tương tự như bóng đèn, chiếu theo tất cả các chiều và có          khoảng giới hạn
+- Point: tương tự như bóng đèn, chiếu theo tất cả các chiều và có khoảng giới hạn
 - Spot
 - Hemisphere: ánh sáng ambient (không direction) từ trần hoặc sàn
 
-Bạn sẽ không thể nhìn thấy gì nếu không có Light, trừ khi bạn sử dụng        Basic hoặc Wireframe Material.
+Bạn sẽ không thể nhìn thấy gì nếu không có Light, trừ khi bạn sử dụng Basic hoặc Wireframe Material.
 
-#### AmbientLight
+### AmbientLight
 
 Thuộc tính intensity và ambientColor.
 
@@ -1910,27 +1910,27 @@ THREE.Color.
 
 [Example           03.01 - Ambient Light](learn three.js/src/chapter-03/03-01-ambient-light.html)
 
-#### SpotLight
+### SpotLight
 
 [Example           03.03 - Spot Light](learn three.js/src/chapter-03/03-02-spot-light.html)
 
-#### PointLight
+### PointLight
 
 [Example           03.02 - Point Light](learn three.js/src/chapter-03/03-03-point-light.html)
 
-#### DirectionalLight
+### DirectionalLight
 
 [Example 03.04 - Directional Light](learn three.js/src/chapter-03/03-04-directional-light.html)
 
-#### HemisphereLight
+### HemisphereLight
 
 [Example           03.05 - Hemisphere Light](learn three.js/src/chapter-03/03-05-hemisphere-light.html)
 
-#### AreaLight
+### AreaLight
 
 [Example           03.06 - Area Light](learn three.js/src/chapter-03/03-06-area-light.html)
 
-#### LensFlare
+### LensFlare
 
 [Example           03.07 - Lens Flare](learn three.js/src/chapter-03/03-07-lensflares.html)
 
