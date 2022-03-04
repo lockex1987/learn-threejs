@@ -1380,7 +1380,7 @@ Trong Three.js, Material xác định màu của một điểm trên đối tư�
 | MeshLambertMaterial  | Material này có sử dụng ánh sáng và tạo ra đối tượng trông mờ, không sáng bóng. Chỉ tính toán ánh sáng ở các đỉnh. |
 | MeshPhongMaterial    | Material này cũng sử dụng ánh sáng và có thể tạo các đối tượng sáng bóng. Tính toán ánh sáng ở tất cả pixel. Hỗ trợ specular highlight. |
 | MeshToonMaterial     | Một mở rộng của MeshPhongMaterial để làm các đối tượng trông giống như cartoon (hoạt hình). |
-| MeshStandardMaterial | Material này sử dụng physically-based rendering. Một model vật ký được sử dụng để quyết định cách ánh sáng tương tác với các bề mặt. Điều này cho phép bạn tạo các đối tượng chính xác và chân thật hơn. |
+| MeshStandardMaterial | Material này sử dụng physically based rendering. Một model vật ký được sử dụng để quyết định cách ánh sáng tương tác với các bề mặt. Điều này cho phép bạn tạo các đối tượng chính xác và chân thật hơn. |
 | MeshPhysicalMaterial | Một mở rộng của MeshStandardMaterial cho phép nhiều điểu chỉnh hơn về reflection. |
 
 Chúng ta sẽ không tìm hiểu các Material sau:
@@ -1524,8 +1524,7 @@ Sử dụng MeshNormalMaterial rất đơn giản:
 const material = new MeshNormalMaterial();
 ```
 
-Ví dụ MeshNormalMaterial (link)
-
+[Ví dụ MeshNormalMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshNormalMaterial)
 
 ### MeshLambertMaterial
 
@@ -1580,7 +1579,7 @@ const material = new MeshLambertMaterial({
 
 IMAGE
 
-Ví dụ MeshLambertMaterial
+[Ví dụ MeshLambertMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshLambertMaterial)
 
 ### MeshPhongMaterial
 
@@ -1600,7 +1599,7 @@ Tại sao chúng ta có cả MeshBasicMaterial và MeshLambertMaterial trong khi
 
 IMAGE
 
-Ví dụ MeshPhongMaterial
+[Ví dụ MeshPhongMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshPhongMaterial)
 
 ### MeshToonMaterial
 
@@ -1608,7 +1607,7 @@ MeshToonMaterial tương tự như MeshPhongMaterial với một khác biệt l�
 
 ![Toon](images/material-toon.png)
 
-Ví dụ MeshToonMaterial
+[Ví dụ MeshToonMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshToonMaterial)
 
 ### MeshStandardMaterial
 
@@ -1624,7 +1623,7 @@ Hình sau thể hiện `roughness` từ 0 đến 1 (từ trái sang phải) và 
 
 ![roughness và metalness](images/material-roughness-metalness.png)
 
-Ví dụ MeshStandardMaterial
+[Ví dụ MeshStandardMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshStandardMaterial)
 
 IMAGE
 
@@ -1636,7 +1635,7 @@ Hình sau thể hiện cùng `roughness` và `metalness` như hình trước cù
 
 ![roughness và metalness và clearcoat](images/material-roughness-metalness-clearcoat.png)
 
-Ví dụ MeshPhysicalMaterial
+[Ví dụ MeshPhysicalMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshPhysicalMaterial)
 
 IMAGE
 
@@ -1666,7 +1665,7 @@ Khi khởi tạo Mesh, thay vì truyền vào một đối tượng Material, ch
 
 Bạn có thể chú ý là chúng ta chỉ tạo 6 Material, trong khi hình lập phương có 12 mặt. Đó là do Three.js tự động phân bổ các Material với các mặt tương ứng.
 
-Ví dụ 03.02 - Multiple Materials
+[Ví dụ 03.02 - Multiple Materials](https://static.lockex1987.com/learn-threejs/chapter-03/03-02-multiple-materials.html)
 
 IMAGE
 
