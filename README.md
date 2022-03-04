@@ -1787,7 +1787,7 @@ Bạn có thể điều khiển Camera như sau:
 - Giữ chuột giữa và di chuyển, hoặc scroll chuột giữa: zoom
 - Giữ chuột phải và di chuyển: pan
 
-[Ví dụ 04.01 - Orbit Controls](learn three.js/src/chapter-04/04-01-orbit-controls.html)
+[Ví dụ 04.01 - Orbit Controls](https://static.lockex1987.com/learn-threejs/chapter-04/04-01-orbit-controls.html)
 
 SCREENSHOT
 
@@ -1871,7 +1871,7 @@ PHải luôn sử dụng animation loop, không thể render bằng cách lắng
 
 
 
-[Ví dụ 04.02 - Trackball Controls](learn three.js/src/chapter-04/04-02-trackball-controls.html)
+[Ví dụ 04.02 - Trackball Controls](https://static.lockex1987.com/learn-threejs/chapter-04/04-02-trackball-controls.html)
 
 SCREENSHOT
 
