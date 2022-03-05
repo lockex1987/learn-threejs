@@ -1,13 +1,10 @@
 function init() {
-    // use the defaults
-    const stats = initStats();
     const renderer = initRenderer();
-
     const camera = initCamera();
+
     const trackballControls = initTrackballControls(camera, renderer);
     const clock = new THREE.Clock();
 
-    // create a scene, that will hold all our elements such as objects, cameras and lights.
     const scene = new THREE.Scene();
 
     // add a simple scene
@@ -44,13 +41,11 @@ function init() {
     let phase = 0;
 
     const controls = setupControls();
-    render();
 
     function render() {
         helper.update();
         shadowHelper.update();
 
-        stats.update();
         pointLight.position.copy(sphereMesh.position);
         trackballControls.update(clock.getDelta());
 
@@ -70,10 +65,11 @@ function init() {
             sphereMesh.position.x = (invert * (sphereMesh.position.x - pivot)) + pivot;
         }
 
-        // Render using requestAnimationFrame
-        requestAnimationFrame(render);
         renderer.render(scene, camera);
+        requestAnimationFrame(render);
     }
+
+    render();
 
     function setupControls() {
         const controls = new function () {
@@ -89,19 +85,15 @@ function init() {
         gui.addColor(controls, 'ambientColor').onChange(function (e) {
             ambientLight.color = new THREE.Color(e);
         });
-
         gui.addColor(controls, 'pointColor').onChange(function (e) {
             pointLight.color = new THREE.Color(e);
         });
-
         gui.add(controls, 'distance', 0, 100).onChange(function (e) {
             pointLight.distance = e;
         });
-
         gui.add(controls, 'intensity', 0, 3).onChange(function (e) {
             pointLight.intensity = e;
         });
-
         return controls;
     }
 }

@@ -6,7 +6,9 @@ import {
     BoxGeometry,
     SphereGeometry,
     PlaneGeometry,
+    DoubleSide,
     MeshStandardMaterial,
+    MeshBasicMaterial,
     AmbientLight,
     SpotLight,
     SpotLightHelper,
@@ -25,22 +27,12 @@ class ThreejsExample {
         this.scene = this.createScene();
         this.camera = this.createCamera(canvas);
         this.renderer = this.createRenderer(canvas);
-        this.cube = this.createCube();
-        this.sphere = this.createSphere();
-        this.ground = this.createGround();
-        this.scene.add(
-            this.cube,
-            this.sphere,
-            this.ground
-        );
-        this.ambientLight = this.createAmbientLight();
-        this.spotLight = this.createSpotLight();
-        const spotLightHelper = new SpotLightHelper(this.spotLight);
-        this.scene.add(
-            this.ambientLight,
-            this.spotLight,
-            spotLightHelper
-        );
+        this.createCube();
+        this.createSphere();
+        this.createGround();
+        this.createAmbientLight();
+        this.createSpotLight();
+        this.createPointLight();
         this.createTrackballControls();
         requestAnimationFrame(this.render.bind(this));
         this.handleResize();
@@ -70,6 +62,7 @@ class ThreejsExample {
         const width = canvas.clientWidth * pixelRatio;
         const height = canvas.clientHeight * pixelRatio;
         renderer.setSize(width, height, false);
+        renderer.shadowMap.enabled = true;
         return renderer;
     }
 
@@ -80,11 +73,16 @@ class ThreejsExample {
         });
         const cube = new Mesh(cubeGeometry, cubeMaterial);
         cube.castShadow = true;
-        cube.position.set(0, 3, 2);
+        cube.position.set(-4, 1, 0);
         cube.tick = (ms) => {
-            cube.rotation.y = ms * Math.PI / 1000;
+            const angle = ms * Math.PI / 1000;
+            cube.rotation.x = angle;
+            cube.rotation.y = angle;
+            cube.rotation.z = angle;
         };
-        return cube;
+
+        this.cube = cube;
+        this.scene.add(this.cube);
     }
 
     createSphere() {
@@ -94,13 +92,14 @@ class ThreejsExample {
         });
         const sphere = new Mesh(sphereGeometry, sphereMaterial);
         sphere.castShadow = true;
-        sphere.position.set(0, 0, 2);
+        sphere.position.set(4, 1, 0);
         sphere.tick = (ms) => {
             const temp = ms * 0.002;
-            sphere.position.x = 3 + (2 * (Math.cos(temp)));
-            sphere.position.y = 2 + (2 * Math.abs(Math.sin(temp)));
+            sphere.position.x = 2 + (2 * (Math.cos(temp)));
+            sphere.position.y = 0.5 + (2 * Math.abs(Math.sin(temp))); // 0.5 là bán kính quả cầu
         };
-        return sphere;
+        this.sphere = sphere;
+        this.scene.add(this.sphere);
     }
 
     createGround() {
@@ -108,28 +107,65 @@ class ThreejsExample {
         const groundMaterial = new MeshStandardMaterial({
             color: 0xffffff
         });
+        groundMaterial.side = DoubleSide;
         const ground = new Mesh(groundGeometry, groundMaterial);
         ground.receiveShadow = true;
-        ground.rotation.x = 1.5 * Math.PI;
-        return ground;
+        ground.rotation.x = 0.5 * Math.PI;
+        this.ground = ground;
+        this.scene.add(this.ground);
     }
 
     createAmbientLight() {
         const ambientLight = new AmbientLight('#1c1c1c', 1);
-        return ambientLight;
+        this.ambientLight = ambientLight;
+        this.scene.add(this.ambientLight);
     }
 
     createSpotLight() {
         const spotLight = new SpotLight('#ffffff');
-        spotLight.position.set(3, 5, -2);
+        spotLight.position.set(0, 5, 0);
+        spotLight.target = this.ground;
         spotLight.castShadow = true;
         spotLight.shadow.camera.near = 1;
         spotLight.shadow.camera.far = 50;
         spotLight.shadow.camera.fov = 120;
         spotLight.distance = 0;
         spotLight.angle = Math.PI * 0.1;
-        spotLight.target = this.ground;
-        return spotLight;
+        spotLight.visible = false;
+
+        this.spotLight = spotLight;
+
+        this.spotLightHelper = new SpotLightHelper(this.spotLight);
+        this.spotLightHelper.visible = false;
+
+        this.scene.add(
+            this.spotLight,
+            this.spotLightHelper
+        );
+    }
+
+    createPointLight() {
+        const pointLight = new PointLight('#ccffcc');
+        pointLight.decay = 0.1;
+        pointLight.castShadow = true;
+
+        const sphereGeometry = new SphereGeometry(0.05);
+        const sphereMaterial = new MeshBasicMaterial({
+            color: 0xac6c25
+        });
+        const pointLightPosition = new Mesh(sphereGeometry, sphereMaterial);
+        pointLightPosition.position.set(0, 3, 0);
+        this.scene.add(pointLightPosition);
+
+        this.pointLight = pointLight;
+        this.pointLight.position.copy(pointLightPosition.position);
+        this.scene.add(this.pointLight);
+
+        this.pointLight.tick = (ms) => {
+            const height = 3 + 2 * Math.sin((ms / 100) * 0.1);
+            pointLightPosition.position.y = height;
+            this.pointLight.position.copy(pointLightPosition.position);
+        };
     }
 
     createControlsGui() {
@@ -155,6 +191,8 @@ class ThreejsExample {
             .onChange(color => {
                 this.spotLight.color.set(color);
             });
+        spotFolder.add(this.spotLightHelper, 'visible')
+            .name('spotLightHelper');
         spotFolder.add(this.spotLight, 'castShadow');
         spotFolder.add(controls, 'spotTarget', ['Ground', 'Sphere', 'Cube'])
             .onChange(value => {
@@ -171,6 +209,10 @@ class ThreejsExample {
                 }
             });
         spotFolder.open();
+
+        const pointFolder = gui.addFolder('PointLight');
+        pointFolder.add(this.pointLight, 'visible');
+        pointFolder.open();
     }
 
     createTrackballControls() {
@@ -183,10 +225,12 @@ class ThreejsExample {
     update(ms) {
         this.cube.tick(ms);
         this.sphere.tick(ms);
+        this.pointLight.tick(ms);
     }
 
     render(ms) {
         this.trackballControls.update();
+        this.spotLightHelper.update();
         this.update(ms);
         this.renderer.render(this.scene, this.camera);
         requestAnimationFrame(this.render.bind(this));

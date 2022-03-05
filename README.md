@@ -1962,6 +1962,8 @@ SCREENSHOT
 
 Tạo bóng: cast và receive
 
+renderer.shadowMap.enabled = true;
+
 light.castShadow = true;
 
 mesh.castShadow = true;

@@ -1,10 +1,6 @@
 function init() {
-    // Use the defaults
-    const stats = initStats();
     const renderer = initRenderer();
     const camera = initCamera();
-
-    // create a scene, that will hold all our elements such as objects, cameras and lights.
     const scene = new THREE.Scene();
 
     const cubeAndSphere = addDefaultCubeAndSphere(scene);
@@ -61,10 +57,8 @@ function init() {
 
     const controls = setupControls();
 
-    render();
-
     function render() {
-        stats.update();
+        helper.update();
 
         // Rotate the cube around its axes
         cube.rotation.x += controls.rotationSpeed;
@@ -96,11 +90,8 @@ function init() {
             spotLight.position.copy(sphereLightMesh.position);
         }
 
-        helper.update();
-
-        // Render using requestAnimationFrame
-        requestAnimationFrame(render);
         renderer.render(scene, camera);
+        requestAnimationFrame(render);
     }
 
     function setupControls() {
@@ -170,12 +161,12 @@ function init() {
             }
         });
 
-        gui.add(controls, 'stopMovingLight').onChange(function (e) {
-            stopMovingLight = e;
-        });
+        gui.add(controls, 'stopMovingLight');
 
         return controls;
     }
+
+    render();
 }
 
 

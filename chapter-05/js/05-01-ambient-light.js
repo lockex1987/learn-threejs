@@ -1,10 +1,6 @@
 function init() {
-    // use the defaults
-    const stats = initStats();
     const renderer = initRenderer();
     const camera = initCamera();
-
-    // Create a scene, that will hold all our elements such as objects, cameras and lights
     const scene = new THREE.Scene();
 
     // Add ambient lighting
@@ -24,13 +20,9 @@ function init() {
     // add controls
     setupControls();
 
-    // call the render function
-    render();
-
     function render() {
-        stats.update();
-        requestAnimationFrame(render);
         renderer.render(scene, camera);
+        requestAnimationFrame(render);
     }
 
     function setupControls() {
@@ -53,6 +45,8 @@ function init() {
             spotLight.visible = !e;
         });
     }
+
+    render();
 }
 
 

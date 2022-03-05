@@ -1,5 +1,4 @@
 function init() {
-    const stats = initStats();
     const renderer = initRenderer({
         antialias: true
     });
@@ -19,7 +18,6 @@ function init() {
     const planeMaterial = new THREE.MeshStandardMaterial({
         roughness: 0.044676705160855, // calculated from shininess = 1000
         metalness: 0.0
-
     });
     const plane = new THREE.Mesh(planeGeometry, planeMaterial);
     // plane.receiveShadow  = true;
@@ -29,12 +27,7 @@ function init() {
     plane.position.x = 0;
     plane.position.y = 0;
     plane.position.z = 0;
-
-    // add the plane to the scene
     scene.add(plane);
-
-    // call the render function
-    const step = 0;
 
     const spotLight0 = new THREE.SpotLight(0xcccccc);
     spotLight0.position.set(-40, 60, -10);
@@ -126,16 +119,13 @@ function init() {
         areaLight3.intensity = e;
     });
 
-    render();
-
     function render() {
-        stats.update();
         trackballControls.update(clock.getDelta());
-
-        // render using requestAnimationFrame
-        requestAnimationFrame(render);
         renderer.render(scene, camera);
+        requestAnimationFrame(render);
     }
+
+    render();
 }
 
 

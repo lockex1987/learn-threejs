@@ -1,12 +1,10 @@
 function init() {
-    const stats = initStats();
     const renderer = initRenderer();
     const camera = initCamera();
 
     const trackballControls = initTrackballControls(camera, renderer);
     const clock = new THREE.Clock();
 
-    // Create a scene, that will hold all our elements such as objects and lights
     const scene = new THREE.Scene();
 
     // Create the ground plane
@@ -19,8 +17,7 @@ function init() {
     const planeMaterial = new THREE.MeshLambertMaterial({
         map: textureGrass
     });
-
-    // var planeMaterial = new THREE.MeshLambertMaterial();
+    // const planeMaterial = new THREE.MeshLambertMaterial();
     const plane = new THREE.Mesh(planeGeometry, planeMaterial);
     plane.receiveShadow = true;
 
@@ -98,11 +95,7 @@ function init() {
     // Used to determine the switch point for the light animation
     const controls = addControls();
 
-    render();
-
     function render() {
-        stats.update();
-
         trackballControls.update(clock.getDelta());
 
         // Rotate the cube around its axes
@@ -115,8 +108,8 @@ function init() {
         sphere.position.x = 20 + (10 * (Math.cos(step)));
         sphere.position.y = 2 + (10 * Math.abs(Math.sin(step)));
 
-        requestAnimationFrame(render);
         renderer.render(scene, camera);
+        requestAnimationFrame(render);
     }
 
     function addControls() {
@@ -150,6 +143,8 @@ function init() {
 
         return controls;
     }
+
+    render();
 }
 
 

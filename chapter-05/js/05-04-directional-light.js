@@ -1,14 +1,11 @@
 function init() {
-    // use the defaults
-    const stats = initStats();
     const renderer = initRenderer();
     const camera = initCamera();
     camera.position.set(-80, 80, 80);
+
     const trackballControls = initTrackballControls(camera, renderer);
     const clock = new THREE.Clock();
 
-
-    // create a scene, that will hold all our elements such as objects, cameras and lights.
     const scene = new THREE.Scene();
 
     // create the ground plane
@@ -77,7 +74,6 @@ function init() {
     directionalLight.shadow.camera.right = 30;
     directionalLight.shadow.camera.top = 30;
     directionalLight.shadow.camera.bottom = -30;
-
     directionalLight.intensity = 0.5;
     directionalLight.shadow.mapSize.width = 1024;
     directionalLight.shadow.mapSize.height = 1024;
@@ -116,27 +112,21 @@ function init() {
     gui.addColor(controls, 'ambientColor').onChange(function (e) {
         ambientLight.color = new THREE.Color(e);
     });
-
     gui.addColor(controls, 'pointColor').onChange(function (e) {
         directionalLight.color = new THREE.Color(e);
     });
-
     gui.add(controls, 'intensity', 0, 5).onChange(function (e) {
         directionalLight.intensity = e;
     });
-
     gui.add(controls, 'debug').onChange(function (e) {
         e ? scene.add(shadowCamera) : scene.remove(shadowCamera);
     });
-
     gui.add(controls, 'castShadow').onChange(function (e) {
         directionalLight.castShadow = e;
     });
-
     gui.add(controls, 'onlyShadow').onChange(function (e) {
         directionalLight.onlyShadow = e;
     });
-
     gui.add(controls, 'target', ['Plane', 'Sphere', 'Cube']).onChange(function (e) {
         console.log(e);
         switch (e) {
@@ -152,11 +142,7 @@ function init() {
         }
     });
 
-
-    render();
-
     function render() {
-        stats.update();
         trackballControls.update(clock.getDelta());
 
         // rotate the cube around its axes
@@ -175,12 +161,11 @@ function init() {
 
         directionalLight.position.copy(sphereLightMesh.position);
 
-        // render using requestAnimationFrame
-        requestAnimationFrame(render);
-
-
         renderer.render(scene, camera);
+        requestAnimationFrame(render);
     }
+
+    render();
 }
 
 

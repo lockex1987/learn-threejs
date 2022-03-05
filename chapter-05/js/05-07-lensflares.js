@@ -1,5 +1,4 @@
 function init() {
-    const stats = initStats();
     const renderer = initRenderer({
         alpha: true
     });
@@ -148,10 +147,7 @@ function init() {
     lensFlare.addElement(new THREE.LensflareElement(textureFlare3, 70, 1.0, flareColor));
     spotLight.add(lensFlare);
 
-    render();
-
     function render() {
-        stats.update();
         trackballControls.update(clock.getDelta());
 
         // rotate the cube around its axes
@@ -164,9 +160,11 @@ function init() {
         sphere.position.x = 20 + (10 * (Math.cos(step)));
         sphere.position.y = 2 + (10 * Math.abs(Math.sin(step)));
 
-        requestAnimationFrame(render);
         renderer.render(scene, camera);
+        requestAnimationFrame(render);
     }
+
+    render();
 }
 
 
