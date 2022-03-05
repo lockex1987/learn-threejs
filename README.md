@@ -1890,7 +1890,11 @@ THREE.Color.
 
 [Example           03.07 - Lens Flare](learn three.js/src/chapter-03/03-07-lensflares.html)
 
-## Chương 6 - Texture
+## Chương 6 - 3D Text
+
+3D text
+
+## Chương 7 - Texture
 
  Từ canvas
 
@@ -1907,10 +1911,6 @@ Trông không đơn sắc mà không cần ánh sáng. MatCap (Material Capture)
 Để ở Texture, hay một ví dụ Texture cơ bản ở đây luôn?
 
 Thuộc tính là `matcap`.
-
-## Chương 7 - 3D Text
-
-3D text
 
 ## Chương 8 - Load model
 
