@@ -15,6 +15,7 @@ import {
     PointLight,
     DirectionalLight,
     HemisphereLight,
+    RectAreaLight,
     Mesh
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
@@ -33,6 +34,9 @@ class ThreejsExample {
         this.createAmbientLight();
         this.createSpotLight();
         this.createPointLight();
+        this.createDirectionalLight();
+        this.createHemisphereLight();
+        this.createRectAreaLight();
         this.createTrackballControls();
         requestAnimationFrame(this.render.bind(this));
         this.handleResize();
@@ -70,10 +74,11 @@ class ThreejsExample {
         const cubeGeometry = new BoxGeometry(1, 1, 1);
         const cubeMaterial = new MeshStandardMaterial({
             color: 0xff0000
+            // color: 0x7777ff
         });
         const cube = new Mesh(cubeGeometry, cubeMaterial);
         cube.castShadow = true;
-        cube.position.set(-4, 1, 0);
+        cube.position.set(-3, 1, 0);
         cube.tick = (ms) => {
             const angle = ms * Math.PI / 1000;
             cube.rotation.x = angle;
@@ -118,6 +123,7 @@ class ThreejsExample {
     createAmbientLight() {
         const ambientLight = new AmbientLight('#1c1c1c', 1);
         this.ambientLight = ambientLight;
+        this.ambientLight.visible = false;
         this.scene.add(this.ambientLight);
     }
 
@@ -153,19 +159,89 @@ class ThreejsExample {
         const sphereMaterial = new MeshBasicMaterial({
             color: 0xac6c25
         });
-        const pointLightPosition = new Mesh(sphereGeometry, sphereMaterial);
-        pointLightPosition.position.set(0, 3, 0);
-        this.scene.add(pointLightPosition);
+        this.pointMarker = new Mesh(sphereGeometry, sphereMaterial);
+        this.pointMarker.visible = false;
+        this.pointMarker.position.set(0, 3, 0);
 
         this.pointLight = pointLight;
-        this.pointLight.position.copy(pointLightPosition.position);
-        this.scene.add(this.pointLight);
+        this.pointLight.visible = false;
+        this.pointLight.position.copy(this.pointMarker.position);
 
         this.pointLight.tick = (ms) => {
-            const height = 3 + 2 * Math.sin((ms / 100) * 0.1);
-            pointLightPosition.position.y = height;
-            this.pointLight.position.copy(pointLightPosition.position);
+            const angle = (ms / 100) * 0.1;
+            this.pointMarker.position.y = 4 + 2 * Math.sin(angle);
+            this.pointLight.position.copy(this.pointMarker.position);
         };
+
+        this.scene.add(this.pointLight);
+        this.scene.add(this.pointMarker);
+    }
+
+    createDirectionalLight() {
+        const directionalLight = new DirectionalLight('#ff5808');
+        directionalLight.intensity = 0.5;
+        directionalLight.castShadow = true;
+        directionalLight.shadow.camera.near = 2;
+        directionalLight.shadow.camera.far = 80;
+        directionalLight.shadow.camera.left = -30;
+        directionalLight.shadow.camera.right = 30;
+        directionalLight.shadow.camera.top = 30;
+        directionalLight.shadow.camera.bottom = -30;
+        directionalLight.shadow.mapSize.width = 1024;
+        directionalLight.shadow.mapSize.height = 1024;
+
+        const sphereGeometry = new SphereGeometry(0.05);
+        const sphereMaterial = new MeshBasicMaterial({
+            color: 0xac6c25
+        });
+        this.directionalMarker = new Mesh(sphereGeometry, sphereMaterial);
+        this.directionalMarker.visible = false;
+        this.directionalMarker.position.set(-5, 10, -4);
+
+        this.directionalLight = directionalLight;
+        this.directionalLight.visible = false;
+        this.directionalLight.position.copy(this.directionalMarker.position);
+
+        this.directionalLight.tick = (ms) => {
+            const angle = (ms / 100) * 0.1;
+            this.directionalMarker.position.y = 3 + 2 * Math.sin(angle);
+            this.directionalMarker.position.z = 2 * Math.cos(angle);
+            this.directionalLight.position.copy(this.directionalMarker.position);
+        };
+
+        this.scene.add(this.directionalLight);
+        this.scene.add(this.directionalMarker);
+    }
+
+    createHemisphereLight() {
+        const hemisphereLight = new HemisphereLight(0x0000ff, 0x00ff00, 0.6);
+        hemisphereLight.position.set(0, 5, 0);
+
+        this.hemisphereLight = hemisphereLight;
+        this.hemisphereLight.visible = false;
+
+        this.scene.add(this.hemisphereLight);
+    }
+
+    createRectAreaLight() {
+        const rectAreaLight = new RectAreaLight(0xff00ff, 500, 2, 5);
+        rectAreaLight.position.set(-1, 1, -3.5);
+
+        this.rectAreaLight = rectAreaLight;
+        this.rectAreaLight.visible = true;
+        // this.rectAreaLight.lookAt(this.ground);
+        this.rectAreaLight.lookAt(0, 0, 0);
+        this.scene.add(this.rectAreaLight);
+
+        const planeGeometry = new BoxGeometry(2, 5, 0);
+        const planeMaterial = new MeshBasicMaterial({
+            color: 0xff00ff
+        });
+        const rectAreaMarker = new Mesh(planeGeometry, planeMaterial);
+        rectAreaMarker.position.copy(this.rectAreaLight.position);
+        this.rectAreaMarker = rectAreaMarker;
+        this.rectAreaMarker.visible = true;
+        this.scene.add(this.rectAreaMarker);
     }
 
     createControlsGui() {
@@ -212,7 +288,28 @@ class ThreejsExample {
 
         const pointFolder = gui.addFolder('PointLight');
         pointFolder.add(this.pointLight, 'visible');
+        pointFolder.add(this.pointMarker, 'visible')
+            .name('marker');
         pointFolder.open();
+
+        const directionalFolder = gui.addFolder('DirectionalLight');
+        directionalFolder.add(this.directionalLight, 'visible');
+        directionalFolder.add(this.directionalMarker, 'visible')
+            .name('marker');
+        directionalFolder.open();
+
+        const hemisphereFolder = gui.addFolder('HemisphereLight');
+        hemisphereFolder.add(this.hemisphereLight, 'visible');
+        hemisphereFolder.open();
+
+        const rectAreaFolder = gui.addFolder('RectAreaLight');
+        rectAreaFolder.add(this.rectAreaLight, 'visible')
+            .onChange(visible => {
+                this.rectAreaMarker.visible = visible;
+            });
+        rectAreaFolder.open();
+
+        gui.close();
     }
 
     createTrackballControls() {
@@ -226,6 +323,7 @@ class ThreejsExample {
         this.cube.tick(ms);
         this.sphere.tick(ms);
         this.pointLight.tick(ms);
+        this.directionalLight.tick(ms);
     }
 
     render(ms) {

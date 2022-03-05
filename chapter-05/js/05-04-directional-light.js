@@ -61,11 +61,9 @@ function init() {
     const ambientLight = new THREE.AmbientLight(ambiColor);
     scene.add(ambientLight);
 
-    const target = new THREE.Object3D();
-    target.position = new THREE.Vector3(5, 0, 0);
-
     const pointColor = '#ff5808';
     const directionalLight = new THREE.DirectionalLight(pointColor);
+    directionalLight.intensity = 0.5;
     directionalLight.position.set(-40, 60, -10);
     directionalLight.castShadow = true;
     directionalLight.shadow.camera.near = 2;
@@ -74,11 +72,10 @@ function init() {
     directionalLight.shadow.camera.right = 30;
     directionalLight.shadow.camera.top = 30;
     directionalLight.shadow.camera.bottom = -30;
-    directionalLight.intensity = 0.5;
     directionalLight.shadow.mapSize.width = 1024;
     directionalLight.shadow.mapSize.height = 1024;
-
     scene.add(directionalLight);
+
     const shadowCamera = new THREE.CameraHelper(directionalLight.shadow.camera);
 
     // add a small sphere simulating the pointlight
