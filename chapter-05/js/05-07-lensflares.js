@@ -17,7 +17,7 @@ function init() {
     const scene = new THREE.Scene();
 
     // create the ground plane
-    const textureGrass = new THREE.TextureLoader().load('../../assets/textures/ground/grasslight-big.jpg');
+    const textureGrass = new THREE.TextureLoader().load('../textures/ground/grasslight-big.jpg');
     textureGrass.wrapS = THREE.RepeatWrapping;
     textureGrass.wrapT = THREE.RepeatWrapping;
     textureGrass.repeat.set(10, 10);
@@ -137,8 +137,8 @@ function init() {
     });
 
 
-    const textureFlare0 = THREE.ImageUtils.loadTexture('../../assets/textures/flares/lensflare0.png');
-    const textureFlare3 = THREE.ImageUtils.loadTexture('../../assets/textures/flares/lensflare3.png');
+    const textureFlare0 = THREE.ImageUtils.loadTexture('../textures/flares/lensflare0.png');
+    const textureFlare3 = THREE.ImageUtils.loadTexture('../textures/flares/lensflare3.png');
     const flareColor = new THREE.Color(0xffaacc);
     const lensFlare = new THREE.Lensflare();
     lensFlare.addElement(new THREE.LensflareElement(textureFlare0, 350, 0.0, flareColor));
