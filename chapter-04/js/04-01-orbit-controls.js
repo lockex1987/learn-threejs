@@ -61,7 +61,6 @@ class ThreejsExample {
         this.orbitControls.enableDamping = true;
         this.orbitControls.autoRotate = false;
 
-        // Call this only in static scenes, if there is no animation loop
         this.orbitControls.addEventListener('change', () => {
             if (!this.controls.useAnimationLoop) {
                 this.renderer.render(this.scene, this.camera);
@@ -94,5 +93,5 @@ class ThreejsExample {
     }
 }
 
-// window.addEventListener('load', () => {});
+
 new ThreejsExample(document.querySelector('#webglOutput'));

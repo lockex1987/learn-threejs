@@ -1370,7 +1370,7 @@ Chúng ta sẽ không đi sâu vào từng Geometry ở đây. Bạn có thể t
 
 ### Giới thiệu chung
 
-Trong Three.js, Material xác định màu của một điểm trên đối tượng (Mesh). Material quyết định đối tượng trông như thế nào: trong suốt, wireframe, bóng láng - sáng bóng, sần sùi - thô ráp, giống kim loại,... Chúng ta sẽ lần lượt tìm hiểu từng loại Material từ đơn giản đến phức tạp.
+Trong Three.js, Material xác định màu của một điểm trên đối tượng (Mesh). Material quyết định đối tượng trông như thế nào: trong suốt, wireframe, sáng bóng, thô ráp, giống kim loại,... Chúng ta sẽ lần lượt tìm hiểu từng loại Material từ đơn giản đến phức tạp.
 
 | Tên                  | Mô tả                                                        |
 | -------------------- | ------------------------------------------------------------ |
@@ -1417,7 +1417,7 @@ Chú ý rằng kiểu `Color` trong Three.js có nhiều cách để thiết l�
 
 ```javascript
 material.color.set(0x00FFFF); // giống như kiểu CSS #RRGGBB
-material.color.set(cssString); // bất kỳ CSS color nào, ví dụ 'purple',
+material.color.set(cssString); // bất kỳ xâu màu CSS nào, ví dụ 'purple',
                                // '#F32',
                                // 'rgb(255, 127, 64)'
                                // 'hsl(180, 50%, 25%)'
@@ -1426,7 +1426,7 @@ material.color.setHSL(h, s, l); // trong đó h, s, l từ 0 đến 1
 material.color.setRGB(r, b, b); // trong đó r, g, b từ 0 đến 1
 ```
 
-Các Material cùng chia sẻ các thuộc tính được định nghĩa ở lớp THREE.Material. Các thuộc tính chung hay dùng nhất là `side`, `needsUpdate`, `transparent`, `opacity`,... Ngoài ra, một số Material cũng có các thuộc tính giống nhau như `color`, `flatShading`, `wireframe`,...
+Các Material cùng chia sẻ các thuộc tính được định nghĩa ở base class THREE.Material. Các thuộc tính chung hay dùng nhất là `side`, `needsUpdate`, `transparent`, `opacity`,... Ngoài ra, một số Material cũng có các thuộc tính giống nhau như `color`, `flatShading`, `wireframe`,...
 
 Thuộc tính `color` chỉ định màu sắc của Material.
 
@@ -1459,9 +1459,9 @@ const material = new MeshBasicMaterial({
 });
 ```
 
-![material-basic](images/material-basic.png)
-
 [Ví dụ MeshBasicMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshBasicMaterial)
+
+![material-basic](images/material-basic.png)
 
 ### MeshDeptMaterial
 
@@ -1477,9 +1477,9 @@ Tạo MeshDeptMaterial rất dễ và không yêu cầu tham số nào:
 const material = new MeshDeptMaterial();
 ```
 
-![Depth](images/material-depth.png)
-
 [Ví dụ MeshDepthMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshDepthMaterial)
+
+![Depth](images/material-depth.png)
 
 MeshDepthMaterial không có thuộc tính để thiết lập màu sắc của đối tượng. Tuy nhiên, bạn có thể kết hợp các Material để tạo hiệu ứng mới (blend). Đoạn code sau chỉ cách chúng ta kết hợp các Material:
 
@@ -1502,9 +1502,9 @@ materials.forEach(material => {
 });
 ```
 
-![Combine](images/material-combine.png)
-
 [Ví dụ Combine](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#Combine)
+
+![Combine](images/material-combine.png)
 
 ### MeshNormalMaterial
 
@@ -1518,9 +1518,9 @@ Sử dụng MeshNormalMaterial rất đơn giản:
 const material = new MeshNormalMaterial();
 ```
 
-![Normal](images/material-normal.png)
-
 [Ví dụ MeshNormalMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshNormalMaterial)
+
+![Normal](images/material-normal.png)
 
 ### MeshLambertMaterial
 
@@ -1560,7 +1560,7 @@ function addLights(scene) {
 }
 ```
 
-MeshLambertMaterial cũng có các thuộc tính như flatShading, wireframe mà chúng ta đã tìm hiểu trước đó, do đó chúng ta sẽ không đi vào chi tiết các thuộc tính này nữa. Chúng ta sẽ tập trung vào hai thuộc tính quan trọng của MeshLambertMaterial là:
+MeshLambertMaterial cũng có các thuộc tính như `flatShading`, `wireframe` mà chúng ta đã tìm hiểu trước đó, do đó chúng ta sẽ không đi vào chi tiết các thuộc tính này nữa. Chúng ta sẽ tập trung vào hai thuộc tính quan trọng của MeshLambertMaterial là:
 
 - `color`: Màu sắc của Material.
 - `emissive`: Màu mà Material phát ra. Nó không thực sự đóng vai trò như một nguồn sáng mà là màu không bị ảnh hưởng bởi ánh sáng khác. Giá trị mặc định là màu đen.
@@ -1599,7 +1599,7 @@ Tại sao chúng ta có cả MeshBasicMaterial và MeshLambertMaterial trong khi
 
 ### MeshToonMaterial
 
-MeshToonMaterial tương tự như MeshPhongMaterial với một khác biệt lớn. Thay vì shading mượt sử dụng gradient map, MeshToonMaterial mặc định sử dụng gradientMap mà 70% độ sáng cho 70% đầu tiên và 100% sau đó. Kết quả là hai tông màu khác nhau giống như cartoon.
+MeshToonMaterial tương tự như MeshPhongMaterial với một khác biệt lớn. Thay vì shading mượt sử dụng gradient map, MeshToonMaterial mặc định sử dụng gradient map mà 70% độ sáng cho 70% đầu tiên và 100% sau đó. Kết quả là hai tông màu khác nhau giống như cartoon.
 
 [Ví dụ MeshToonMaterial](https://static.lockex1987.com/learn-threejs/chapter-03/03-01-material-browser.html#MeshToonMaterial)
 
@@ -1673,7 +1673,7 @@ Quyết định giá trị cho các thuộc tính của Material rất khó. Gi�
 
 ## Chương 4 - Camera Controls
 
-Three.js có một số Camera Controls mà bạn có thể sử dụng để điều khiển Camera di chuyển bên trong cảnh. Các Controls này không nằm trong file thư viện core của Three.js ở thư mục `build` mà được để trong thư mục `examples/jsm/controls`. Thư viện core của Three.js tập trung vào render thôi.
+Three.js có một số Camera Controls mà bạn có thể sử dụng để điều khiển Camera di chuyển bên trong cảnh. Các Controls này không nằm trong file thư viện core của Three.js ở thư mục `build` mà được để trong các file trong thư mục `examples/jsm/controls`. File thư viện core của Three.js tập trung vào render thôi.
 
 Chúng ta sẽ tìm hiểu OrbitControls và TrackballControls. Bản thân tôi thấy hai cái đó là đã đáp ứng đủ nhu cầu. Còn một số khác như FirstPersonControls, FlyControls, DragControls, PointerLockControls,... khi sử dụng tôi thấy khá là chóng mặt, khó điều khiển.
 
@@ -1723,7 +1723,7 @@ import {
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 ```
 
-Sau đó, chúng ta sẽ import class OrbitControls từ file local chứ không phải file từ CDN.
+Sau đó, chúng ta sẽ import class OrbitControls từ file local chứ không phải file từ CDN nữa.
 
 Có cách khác hiện đại hơn để khắc phục lỗi trên là sử dụng importmap. Đây là cách mà chúng ta sẽ sử dụng.
 
@@ -1751,7 +1751,7 @@ Bạn có thể tìm hiểu thêm về importmap ở các link sau:
 
 Ở phiên bản 127, file trên CDN vẫn load kiểu tương đối như sau:
 
-https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js
+[https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js](https://unpkg.com/three@0.127.0/examples/jsm/controls/OrbitControls.js)
 
 ```javascript
 import {
@@ -1765,7 +1765,7 @@ import {
 } from '../../../build/three.module.js';
 ```
 
-Nếu bạn sử dụng phiên bản từ 127 trở về thì cứ import bình thường, không cần sử dụng importmap. Từ phiên bản 128 trở đi, file trên CDN bắt đầu sửa lại kiểu `import { ... } from 'three'` thôi. Khi đó hãy sử dụng importmap.
+Nếu bạn sử dụng phiên bản từ 127 trở về thì cứ import bình thường, không cần sử dụng importmap. Từ phiên bản 128 trở đi, file trên CDN bắt đầu sửa lại kiểu `import { ... } from 'three'`. Khi đó hãy sử dụng importmap.
 
 ### OrbitControls
 
@@ -1773,6 +1773,8 @@ OribtControls là một cách tốt để rotate và pan một đối tượng �
 
 ```javascript
 const orbitControls = new OrbitControls(camera, canvas);
+orbitControls.enableDamping = true;
+orbitControls.autoRotate = false;
 ```
 
 Hàm khởi tạo có hai tham số. Ở tham số thứ nhất chúng ta truyền đối tượng Camera của Three.js. Ở tham số thứ hai, chúng ta truyền phần tử DOM canvas trong trang. Chúng ta có thể lấy phần tử này thông qua `renderer.domElement`.
@@ -1789,35 +1791,23 @@ Bạn có thể điều khiển Camera như sau:
 
 [Orbit Controls | Documentation](https://threejs.org/docs/#examples/en/controls/OrbitControls)
 
+#### Quán tính
+
 Khi người dùng dừng thao tác với cảnh, Camera sẽ dừng đột ngột. Các đối tượng trong thế giới thật có quán tính và không bao giờ dừng đột ngột như vậy. Để cho việc điều khiển chân thực hơn, chúng ta có thể thiết lập thuộc tính `enableDamping` của đối tượng Controls bằng `true`. Khi đó, việc điều khiển sẽ chầm chậm lại và kết thúc sau một vài frame. Tuy nhiên, chúng ta sẽ phải gọi `orbitControls.update()` trong vòng lặp animation nếu bạn để `enableDamping` (hoặc `autoRotate`) bằng `true`.
 
+#### Render khi yêu cầu
 
+Ở một số cảnh tĩnh, chúng ta không nhất thiết phải sử dụng vòng lặp animation, vì nó có thể gây tốn hiệu năng, tốn pin trên các thiết bị di động. Ở một số trường hợp, chúng ta nên chọn giải pháp chỉ render lại cảnh khi yêu cầu thay vì render lại cảnh ở mỗi frame sử dụng vòng lặp animation.
 
-Rendering on Demand with OrbitControls
+Ứng dụng của chúng ta giờ đã có thêm OrbitControls. Mỗi khi người dùng tương tác với cảnh, Camera sẽ được di chuyển đến vị trí mới và chúng ta sẽ cần render lại cảnh, nếu không, chúng ta sẽ thấy Camera đứng im. Nếu chúng ta sử dụng vòng lặp animation thì đây không phải là vấn đề. Tuy nhiên, nếu chúng ta không sử dụng mà chỉ render khi yêu cầu, chúng ta có thể lắng nghe sự kiện change của OrbitControls. Sự kiện này được fire bất cứ khi nào người dùng tương tác di chuyển Camera. Code như sau:
 
-
-
-A couple of chapters ago we set up the [animation loop](https://discoverthreejs.com/book/first-steps/animation-loop/), a powerful tool that allows us to create beautiful animations with ease. On the other hand, as we discussed at the end of that chapter, [the loop does have some downsides](https://discoverthreejs.com/book/first-steps/animation-loop/#to-loop-or-not-to-loop), such as increased battery use on mobile devices. As a result, sometime we’ll choose to render frames **on demand** instead of generating a constant stream of frames using the loop.
-
-Now that our app has orbit controls, whenever the user interacts with your scene, the controls will move the camera to a new position, and when this occurs you must draw a new frame, otherwise, you won’t be able to see that the camera has moved. If you’re using the animation loop, that’s not a problem. However, if we’re rendering on demand we’ll have to figure something else out.
-
-Fortunately, `OrbitControls` provides an easy way to generate new frames whenever the camera moves. The controls have a custom event called `change` which we can listen for using [`addEventListener`](https://discoverthreejs.com/book/appendix/dom-api-reference/#listening-for-events). This event will fire whenever a user interaction causes the controls to move the camera.
-
-To use rendering on demand with the orbit control, you must render a frame whenever this event fires:
-
-*Rendering on demand with `OrbitControls`*
-
-```js
-controls.addEventListener('change', () => {
-renderer.render(scene, camera);
+```javascript
+orbitControls.addEventListener('change', () => {
+    renderer.render(scene, camera);
 });
 ```
 
-
-
 ### TrackballControls
-
-TrackballControls is similar to OrbitControls. However, it does not maintain a constant camera up vector. That means if the camera orbits over the “north” and “south” poles, it does not flip to stay "right side up".
 
 Chúng ta tạo TrackballControls với tham số Camera và canvas giống OrbitControls như sau:
 
@@ -1828,40 +1818,17 @@ this.trackballControls.zoomSpeed = 1;
 this.trackballControls.panSpeed = 1;
 ```
 
-Chúng ta cập nhật vị trí của Camera ở trong vòng lặp `render` như sau:
-
-```javascript
-constructor() {
-    this.clock = new Clock();
-}
-
-render() {
-    const delta = clock.getDelta();
-    trackballControls.update(delta);
-    this.renderer.render(this.scene, this.camera);
-    requestAnimationFrame(this.render.bind(this));
-}
-```
-
-Ở phiên bản mới không cần cập nhật?
-
 Bạn có thể điều khiển Camera như sau:
 
 - Giữ chuột trái và di chuyển: rotate (xoay)
 - Giữ chuột giữa và di chuyển, hoặc scroll chuột giữa: zoom
 - Giữ chuột phải và di chuyển: pan
 
-Có một số các thuộc tính mà bạn có thể điều chỉnh cho Controls như rotateSpeed, zoomSpeed, panSpeed, noZoom,...
+Có một số các thuộc tính mà bạn có thể điều chỉnh cho TrackballControls như `rotateSpeed`, `zoomSpeed`, `panSpeed`, `noZoom`,...
 
+Với TrackballControls, bạn không thể sử dụng kỹ thuật render khi yêu cầu mà phải sử dụng vòng lặp animation. Bạn cũng luôn cần gọi phương thức `trackballControls.update()` trong vòng lặp.
 
-
-controls.handleResize(); Should be called if the application window is resized.
-
-
-
-Phải luôn sử dụng animation loop, không thể render bằng cách lắng nghe sự kiện change.
-
-
+Khi trình duyệt (thẻ canvas) bị resize, bạn cũng nên gọi phương thức `trackballControls.handleResize()`.
 
 [Ví dụ 04.02 - Trackball Controls](https://static.lockex1987.com/learn-threejs/chapter-04/04-02-trackball-controls.html)
 

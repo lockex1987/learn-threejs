@@ -64,7 +64,7 @@ class ThreejsExample {
         this.trackballControls.zoomSpeed = 1.2;
         this.trackballControls.panSpeed = 0.8;
 
-        // TrackballControls không làm thế này được
+        // TrackballControls không thể sử dụng kỹ thuật render theo yêu cầu
         /*
         this.trackballControls.addEventListener('change', () => {
             this.renderer.render(this.scene, this.camera);
