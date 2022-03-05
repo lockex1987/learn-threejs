@@ -12,23 +12,25 @@ import {
 class ThreejsExample {
     constructor(canvas) {
         this.scene = this.createScene();
-        this.camera = this.createCamera();
+        this.camera = this.createCamera(canvas);
         this.renderer = this.createRenderer(canvas);
         this.cube = this.createCube();
         this.scene.add(this.cube);
-        this.render();
+        // this.render();
+        requestAnimationFrame(this.render.bind(this));
         this.handleResize();
     }
 
     createScene() {
         const scene = new Scene();
+        scene.background = new Color(0xFFFFFF);
         return scene;
     }
 
-    createCamera() {
-        const aspect = window.innerWidth / window.innerHeight;
-        const camera = new PerspectiveCamera(45, aspect, 0.1, 1000);
-        camera.position.set(-30, 40, 30);
+    createCamera(canvas) {
+        const aspect = canvas.clientWidth / canvas.clientHeight;
+        const camera = new PerspectiveCamera(45, aspect, 0.1, 10);
+        camera.position.set(-3, 3, 3);
         camera.lookAt(this.scene.position);
         return camera;
     }
@@ -38,7 +40,7 @@ class ThreejsExample {
             canvas,
             antialias: true
         });
-        renderer.setClearColor(new Color(0xFFFFFF));
+        // renderer.setClearColor(new Color(0xFFFFFF));
         const pixelRatio = window.devicePixelRatio;
         const width = canvas.clientWidth * pixelRatio;
         const height = canvas.clientHeight * pixelRatio;
@@ -47,10 +49,10 @@ class ThreejsExample {
     }
 
     createCube() {
-        const cubeGeometry = new BoxGeometry(6, 6, 6);
+        const cubeGeometry = new BoxGeometry(1, 1, 1);
         const cubeMaterial = new MeshNormalMaterial();
         const cube = new Mesh(cubeGeometry, cubeMaterial);
-        cube.position.set(-4, 3, 0);
+        // cube.position.set(-4, 3, 0);
         cube.tick = (ms) => {
             cube.rotation.y = ms * Math.PI / 1000;
         };

@@ -1836,59 +1836,143 @@ Khi trình duyệt (thẻ canvas) bị resize, bạn cũng nên gọi phương t
 
 ## Chương 5 - Light
 
-Light: ambient, direction, point, spot; bóng: cast và receive
+Để tạo ra cảnh chân thật, chúng ta nên sử dụng MeshStandardMaterial và các Light (nguồn sáng). Nếu không có Light, các đối tượng sẽ chỉ là các khối màu đen.
 
-Shadow
+Ở thế giới thật, các tia sáng có thể chiếu thẳng trực tiếp vào đối tượng, hoặc có thể va chạm vào các bề mặt khác nhau và phản xạ hoặc khuếch tán trướckhi chạm vào đối tượng. Tuy nhiên, các máy tính không thể có đủ sức mạnh để mô phỏng toàn bộ việc này ở real-time.
 
-spotLight.castShadow = true;
+Three.js có các kiểu Light sau:
 
-cube.castShadow = true;
+- AmbientLight
+- PointLight
+- SpotLight
+- DirectionalLight
+- HemisphereLight
+- AreaLight
 
-plane.receiveShadow = true;
+Các kiểu Light khác nhau sẽ tạo ra các hiệu ứng khác nhau.
 
-Ánh sáng
-
-Bạn có thể tưởng tượng khung cảnh của bạn giờ như một căn phòng với một camera và không có ánh sáng nào. Nếu bạn đặt một đối tượng vào trong        phòng, bạn vẫn không thể nhìn thấy nó. Bạn sẽ cần chiếu một nguồn sáng vào đối tượng để nó hiển thị lên camera. Có nhiều kiểu ánh sáng khác        nhau và chúng có các hiệu ứng khác nhau.
-
-- Direction: Một ánh sáng lớn từ rất xa mà chiếu theo một chiều (như mặt trời)
-- Ambient: ánh sáng chiếu đều
-- Point: tương tự như bóng đèn, chiếu theo tất cả các chiều và có khoảng giới hạn
-- Spot
-- Hemisphere: ánh sáng ambient (không direction) từ trần hoặc sàn
-
-Bạn sẽ không thể nhìn thấy gì nếu không có Light, trừ khi bạn sử dụng Basic hoặc Wireframe Material.
+![Light types](images/light-types.png)
 
 ### AmbientLight
 
-Thuộc tính intensity và ambientColor.
+Đây là nguồn sáng cơ bản. Màu sáng của nó được áp dụng toàn cục, kết hợp với màu của đối tượng. Với nguồn sáng này, các tia sáng sẽ không có hướng, không tạo bóng. Mọi đối tượng đều bị tác động bởi nguồn sáng này như nhau, bất chấp vị trí, hình dáng của đối tượng. Bạn sẽ thường không chỉ sử dụng mỗi một AmbientLight mà sẽ kết hợp với nó với loại khác như SpotLight hoặc DirectionalLight.
 
-THREE.Color.
+Bạn tạo một AmbientLight và thêm nó vào cảnh như sau:
 
-[Example           03.01 - Ambient Light](learn three.js/src/chapter-03/03-01-ambient-light.html)
+```javascript
+const ambientLight = new AmbientLight(color, intensity);
+scene.add(ambientLight);
+```
+
+AmbientLight có hai thuộc tính quan trọng là `color` (màu sắc của nguồn sáng) và `intensity` (cường độ sáng). Đây là hai thuộc tính của base class Light. Tất cả các loại nguồn sáng khác cũng đều có hai thuộc tính này. Mặt khác, class Light lại extend từ class Object nên tất cả nguồn sáng đều có các thuộc tính như `position`, `visible`,...
+
+Bạn không cần phải chỉ định vị trí của AmbientLight.
+
+[Ví dụ 05.01 - Ambient Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-ambient-light.html)
+
+[Ví dụ 05.00 - Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html)
+
+SCREENSHOT
 
 ### SpotLight
 
-[Example           03.03 - Spot Light](learn three.js/src/chapter-03/03-02-spot-light.html)
+Đây là nguồn sáng mà có hiệu ứng hình nó như đèn chụp hoặc đèn pin. SpotLight có các thuộc tính sau mà bạn có thể điều chỉnh:
+
+angle: góc tỏa sáng, đo bằng radian, mặc định là Math.PI / 3.
+
+castShadow: nếu thiết lập bằng true, nguồn sáng này sẽ tạo bóng.
+
+distance
+
+penumbra
+
+target
+
+power
+
+decay
+
+
+
+
+
+[Ví dụ 05.03 - Spot Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-02-spot-light.html)
+
+SCREENSHOT
 
 ### PointLight
 
-[Example           03.02 - Point Light](learn three.js/src/chapter-03/03-03-point-light.html)
+Đây là nguồn sáng mà từ đó ánh sáng tỏa ra tất cả các hướng từ một điểm trong không gian, ví dụ bóng đèn tròn.
+
+PointLight có một số các thuộc tính giống như SpotLight mà bạn có thể điều chỉnh.
+
+
+
+Point: tương tự như bóng đèn, chiếu theo tất cả các chiều và có khoảng giới hạn
+
+[Ví dụ 05.02 - Point Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-03-point-light.html)
+
+SCREENSHOT
 
 ### DirectionalLight
 
-[Example 03.04 - Directional Light](learn three.js/src/chapter-03/03-04-directional-light.html)
+Đây là nguồn sáng mà các tia sáng chiếu song song theo một chiều, ví dụ như ánh sáng mặt trời. Sự khác nhau lớn nhất giữa DirectionalLight và SpotLight mà tia sáng sẽ không bị giảm cường độ nếu khoảng cách từ nguồn sáng và đối tượng là xa. Toàn bộ không gian được DirectionalLight chiếu với cùng một cường độ.
+
+
+
+[Ví dụ 05.04 - Directional Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-04-directional-light.html)
+
+SCREENSHOT
 
 ### HemisphereLight
 
-[Example           03.05 - Hemisphere Light](learn three.js/src/chapter-03/03-05-hemisphere-light.html)
+Đây là nguồn sáng đặc biệt và có thể được sử dụng để tạo các ngoại cảnh trông tự nhiên hơn bằng cách mô phỏng ánh sáng mạnh từ bầu trời và ánh sáng phản xạ nhẹ hơn từ mặt đất. Hemisphere có các thuộc tính sau:
 
-### AreaLight
+color: màu sắc chiếu từ phía trên xuống
 
-[Example           03.06 - Area Light](learn three.js/src/chapter-03/03-06-area-light.html)
+groundColor: màu sắc chiếuu từ dưới lên
+
+intensity: cường độ của cả color và groundColor
+
+
+
+Hemisphere: ánh sáng ambient (không direction) từ trần hoặc sàn
+
+[Ví dụ 05.05 - Hemisphere Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-05-hemisphere-light.html)
+
+SCREENSHOT
+
+### RectAreaLight
+
+Với nguồn sáng này, thay vì một điểm trong không gian, bạn có thể chỉ định một vùng hình chữ nhật phát sáng.
+
+RectAreaLight có các thuộc tính sau:
+
+width
+
+height
+
+
+
+[Ví dụ 05.06 - Rect Area Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-06-area-light.html)
+
+SCREENSHOT
+
+### Shadow
+
+Tạo bóng: cast và receive
+
+light.castShadow = true;
+
+mesh.castShadow = true;
+
+plane.receiveShadow = true;
 
 ### LensFlare
 
-[Example           03.07 - Lens Flare](learn three.js/src/chapter-03/03-07-lensflares.html)
+[Ví dụ 05.07 - Lens Flare](https://static.lockex1987.com/learn-threejs/chapter-05/05-07-lensflares.html)
+
+SCREENSHOT
 
 ## Chương 6 - 3D Text
 
