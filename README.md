@@ -1870,8 +1870,6 @@ AmbientLight có hai thuộc tính quan trọng là `color` (màu sắc của ng
 
 Bạn không cần phải chỉ định vị trí của AmbientLight.
 
-[Ví dụ 05.01 - Ambient Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-ambient-light.html)
-
 [Ví dụ 05.00 - Ambient Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#Ambient)
 
 SCREENSHOT
@@ -1893,12 +1891,6 @@ target
 power
 
 decay
-
-
-
-
-
-[Ví dụ 05.03 - Spot Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-02-spot-light.html)
 
 [Ví dụ 05.00 - Spot Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#Spot)
 

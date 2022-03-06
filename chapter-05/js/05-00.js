@@ -26,9 +26,9 @@ import { GUI } from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
 
 class ThreejsExample {
     constructor(canvas) {
-        this.scene = this.createScene();
-        this.camera = this.createCamera(canvas);
-        this.renderer = this.createRenderer(canvas);
+        this.createScene();
+        this.createCamera(canvas);
+        this.createRenderer(canvas);
         this.createCube();
         this.createSphere();
         this.createGround();
@@ -38,57 +38,65 @@ class ThreejsExample {
         this.createDirectionalLight();
         this.createHemisphereLight();
         this.createRectAreaLight();
-        this.createCameraControls();
-        this.initSelectedLight();
+        this.createOrbitControls();
+        const selectedLight = window.location.hash.substring(1) || 'Ambient';
+        this.initSelectedLight(selectedLight);
         requestAnimationFrame(this.render.bind(this));
         this.handleResize();
-        this.createControlsGui();
+        this.createControlsGui(selectedLight);
     }
 
     createScene() {
-        const scene = new Scene();
-        scene.background = new Color(0x444444);
-        return scene;
+        this.scene = new Scene();
+        this.scene.background = new Color(0x444444);
     }
 
     createCamera(canvas) {
         const aspect = canvas.clientWidth / canvas.clientHeight;
-        const camera = new PerspectiveCamera(45, aspect, 5, 30);
-        camera.position.set(10, 10, 10);
-        camera.lookAt(this.scene.position);
-        return camera;
+        this.camera = new PerspectiveCamera(45, aspect, 5, 30);
+        this.camera.position.set(10, 10, 10);
+        this.camera.lookAt(this.scene.position);
     }
 
     createRenderer(canvas) {
-        const renderer = new WebGLRenderer({
+        this.renderer = new WebGLRenderer({
             canvas,
             antialias: true
         });
         const pixelRatio = window.devicePixelRatio;
         const width = canvas.clientWidth * pixelRatio;
         const height = canvas.clientHeight * pixelRatio;
-        renderer.setSize(width, height, false);
-        renderer.shadowMap.enabled = true;
-        return renderer;
+        this.renderer.setSize(width, height, false);
+        this.renderer.shadowMap.enabled = true;
     }
 
     createCube() {
         const cubeGeometry = new BoxGeometry(1, 1, 1);
+        /*
         const cubeMaterial = new MeshStandardMaterial({
-            color: 0xff0000
-            // color: 0x7777ff
+            color: 0xff0000,
+            // color: 0x7777ff,
+            // roughness: 0
         });
-        const cube = new Mesh(cubeGeometry, cubeMaterial);
-        cube.castShadow = true;
-        cube.position.set(-3, 1, 0);
-        cube.tick = (ms) => {
+        */
+        const colors = [
+            0x009e60,
+            0x0051ba,
+            0xffd500,
+            0xff5800,
+            0xC41E3A,
+            0xffffff
+        ];
+        const cubeMaterials = colors.map(color => (new MeshStandardMaterial({ color: color })));
+        this.cube = new Mesh(cubeGeometry, cubeMaterials);
+        this.cube.castShadow = true;
+        this.cube.position.set(-3, 1, 0);
+        this.cube.tick = (ms) => {
             const angle = ms * Math.PI / 1000;
-            cube.rotation.x = angle;
-            cube.rotation.y = angle;
-            cube.rotation.z = angle;
+            this.cube.rotation.x = angle;
+            this.cube.rotation.y = angle;
+            this.cube.rotation.z = angle;
         };
-
-        this.cube = cube;
         this.scene.add(this.cube);
     }
 
@@ -97,15 +105,14 @@ class ThreejsExample {
         const sphereMaterial = new MeshStandardMaterial({
             color: 0x7777ff
         });
-        const sphere = new Mesh(sphereGeometry, sphereMaterial);
-        sphere.castShadow = true;
-        sphere.position.set(4, 1, 0);
-        sphere.tick = (ms) => {
+        this.sphere = new Mesh(sphereGeometry, sphereMaterial);
+        this.sphere.castShadow = true;
+        this.sphere.position.set(4, 1, 0);
+        this.sphere.tick = (ms) => {
             const temp = ms * 0.002;
-            sphere.position.x = 2 + (2 * (Math.cos(temp)));
-            sphere.position.y = 0.5 + (2 * Math.abs(Math.sin(temp))); // 0.5 là bán kính quả cầu
+            this.sphere.position.x = 2 + (2 * (Math.cos(temp)));
+            this.sphere.position.y = 0.5 + (2 * Math.abs(Math.sin(temp))); // 0.5 là bán kính quả cầu
         };
-        this.sphere = sphere;
         this.scene.add(this.sphere);
     }
 
@@ -115,33 +122,31 @@ class ThreejsExample {
             color: 0xffffff
         });
         groundMaterial.side = DoubleSide;
-        const ground = new Mesh(groundGeometry, groundMaterial);
-        ground.receiveShadow = true;
-        ground.rotation.x = 0.5 * Math.PI;
-        this.ground = ground;
+        this.ground = new Mesh(groundGeometry, groundMaterial);
+        this.ground.receiveShadow = true;
+        this.ground.rotation.x = 0.5 * Math.PI;
         this.scene.add(this.ground);
     }
 
     createAmbientLight() {
-        const ambientLight = new AmbientLight('#d2d2d2', 1);
-        this.ambientLight = ambientLight;
+        const color = '#d2d2d2';
+        const intensity = 1;
+        this.ambientLight = new AmbientLight(color, intensity);
         this.ambientLight.visible = false;
         this.scene.add(this.ambientLight);
     }
 
     createSpotLight() {
-        const spotLight = new SpotLight('#eeeeee');
-        spotLight.position.set(0, 5, 0);
-        spotLight.target = this.ground;
-        spotLight.castShadow = true;
-        spotLight.shadow.camera.near = 1;
-        spotLight.shadow.camera.far = 50;
-        spotLight.shadow.camera.fov = 120;
-        spotLight.distance = 0;
-        spotLight.angle = Math.PI * 0.1;
-        spotLight.visible = false;
-
-        this.spotLight = spotLight;
+        this.spotLight = new SpotLight('#eeeeee');
+        this.spotLight.position.set(0, 5, 0);
+        this.spotLight.target = this.ground;
+        this.spotLight.castShadow = true;
+        this.spotLight.shadow.camera.near = 1;
+        this.spotLight.shadow.camera.far = 50;
+        this.spotLight.shadow.camera.fov = 120;
+        this.spotLight.distance = 0;
+        this.spotLight.angle = Math.PI * 0.1;
+        this.spotLight.visible = false;
 
         this.spotLightHelper = new SpotLightHelper(this.spotLight);
         this.spotLightHelper.visible = false;
@@ -153,10 +158,6 @@ class ThreejsExample {
     }
 
     createPointLight() {
-        const pointLight = new PointLight('#eeeeee');
-        pointLight.decay = 0.1;
-        pointLight.castShadow = true;
-
         const sphereGeometry = new SphereGeometry(0.05);
         const sphereMaterial = new MeshBasicMaterial({
             color: 0xac6c25
@@ -165,7 +166,9 @@ class ThreejsExample {
         this.pointMarker.visible = false;
         this.pointMarker.position.set(0, 3, 0);
 
-        this.pointLight = pointLight;
+        this.pointLight = new PointLight('#eeeeee');
+        this.pointLight.decay = 0.1;
+        this.pointLight.castShadow = true;
         this.pointLight.visible = false;
         this.pointLight.position.copy(this.pointMarker.position);
 
@@ -180,18 +183,6 @@ class ThreejsExample {
     }
 
     createDirectionalLight() {
-        const directionalLight = new DirectionalLight('#eeeeee');
-        // directionalLight.intensity = 0.5;
-        directionalLight.castShadow = true;
-        directionalLight.shadow.camera.near = 2;
-        directionalLight.shadow.camera.far = 80;
-        directionalLight.shadow.camera.left = -30;
-        directionalLight.shadow.camera.right = 30;
-        directionalLight.shadow.camera.top = 30;
-        directionalLight.shadow.camera.bottom = -30;
-        directionalLight.shadow.mapSize.width = 1024;
-        directionalLight.shadow.mapSize.height = 1024;
-
         const sphereGeometry = new SphereGeometry(0.05);
         const sphereMaterial = new MeshBasicMaterial({
             color: 0xac6c25
@@ -200,7 +191,17 @@ class ThreejsExample {
         this.directionalMarker.visible = false;
         this.directionalMarker.position.set(-5, 10, -4);
 
-        this.directionalLight = directionalLight;
+        this.directionalLight = new DirectionalLight('#eeeeee');
+        // this.directionalLight.intensity = 0.5;
+        this.directionalLight.castShadow = true;
+        this.directionalLight.shadow.camera.near = 2;
+        this.directionalLight.shadow.camera.far = 80;
+        this.directionalLight.shadow.camera.left = -30;
+        this.directionalLight.shadow.camera.right = 30;
+        this.directionalLight.shadow.camera.top = 30;
+        this.directionalLight.shadow.camera.bottom = -30;
+        this.directionalLight.shadow.mapSize.width = 1024;
+        this.directionalLight.shadow.mapSize.height = 1024;
         this.directionalLight.visible = false;
         this.directionalLight.position.copy(this.directionalMarker.position);
 
@@ -216,20 +217,15 @@ class ThreejsExample {
     }
 
     createHemisphereLight() {
-        const hemisphereLight = new HemisphereLight(0xf0e424, 0xd41384, 0.6);
-        hemisphereLight.position.set(0, 5, 0);
-
-        this.hemisphereLight = hemisphereLight;
+        this.hemisphereLight = new HemisphereLight(0xf0e424, 0xd41384, 0.6);
+        this.hemisphereLight.position.set(0, 5, 0);
         this.hemisphereLight.visible = false;
-
         this.scene.add(this.hemisphereLight);
     }
 
     createRectAreaLight() {
-        const rectAreaLight = new RectAreaLight(0xff00ff, 30, 2, 5);
-        rectAreaLight.position.set(-1, 1, -3.5);
-
-        this.rectAreaLight = rectAreaLight;
+        this.rectAreaLight = new RectAreaLight(0xff00ff, 30, 2, 5);
+        this.rectAreaLight.position.set(-1, 1, -3.5);
         this.rectAreaLight.visible = false;
         // this.rectAreaLight.lookAt(this.ground);
         this.rectAreaLight.lookAt(0, 0, 0);
@@ -239,14 +235,13 @@ class ThreejsExample {
         const planeMaterial = new MeshBasicMaterial({
             color: 0xff00ff
         });
-        const rectAreaMarker = new Mesh(planeGeometry, planeMaterial);
-        rectAreaMarker.position.copy(this.rectAreaLight.position);
-        this.rectAreaMarker = rectAreaMarker;
+        this.rectAreaMarker = new Mesh(planeGeometry, planeMaterial);
+        this.rectAreaMarker.position.copy(this.rectAreaLight.position);
         this.rectAreaMarker.visible = false;
         this.scene.add(this.rectAreaMarker);
     }
 
-    createControlsGui() {
+    createControlsGui(selectedLight) {
         const controls = {
             ambientColor: this.ambientLight.color.getHex(),
             spotColor: this.spotLight.color.getHex(),
@@ -268,7 +263,9 @@ class ThreejsExample {
                 this.ambientLight.color.set(color);
             });
         ambientFolder.add(this.ambientLight, 'intensity', 0, 3, 0.1);
-        ambientFolder.open();
+        if (selectedLight == 'Ambient') {
+            ambientFolder.open();
+        }
 
         const spotFolder = gui.addFolder('SpotLight');
         spotFolder.add(this.spotLight, 'visible');
@@ -295,7 +292,9 @@ class ThreejsExample {
                     break;
                 }
             });
-        spotFolder.open();
+        if (selectedLight == 'Spot') {
+            spotFolder.open();
+        }
 
         const pointFolder = gui.addFolder('PointLight');
         pointFolder.add(this.pointLight, 'visible');
@@ -307,7 +306,9 @@ class ThreejsExample {
         pointFolder.add(this.pointLight, 'intensity', 0, 3);
         pointFolder.add(this.pointMarker, 'visible')
             .name('marker');
-        pointFolder.open();
+        if (selectedLight == 'Point') {
+            pointFolder.open();
+        }
 
         const directionalFolder = gui.addFolder('DirectionalLight');
         directionalFolder.add(this.directionalLight, 'visible');
@@ -319,7 +320,9 @@ class ThreejsExample {
         directionalFolder.add(this.directionalLight, 'intensity', 0, 5);
         directionalFolder.add(this.directionalMarker, 'visible')
             .name('marker');
-        directionalFolder.open();
+        if (selectedLight == 'Directional') {
+            directionalFolder.open();
+        }
 
         const hemisphereFolder = gui.addFolder('HemisphereLight');
         hemisphereFolder.add(this.hemisphereLight, 'visible');
@@ -334,7 +337,9 @@ class ThreejsExample {
                 this.hemisphereLight.groundColor.set(color);
             });
         hemisphereFolder.add(this.hemisphereLight, 'intensity', 0, 5);
-        hemisphereFolder.open();
+        if (selectedLight == 'Hemisphere') {
+            hemisphereFolder.open();
+        }
 
         const rectAreaFolder = gui.addFolder('RectAreaLight');
         rectAreaFolder.add(this.rectAreaLight, 'visible')
@@ -347,17 +352,19 @@ class ThreejsExample {
                 this.rectAreaLight.color.set(color);
             });
         rectAreaFolder.add(this.rectAreaLight, 'intensity', 0, 1000);
-        rectAreaFolder.open();
+        if (selectedLight == 'RectArea') {
+            rectAreaFolder.open();
+        }
 
-        gui.close();
+        // gui.close();
     }
 
-    createCameraControls() {
-        // this.cameraControls = new TrackballControls(this.camera, this.renderer.domElement);
-        this.cameraControls = new OrbitControls(this.camera, this.renderer.domElement);
-        this.cameraControls.rotateSpeed = 3;
-        this.cameraControls.zoomSpeed = 1.2;
-        this.cameraControls.panSpeed = 0.8;
+    createOrbitControls() {
+        // this.trackballControls = new TrackballControls(this.camera, this.renderer.domElement);
+        this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
+        this.orbitControls.rotateSpeed = 3;
+        this.orbitControls.zoomSpeed = 1.2;
+        this.orbitControls.panSpeed = 0.8;
     }
 
     update(ms) {
@@ -368,7 +375,7 @@ class ThreejsExample {
     }
 
     render(ms) {
-        this.cameraControls.update();
+        this.orbitControls.update();
         this.spotLightHelper.update();
         this.update(ms);
         this.renderer.render(this.scene, this.camera);
@@ -390,11 +397,10 @@ class ThreejsExample {
         this.camera.aspect = aspect;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(width, height, false);
-        // this.cameraControls.handleResize(); // TrackballControls cần, OrbitControls không
+        // this.trackballControls.handleResize(); // TrackballControls cần, OrbitControls không
     }
 
-    initSelectedLight() {
-        const selectedLight = window.location.hash.substring(1) || 'Ambient';
+    initSelectedLight(selectedLight) {
         switch (selectedLight) {
         case 'Ambient':
             this.ambientLight.visible = true;
