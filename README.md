@@ -1809,6 +1809,8 @@ orbitControls.addEventListener('change', () => {
 
 ### TrackballControls
 
+TrackballControls cũng tương tự như OrbitControls, chỉ khác là với OrbitControls chúng ta không thể xoay quá một vòng từ trên xuống dưới hoặc từ dưới lên trên theo chiều dọc, còn TrackballControls thì xoay thoải mái.
+
 Chúng ta tạo TrackballControls với tham số Camera và canvas giống OrbitControls như sau:
 
 ```javascript
@@ -1870,7 +1872,7 @@ Bạn không cần phải chỉ định vị trí của AmbientLight.
 
 [Ví dụ 05.01 - Ambient Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-ambient-light.html)
 
-[Ví dụ 05.00 - Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html)
+[Ví dụ 05.00 - Ambient Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#Ambient)
 
 SCREENSHOT
 
@@ -1898,6 +1900,8 @@ decay
 
 [Ví dụ 05.03 - Spot Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-02-spot-light.html)
 
+[Ví dụ 05.00 - Spot Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#Spot)
+
 SCREENSHOT
 
 ### PointLight
@@ -1912,6 +1916,8 @@ Point: tương tự như bóng đèn, chiếu theo tất cả các chiều và c
 
 [Ví dụ 05.02 - Point Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-03-point-light.html)
 
+[Ví dụ 05.00 - Point Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#Point)
+
 SCREENSHOT
 
 ### DirectionalLight
@@ -1921,6 +1927,8 @@ SCREENSHOT
 
 
 [Ví dụ 05.04 - Directional Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-04-directional-light.html)
+
+[Ví dụ 05.00 - Directional](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#Directional)
 
 SCREENSHOT
 
@@ -1940,6 +1948,8 @@ Hemisphere: ánh sáng ambient (không direction) từ trần hoặc sàn
 
 [Ví dụ 05.05 - Hemisphere Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-05-hemisphere-light.html)
 
+[Ví dụ 05.00 - Hemisphere Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#Hemisphere)
+
 SCREENSHOT
 
 ### RectAreaLight
@@ -1956,9 +1966,19 @@ height
 
 [Ví dụ 05.06 - Rect Area Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-06-area-light.html)
 
+[Ví dụ 05.00 - Rect Area Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#RectArea)
+
 SCREENSHOT
 
-### Shadow
+
+
+### LensFlare
+
+[Ví dụ 05.07 - Lens Flare](https://static.lockex1987.com/learn-threejs/chapter-05/05-07-lensflares.html)
+
+SCREENSHOT
+
+### Chương 7 - Shadow
 
 Tạo bóng: cast và receive
 
@@ -1970,17 +1990,11 @@ mesh.castShadow = true;
 
 plane.receiveShadow = true;
 
-### LensFlare
-
-[Ví dụ 05.07 - Lens Flare](https://static.lockex1987.com/learn-threejs/chapter-05/05-07-lensflares.html)
-
-SCREENSHOT
-
-## Chương 6 - 3D Text
+## Chương 8 - 3D Text
 
 3D text
 
-## Chương 7 - Texture
+## Chương 9 - Texture
 
  Từ canvas
 

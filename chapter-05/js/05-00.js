@@ -20,6 +20,7 @@ import {
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
 import { TrackballControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/TrackballControls.js';
+import { OrbitControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/OrbitControls.js';
 
 import { GUI } from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
 
@@ -38,6 +39,7 @@ class ThreejsExample {
         this.createHemisphereLight();
         this.createRectAreaLight();
         this.createTrackballControls();
+        this.initSelectedLight();
         requestAnimationFrame(this.render.bind(this));
         this.handleResize();
         this.createControlsGui();
@@ -121,14 +123,14 @@ class ThreejsExample {
     }
 
     createAmbientLight() {
-        const ambientLight = new AmbientLight('#1c1c1c', 1);
+        const ambientLight = new AmbientLight('#d2d2d2', 1);
         this.ambientLight = ambientLight;
         this.ambientLight.visible = false;
         this.scene.add(this.ambientLight);
     }
 
     createSpotLight() {
-        const spotLight = new SpotLight('#ffffff');
+        const spotLight = new SpotLight('#eeeeee');
         spotLight.position.set(0, 5, 0);
         spotLight.target = this.ground;
         spotLight.castShadow = true;
@@ -151,7 +153,7 @@ class ThreejsExample {
     }
 
     createPointLight() {
-        const pointLight = new PointLight('#ccffcc');
+        const pointLight = new PointLight('#eeeeee');
         pointLight.decay = 0.1;
         pointLight.castShadow = true;
 
@@ -178,7 +180,7 @@ class ThreejsExample {
     }
 
     createDirectionalLight() {
-        const directionalLight = new DirectionalLight('#ff5808');
+        const directionalLight = new DirectionalLight('#eeeeee');
         directionalLight.intensity = 0.5;
         directionalLight.castShadow = true;
         directionalLight.shadow.camera.near = 2;
@@ -214,7 +216,7 @@ class ThreejsExample {
     }
 
     createHemisphereLight() {
-        const hemisphereLight = new HemisphereLight(0x0000ff, 0x00ff00, 0.6);
+        const hemisphereLight = new HemisphereLight(0xf0e424, 0xd41384, 0.6);
         hemisphereLight.position.set(0, 5, 0);
 
         this.hemisphereLight = hemisphereLight;
@@ -228,7 +230,7 @@ class ThreejsExample {
         rectAreaLight.position.set(-1, 1, -3.5);
 
         this.rectAreaLight = rectAreaLight;
-        this.rectAreaLight.visible = true;
+        this.rectAreaLight.visible = false;
         // this.rectAreaLight.lookAt(this.ground);
         this.rectAreaLight.lookAt(0, 0, 0);
         this.scene.add(this.rectAreaLight);
@@ -240,15 +242,20 @@ class ThreejsExample {
         const rectAreaMarker = new Mesh(planeGeometry, planeMaterial);
         rectAreaMarker.position.copy(this.rectAreaLight.position);
         this.rectAreaMarker = rectAreaMarker;
-        this.rectAreaMarker.visible = true;
+        this.rectAreaMarker.visible = false;
         this.scene.add(this.rectAreaMarker);
     }
 
     createControlsGui() {
         const controls = {
-            ambientColor: this.ambientLight.color.getStyle(),
-            spotColor: this.spotLight.color.getStyle(),
-            spotTarget: 'Ground'
+            ambientColor: this.ambientLight.color.getHex(),
+            spotColor: this.spotLight.color.getHex(),
+            spotTarget: 'Ground',
+            pointColor: this.pointLight.color.getHex(),
+            directionalColor: this.directionalLight.color.getHex(),
+            hemisphereColor: this.hemisphereLight.color.getHex(),
+            hemisphereGroundColor: this.hemisphereLight.groundColor.getHex(),
+            rectAreaColor: this.rectAreaLight.color.getHex()
         };
 
         const gui = new GUI();
@@ -256,6 +263,7 @@ class ThreejsExample {
         const ambientFolder = gui.addFolder('AmbientLight');
         ambientFolder.add(this.ambientLight, 'visible');
         ambientFolder.addColor(controls, 'ambientColor')
+            .name('color')
             .onChange(color => {
                 this.ambientLight.color.set(color);
             });
@@ -264,11 +272,12 @@ class ThreejsExample {
         const spotFolder = gui.addFolder('SpotLight');
         spotFolder.add(this.spotLight, 'visible');
         spotFolder.addColor(controls, 'spotColor')
+            .name('color')
             .onChange(color => {
                 this.spotLight.color.set(color);
             });
         spotFolder.add(this.spotLightHelper, 'visible')
-            .name('spotLightHelper');
+            .name('helper');
         spotFolder.add(this.spotLight, 'castShadow');
         spotFolder.add(controls, 'spotTarget', ['Ground', 'Sphere', 'Cube'])
             .onChange(value => {
@@ -288,18 +297,38 @@ class ThreejsExample {
 
         const pointFolder = gui.addFolder('PointLight');
         pointFolder.add(this.pointLight, 'visible');
+        pointFolder.addColor(controls, 'pointColor')
+            .name('color')
+            .onChange(color => {
+                this.pointLight.color.set(color);
+            });
         pointFolder.add(this.pointMarker, 'visible')
             .name('marker');
         pointFolder.open();
 
         const directionalFolder = gui.addFolder('DirectionalLight');
         directionalFolder.add(this.directionalLight, 'visible');
+        directionalFolder.addColor(controls, 'directionalColor')
+            .name('color')
+            .onChange(color => {
+                this.directionalLight.color.set(color);
+            });
         directionalFolder.add(this.directionalMarker, 'visible')
             .name('marker');
         directionalFolder.open();
 
         const hemisphereFolder = gui.addFolder('HemisphereLight');
         hemisphereFolder.add(this.hemisphereLight, 'visible');
+        hemisphereFolder.addColor(controls, 'hemisphereColor')
+            .name('sky')
+            .onChange(color => {
+                this.hemisphereLight.color.set(color);
+            });
+        hemisphereFolder.addColor(controls, 'hemisphereGroundColor')
+            .name('ground')
+            .onChange(color => {
+                this.hemisphereLight.groundColor.set(color);
+            });
         hemisphereFolder.open();
 
         const rectAreaFolder = gui.addFolder('RectAreaLight');
@@ -307,13 +336,19 @@ class ThreejsExample {
             .onChange(visible => {
                 this.rectAreaMarker.visible = visible;
             });
+        rectAreaFolder.addColor(controls, 'rectAreaColor')
+            .name('color')
+            .onChange(color => {
+                this.rectAreaLight.color.set(color);
+            });
         rectAreaFolder.open();
 
         gui.close();
     }
 
     createTrackballControls() {
-        this.trackballControls = new TrackballControls(this.camera, this.renderer.domElement);
+        // this.trackballControls = new TrackballControls(this.camera, this.renderer.domElement);
+        this.trackballControls = new OrbitControls(this.camera, this.renderer.domElement);
         this.trackballControls.rotateSpeed = 3;
         this.trackballControls.zoomSpeed = 1.2;
         this.trackballControls.panSpeed = 0.8;
@@ -350,6 +385,27 @@ class ThreejsExample {
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(width, height, false);
         this.trackballControls.handleResize();
+    }
+
+    initSelectedLight() {
+        const selectedLight = window.location.hash.substring(1) || 'Ambient';
+        switch (selectedLight) {
+        case 'Ambient':
+            this.ambientLight.visible = true;
+            break;
+        case 'Spot':
+            this.spotLight.visible = true;
+            break;
+        case 'Point':
+            this.pointLight.visible = true;
+            break;
+        case 'Hemisphere':
+            this.hemisphereLight.visible = true;
+            break;
+        case 'RectArea':
+            this.rectAreaLight.visible = true;
+            break;
+        }
     }
 }
 
