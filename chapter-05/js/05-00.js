@@ -19,7 +19,7 @@ import {
     Mesh
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
-import { TrackballControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/TrackballControls.js';
+// import { TrackballControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/TrackballControls.js';
 import { OrbitControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/OrbitControls.js';
 
 import { GUI } from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
@@ -38,7 +38,7 @@ class ThreejsExample {
         this.createDirectionalLight();
         this.createHemisphereLight();
         this.createRectAreaLight();
-        this.createTrackballControls();
+        this.createCameraControls();
         this.initSelectedLight();
         requestAnimationFrame(this.render.bind(this));
         this.handleResize();
@@ -181,7 +181,7 @@ class ThreejsExample {
 
     createDirectionalLight() {
         const directionalLight = new DirectionalLight('#eeeeee');
-        directionalLight.intensity = 0.5;
+        // directionalLight.intensity = 0.5;
         directionalLight.castShadow = true;
         directionalLight.shadow.camera.near = 2;
         directionalLight.shadow.camera.far = 80;
@@ -226,7 +226,7 @@ class ThreejsExample {
     }
 
     createRectAreaLight() {
-        const rectAreaLight = new RectAreaLight(0xff00ff, 500, 2, 5);
+        const rectAreaLight = new RectAreaLight(0xff00ff, 30, 2, 5);
         rectAreaLight.position.set(-1, 1, -3.5);
 
         this.rectAreaLight = rectAreaLight;
@@ -267,6 +267,7 @@ class ThreejsExample {
             .onChange(color => {
                 this.ambientLight.color.set(color);
             });
+        ambientFolder.add(this.ambientLight, 'intensity', 0, 3, 0.1);
         ambientFolder.open();
 
         const spotFolder = gui.addFolder('SpotLight');
@@ -276,6 +277,7 @@ class ThreejsExample {
             .onChange(color => {
                 this.spotLight.color.set(color);
             });
+        spotFolder.add(this.spotLight, 'intensity', 0, 5);
         spotFolder.add(this.spotLightHelper, 'visible')
             .name('helper');
         spotFolder.add(this.spotLight, 'castShadow');
@@ -302,6 +304,7 @@ class ThreejsExample {
             .onChange(color => {
                 this.pointLight.color.set(color);
             });
+        pointFolder.add(this.pointLight, 'intensity', 0, 3);
         pointFolder.add(this.pointMarker, 'visible')
             .name('marker');
         pointFolder.open();
@@ -313,6 +316,7 @@ class ThreejsExample {
             .onChange(color => {
                 this.directionalLight.color.set(color);
             });
+        directionalFolder.add(this.directionalLight, 'intensity', 0, 5);
         directionalFolder.add(this.directionalMarker, 'visible')
             .name('marker');
         directionalFolder.open();
@@ -329,6 +333,7 @@ class ThreejsExample {
             .onChange(color => {
                 this.hemisphereLight.groundColor.set(color);
             });
+        hemisphereFolder.add(this.hemisphereLight, 'intensity', 0, 5);
         hemisphereFolder.open();
 
         const rectAreaFolder = gui.addFolder('RectAreaLight');
@@ -341,17 +346,18 @@ class ThreejsExample {
             .onChange(color => {
                 this.rectAreaLight.color.set(color);
             });
+        rectAreaFolder.add(this.rectAreaLight, 'intensity', 0, 1000);
         rectAreaFolder.open();
 
         gui.close();
     }
 
-    createTrackballControls() {
-        // this.trackballControls = new TrackballControls(this.camera, this.renderer.domElement);
-        this.trackballControls = new OrbitControls(this.camera, this.renderer.domElement);
-        this.trackballControls.rotateSpeed = 3;
-        this.trackballControls.zoomSpeed = 1.2;
-        this.trackballControls.panSpeed = 0.8;
+    createCameraControls() {
+        // this.cameraControls = new TrackballControls(this.camera, this.renderer.domElement);
+        this.cameraControls = new OrbitControls(this.camera, this.renderer.domElement);
+        this.cameraControls.rotateSpeed = 3;
+        this.cameraControls.zoomSpeed = 1.2;
+        this.cameraControls.panSpeed = 0.8;
     }
 
     update(ms) {
@@ -362,7 +368,7 @@ class ThreejsExample {
     }
 
     render(ms) {
-        this.trackballControls.update();
+        this.cameraControls.update();
         this.spotLightHelper.update();
         this.update(ms);
         this.renderer.render(this.scene, this.camera);
@@ -384,7 +390,7 @@ class ThreejsExample {
         this.camera.aspect = aspect;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(width, height, false);
-        this.trackballControls.handleResize();
+        // this.cameraControls.handleResize(); // TrackballControls cần, OrbitControls không
     }
 
     initSelectedLight() {
@@ -398,6 +404,9 @@ class ThreejsExample {
             break;
         case 'Point':
             this.pointLight.visible = true;
+            break;
+        case 'Directional':
+            this.directionalLight.visible = true;
             break;
         case 'Hemisphere':
             this.hemisphereLight.visible = true;
