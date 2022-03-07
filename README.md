@@ -1838,17 +1838,17 @@ Khi trình duyệt (thẻ canvas) bị resize, bạn cũng nên gọi phương t
 
 ## Chương 5 - Light
 
-Để tạo ra cảnh chân thật, chúng ta nên sử dụng MeshStandardMaterial và các Light (nguồn sáng). Nếu không có Light, các đối tượng sẽ chỉ là các khối màu đen.
+Để tạo ra các cảnh chân thật, chúng ta nên sử dụng MeshStandardMaterial và các Light (nguồn sáng). Nếu không có Light, các đối tượng sẽ chỉ là các khối màu đen.
 
 Ở thế giới thật, các tia sáng có thể chiếu thẳng trực tiếp vào đối tượng, hoặc có thể va chạm vào các bề mặt khác nhau và phản xạ hoặc khuếch tán trước khi chạm vào đối tượng. Tuy nhiên, các máy tính không thể có đủ sức mạnh để mô phỏng toàn bộ việc này ở real-time.
 
 Three.js có các kiểu Light sau:
 
 - AmbientLight
-- SpotLight
-- PointLight
-- DirectionalLight
 - HemisphereLight
+- DirectionalLight
+- PointLight
+- SpotLight
 - RectAreaLight
 
 Các kiểu Light khác nhau sẽ tạo ra các hiệu ứng khác nhau.
@@ -1873,6 +1873,64 @@ const ambientLight = new AmbientLight(color, intensity);
 ```
 
 [Ví dụ  Ambient Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-lights.html#Ambient)
+
+SCREENSHOT
+
+### HemisphereLight
+
+Đây là nguồn sáng đặc biệt và có thể được sử dụng để tạo các ngoại cảnh trông tự nhiên hơn bằng cách mô phỏng ánh sáng mạnh từ bầu trời và ánh sáng phản xạ nhẹ hơn từ mặt đất. Hemisphere: ánh sáng ambient (không direction) từ trần hoặc sàn
+
+Hemisphere có các thuộc tính sau:
+
+- color: màu sắc chiếu từ phía trên xuống (màu bầu trời)
+
+- groundColor: màu sắc chiếu từ dưới lên (màu mặt đất)
+
+- intensity: cường độ của cả color và groundColor
+
+
+```javascript
+const hemisphereLight = new HemisphereLight(0xf0e424, 0xd41384, 0.6);
+hemisphereLight.position.set(0, 5, 0);
+```
+
+[Ví dụ Hemisphere Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-lights.html#Hemisphere)
+
+SCREENSHOT
+
+### DirectionalLight
+
+Đây là nguồn sáng mà các tia sáng chiếu song song theo một chiều, ví dụ như ánh sáng mặt trời. Sự khác nhau lớn nhất giữa DirectionalLight và SpotLight mà tia sáng sẽ không bị giảm cường độ nếu khoảng cách từ nguồn sáng và đối tượng là xa. Toàn bộ không gian được DirectionalLight chiếu với cùng một cường độ.
+
+DirectionalLight có các thuộc tính:
+
+- `castShadow`:
+
+```javascript
+const directionalLight = new DirectionalLight('#eeeeee');
+directionalLight.intensity = 1.5;
+directionalLight.castShadow = true;
+```
+
+[Ví dụ Directional Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-lights.html#Directional)
+
+SCREENSHOT
+
+### PointLight
+
+Đây là nguồn sáng mà từ đó ánh sáng tỏa ra tất cả các hướng từ một điểm trong không gian, ví dụ bóng đèn tròn.
+
+Point: tương tự như bóng đèn, chiếu theo tất cả các chiều và có khoảng giới hạn
+
+PointLight có một số các thuộc tính giống như SpotLight mà bạn có thể điều chỉnh.
+
+```javascript
+const pointLight = new PointLight('#eeeeee');
+pointLight.decay = 0.1;
+pointLight.castShadow = true;
+```
+
+[Ví dụ Point Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-lights.html#Point)
 
 SCREENSHOT
 
@@ -1912,66 +1970,6 @@ spotLight.shadow.camera.fov = 20;
 
 SCREENSHOT
 
-### PointLight
-
-Đây là nguồn sáng mà từ đó ánh sáng tỏa ra tất cả các hướng từ một điểm trong không gian, ví dụ bóng đèn tròn.
-
-Point: tương tự như bóng đèn, chiếu theo tất cả các chiều và có khoảng giới hạn
-
-PointLight có một số các thuộc tính giống như SpotLight mà bạn có thể điều chỉnh.
-
-```javascript
-const pointLight = new PointLight('#eeeeee');
-pointLight.decay = 0.1;
-pointLight.castShadow = true;
-```
-
-
-
-[Ví dụ Point Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-lights.html#Point)
-
-SCREENSHOT
-
-### DirectionalLight
-
-Đây là nguồn sáng mà các tia sáng chiếu song song theo một chiều, ví dụ như ánh sáng mặt trời. Sự khác nhau lớn nhất giữa DirectionalLight và SpotLight mà tia sáng sẽ không bị giảm cường độ nếu khoảng cách từ nguồn sáng và đối tượng là xa. Toàn bộ không gian được DirectionalLight chiếu với cùng một cường độ.
-
-DirectionalLight có các thuộc tính:
-
-- `castShadow`:
-
-```javascript
-const directionalLight = new DirectionalLight('#eeeeee');
-directionalLight.intensity = 1.5;
-directionalLight.castShadow = true;
-```
-
-[Ví dụ Directional Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-lights.html#Directional)
-
-SCREENSHOT
-
-### HemisphereLight
-
-Đây là nguồn sáng đặc biệt và có thể được sử dụng để tạo các ngoại cảnh trông tự nhiên hơn bằng cách mô phỏng ánh sáng mạnh từ bầu trời và ánh sáng phản xạ nhẹ hơn từ mặt đất. Hemisphere: ánh sáng ambient (không direction) từ trần hoặc sàn
-
-Hemisphere có các thuộc tính sau:
-
-- color: màu sắc chiếu từ phía trên xuống
-
-- groundColor: màu sắc chiếu từ dưới lên
-
-- intensity: cường độ của cả color và groundColor
-
-
-```javascript
-const hemisphereLight = new HemisphereLight(0xf0e424, 0xd41384, 0.6);
-hemisphereLight.position.set(0, 5, 0);
-```
-
-[Ví dụ Hemisphere Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-lights.html#Hemisphere)
-
-SCREENSHOT
-
 ### RectAreaLight
 
 Với nguồn sáng này, thay vì một điểm trong không gian, bạn có thể chỉ định một vùng hình chữ nhật phát sáng, ví dụ khung cửa sổ, đèn trần huỳnh quang.
@@ -1995,6 +1993,17 @@ rectAreaLight.lookAt(0, 0, 0);
 [Ví dụ Rect Area Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-lights.html#RectArea)
 
 SCREENSHOT
+
+### Tổng kết
+
+| Light            | Helper                                           | Có tạo bóng không | Hướng tia sáng                                               |
+| ---------------- | ------------------------------------------------ | ----------------- | ------------------------------------------------------------ |
+| AmbientLight     |                                                  |                   | Vô hướng, tác động đều, toàn cục                             |
+| HemisphereLight  | HemisphereLightHelper                            |                   | Theo hai hướng: từ trên xuống và từ dưới lên<br />Mặt hướng lên trên chịu tác động của màu bầu trời<br />Mặt hướn xuống dưới chịu tác động của màu mặt đất |
+| DirectionalLight | DirectionalLightHelper                           | Có                | Hướng từ position đến target.position                        |
+| SpotLight        | SpotLightHelper                                  | Có                | Hướng từ position đến target.position                        |
+| PointLight       | PointLightHelper                                 | Có                | Tỏa ra tất cả các hướng                                      |
+| RectAreaLight    | RectAreaLightHelper<br />(phải load từ examples) |                   | Dùng phương thức lookAt()                                    |
 
 ## Chương 6 - 3D Text
 
