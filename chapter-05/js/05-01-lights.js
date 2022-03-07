@@ -37,7 +37,7 @@ class ThreejsExample {
         this.createCamera(canvas);
         this.createRenderer(canvas);
 
-        // RectAreaLightUniformsLib.init(); // phải có cái này thì mới tạo bóng ở sàn được
+        RectAreaLightUniformsLib.init(); // phải có cái này thì mới tạo bóng ở sàn được
 
         this.createCube();
         this.createSphere();
