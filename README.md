@@ -1840,16 +1840,16 @@ Khi trình duyệt (thẻ canvas) bị resize, bạn cũng nên gọi phương t
 
 Để tạo ra cảnh chân thật, chúng ta nên sử dụng MeshStandardMaterial và các Light (nguồn sáng). Nếu không có Light, các đối tượng sẽ chỉ là các khối màu đen.
 
-Ở thế giới thật, các tia sáng có thể chiếu thẳng trực tiếp vào đối tượng, hoặc có thể va chạm vào các bề mặt khác nhau và phản xạ hoặc khuếch tán trướckhi chạm vào đối tượng. Tuy nhiên, các máy tính không thể có đủ sức mạnh để mô phỏng toàn bộ việc này ở real-time.
+Ở thế giới thật, các tia sáng có thể chiếu thẳng trực tiếp vào đối tượng, hoặc có thể va chạm vào các bề mặt khác nhau và phản xạ hoặc khuếch tán trước khi chạm vào đối tượng. Tuy nhiên, các máy tính không thể có đủ sức mạnh để mô phỏng toàn bộ việc này ở real-time.
 
 Three.js có các kiểu Light sau:
 
 - AmbientLight
-- PointLight
 - SpotLight
+- PointLight
 - DirectionalLight
 - HemisphereLight
-- AreaLight
+- RectAreaLight
 
 Các kiểu Light khác nhau sẽ tạo ra các hiệu ứng khác nhau.
 
@@ -1859,40 +1859,56 @@ Các kiểu Light khác nhau sẽ tạo ra các hiệu ứng khác nhau.
 
 Đây là nguồn sáng cơ bản. Màu sáng của nó được áp dụng toàn cục, kết hợp với màu của đối tượng. Với nguồn sáng này, các tia sáng sẽ không có hướng, không tạo bóng. Mọi đối tượng đều bị tác động bởi nguồn sáng này như nhau, bất chấp vị trí, hình dáng của đối tượng. Bạn sẽ thường không chỉ sử dụng mỗi một AmbientLight mà sẽ kết hợp với nó với loại khác như SpotLight hoặc DirectionalLight.
 
-Bạn tạo một AmbientLight và thêm nó vào cảnh như sau:
+AmbientLight có hai thuộc tính quan trọng là:
+
+- `color`: màu sắc của nguồn sáng.
+- `intensity`: cường độ sáng.
+
+Hai thuộc tính trên là hai thuộc tính của base class Light. Tất cả các loại nguồn sáng khác cũng đều có hai thuộc tính này. Mặt khác, class Light lại extend từ class Object nên tất cả nguồn sáng đều có các thuộc tính như `position`, `visible`,... Chúng ta cần thêm các nguồn sáng vào cảnh một cách tường minh: `scene.add(light)`. Chúng ta không cần phải chỉ định vị trí của AmbientLight.
 
 ```javascript
+const color = '#d2d2d2';
+const intensity = 1;
 const ambientLight = new AmbientLight(color, intensity);
-scene.add(ambientLight);
 ```
 
-AmbientLight có hai thuộc tính quan trọng là `color` (màu sắc của nguồn sáng) và `intensity` (cường độ sáng). Đây là hai thuộc tính của base class Light. Tất cả các loại nguồn sáng khác cũng đều có hai thuộc tính này. Mặt khác, class Light lại extend từ class Object nên tất cả nguồn sáng đều có các thuộc tính như `position`, `visible`,...
-
-Bạn không cần phải chỉ định vị trí của AmbientLight.
-
-[Ví dụ  Ambient Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01.html#Ambient)
+[Ví dụ  Ambient Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-lights.html#Ambient)
 
 SCREENSHOT
 
 ### SpotLight
 
-Đây là nguồn sáng mà có hiệu ứng hình nó như đèn chụp hoặc đèn pin. SpotLight có các thuộc tính sau mà bạn có thể điều chỉnh:
+Đây là nguồn sáng mà có hiệu ứng hình nó như đèn chụp hoặc đèn pin. There's actually 2 cones. An outer cone and an inner cone. Between the inner cone and the outer cone the light fades from full intensity to zero.
 
-angle: góc tỏa sáng, đo bằng radian, mặc định là Math.PI / 3.
+SpotLight có các thuộc tính sau mà bạn có thể điều chỉnh:
 
-castShadow: nếu thiết lập bằng true, nguồn sáng này sẽ tạo bóng.
+- angle: góc tỏa sáng, đo bằng radian, mặc định là Math.PI / 3.
 
-distance
+- castShadow: nếu thiết lập bằng true, nguồn sáng này sẽ tạo bóng.
 
-penumbra
+- distance:
 
-target
+- penumbra:
 
-power
+- target: chỉ định hướng của các tia sáng (từ spotLight.position đến spotLight.target.position).
 
-decay
+- power:
 
-[Ví dụ Spot Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01.html#Spot)
+- decay:
+
+````javascript
+const spotLight = new SpotLight('#eeeeee');
+spotLight.position.set(0, 5, 0);
+spotLight.target = this.ground;
+spotLight.distance = 10; // 0 là vô hạn
+spotLight.angle = Math.PI * 0.1;
+spotLight.castShadow = true;
+spotLight.shadow.camera.near = 1;
+spotLight.shadow.camera.far = 12;
+spotLight.shadow.camera.fov = 20;
+````
+
+[Ví dụ Spot Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-lights.html#Spot)
 
 SCREENSHOT
 
@@ -1900,13 +1916,19 @@ SCREENSHOT
 
 Đây là nguồn sáng mà từ đó ánh sáng tỏa ra tất cả các hướng từ một điểm trong không gian, ví dụ bóng đèn tròn.
 
-PointLight có một số các thuộc tính giống như SpotLight mà bạn có thể điều chỉnh.
-
-
-
 Point: tương tự như bóng đèn, chiếu theo tất cả các chiều và có khoảng giới hạn
 
-[Ví dụ Point Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01.html#Point)
+PointLight có một số các thuộc tính giống như SpotLight mà bạn có thể điều chỉnh.
+
+```javascript
+const pointLight = new PointLight('#eeeeee');
+pointLight.decay = 0.1;
+pointLight.castShadow = true;
+```
+
+
+
+[Ví dụ Point Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-lights.html#Point)
 
 SCREENSHOT
 
@@ -1914,43 +1936,65 @@ SCREENSHOT
 
 Đây là nguồn sáng mà các tia sáng chiếu song song theo một chiều, ví dụ như ánh sáng mặt trời. Sự khác nhau lớn nhất giữa DirectionalLight và SpotLight mà tia sáng sẽ không bị giảm cường độ nếu khoảng cách từ nguồn sáng và đối tượng là xa. Toàn bộ không gian được DirectionalLight chiếu với cùng một cường độ.
 
-[Ví dụ Directional Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01.html#Directional)
+DirectionalLight có các thuộc tính:
+
+- `castShadow`:
+
+```javascript
+const directionalLight = new DirectionalLight('#eeeeee');
+directionalLight.intensity = 1.5;
+directionalLight.castShadow = true;
+```
+
+[Ví dụ Directional Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-lights.html#Directional)
 
 SCREENSHOT
 
 ### HemisphereLight
 
-Đây là nguồn sáng đặc biệt và có thể được sử dụng để tạo các ngoại cảnh trông tự nhiên hơn bằng cách mô phỏng ánh sáng mạnh từ bầu trời và ánh sáng phản xạ nhẹ hơn từ mặt đất. Hemisphere có các thuộc tính sau:
+Đây là nguồn sáng đặc biệt và có thể được sử dụng để tạo các ngoại cảnh trông tự nhiên hơn bằng cách mô phỏng ánh sáng mạnh từ bầu trời và ánh sáng phản xạ nhẹ hơn từ mặt đất. Hemisphere: ánh sáng ambient (không direction) từ trần hoặc sàn
 
-color: màu sắc chiếu từ phía trên xuống
+Hemisphere có các thuộc tính sau:
 
-groundColor: màu sắc chiếuu từ dưới lên
+- color: màu sắc chiếu từ phía trên xuống
 
-intensity: cường độ của cả color và groundColor
+- groundColor: màu sắc chiếu từ dưới lên
+
+- intensity: cường độ của cả color và groundColor
 
 
+```javascript
+const hemisphereLight = new HemisphereLight(0xf0e424, 0xd41384, 0.6);
+hemisphereLight.position.set(0, 5, 0);
+```
 
-Hemisphere: ánh sáng ambient (không direction) từ trần hoặc sàn
-
-[Ví dụ Hemisphere Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01.html#Hemisphere)
+[Ví dụ Hemisphere Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-lights.html#Hemisphere)
 
 SCREENSHOT
 
 ### RectAreaLight
 
-Với nguồn sáng này, thay vì một điểm trong không gian, bạn có thể chỉ định một vùng hình chữ nhật phát sáng.
+Với nguồn sáng này, thay vì một điểm trong không gian, bạn có thể chỉ định một vùng hình chữ nhật phát sáng, ví dụ khung cửa sổ, đèn trần huỳnh quang.
+
+One thing to notice is that unlike the [`DirectionalLight`](https://threejs.org/docs/#api/en/lights/DirectionalLight) and the [`SpotLight`](https://threejs.org/docs/#api/en/lights/SpotLight), the [`RectAreaLight`](https://threejs.org/docs/#api/en/lights/RectAreaLight) does not use a target. It just uses its rotation. Another thing to notice is the helper needs to be a child of the light. It is not a child of the scene like other helpers.
 
 RectAreaLight có các thuộc tính sau:
 
-width
+- width:
 
-height
+- height:
+- position
+- lookAt(): chỉ định hướng của các tia sáng
 
-[Ví dụ Rect Area Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01.html#RectArea)
+```javascript
+const rectAreaLight = new RectAreaLight(0xff00ff, 10, 2, 5);
+rectAreaLight.position.set(0, 2.5, -2);
+rectAreaLight.lookAt(0, 0, 0);
+```
+
+[Ví dụ Rect Area Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-lights.html#RectArea)
 
 SCREENSHOT
-
-
 
 ## Chương 6 - 3D Text
 
@@ -1989,6 +2033,8 @@ glTF files come in standard and binary form. These have different extensions:
 
 ## Chương 9 - Shadow
 
+Shadow tốn nhiều hiệu năng.
+
 Tạo bóng: cast và receive
 
 renderer.shadowMap.enabled = true;
@@ -1998,6 +2044,8 @@ light.castShadow = true;
 mesh.castShadow = true;
 
 plane.receiveShadow = true;
+
+https://threejs.org/manual/#en/shadows
 
 ## Chương 10 - Các ví dụ lẻ
 
