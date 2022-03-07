@@ -1838,9 +1838,7 @@ Khi trình duyệt (thẻ canvas) bị resize, bạn cũng nên gọi phương t
 
 ## Chương 5 - Light
 
-Để tạo ra các cảnh chân thật, chúng ta nên sử dụng MeshStandardMaterial và các Light (nguồn sáng). Nếu không có Light, các đối tượng sẽ chỉ là các khối màu đen.
-
-Ở thế giới thật, các tia sáng có thể chiếu thẳng trực tiếp vào đối tượng, hoặc có thể va chạm vào các bề mặt khác nhau và phản xạ hoặc khuếch tán trước khi chạm vào đối tượng. Tuy nhiên, các máy tính không thể có đủ sức mạnh để mô phỏng toàn bộ việc này ở real-time.
+Ở thế giới thật, các tia sáng có thể chiếu thẳng trực tiếp vào đối tượng, hoặc có thể va chạm vào các bề mặt khác nhau và phản xạ hoặc khuếch tán trước khi chạm vào đối tượng. Tuy nhiên, các máy tính hiện nay không thể có đủ sức mạnh để mô phỏng toàn bộ việc này ở real-time. Các model, thuật toán chỉ có thể mô phỏng gần giống nhất, chấp nhận được trong từng trường hợp cụ thể.
 
 Three.js có các kiểu Light sau:
 
@@ -1854,6 +1852,12 @@ Three.js có các kiểu Light sau:
 Các kiểu Light khác nhau sẽ tạo ra các hiệu ứng khác nhau.
 
 ![Light types](images/light-types.png)
+
+Chúng ta sẽ tạo một cảnh gồm một hình lập phương, một hình cầu, và một mặt phẳng. Chúng ta chỉ sử dụng các kiến thức đã học ở các bài trước để xây dựng cảnh. Các đối tượng đều sử dụng MeshStandardMaterial. Chúng ta chưa động gì đến Light. Cảnh của chúng ta sẽ hiển thị ra như sau:
+
+![No Light](images/light-none.png)
+
+Chúng ta có thể thấy các đối tượng chỉ là các khối màu đen, mặc dù chúng ta đã truyền thuộc tính `color` cho MeshStandardMaterial.
 
 ### AmbientLight
 
@@ -1876,17 +1880,19 @@ const ambientLight = new AmbientLight(color, intensity);
 
 SCREENSHOT
 
+Wow, giờ chúng ta đã có thể hình thấy các đối tượng trong cảnh.
+
 ### HemisphereLight
 
 Đây là nguồn sáng đặc biệt và có thể được sử dụng để tạo các ngoại cảnh trông tự nhiên hơn bằng cách mô phỏng ánh sáng mạnh từ bầu trời và ánh sáng phản xạ nhẹ hơn từ mặt đất. Hemisphere: ánh sáng ambient (không direction) từ trần hoặc sàn
 
 Hemisphere có các thuộc tính sau:
 
-- color: màu sắc chiếu từ phía trên xuống (màu bầu trời)
+- `color`: màu sắc chiếu từ phía trên xuống (màu bầu trời)
 
-- groundColor: màu sắc chiếu từ dưới lên (màu mặt đất)
+- `groundColor`: màu sắc chiếu từ dưới lên (màu mặt đất)
 
-- intensity: cường độ của cả color và groundColor
+- `intensity`: cường độ của cả color và groundColor
 
 
 ```javascript
