@@ -16,10 +16,10 @@ import {
     DirectionalLight,
     HemisphereLight,
     RectAreaLight,
-    Mesh
+    Mesh,
+    CameraHelper
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
-// import { TrackballControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/TrackballControls.js';
 import { OrbitControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/OrbitControls.js';
 
 import { GUI } from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
@@ -117,7 +117,7 @@ class ThreejsExample {
     }
 
     createGround() {
-        const groundGeometry = new PlaneGeometry(10, 2);
+        const groundGeometry = new PlaneGeometry(10, 3);
         const groundMaterial = new MeshStandardMaterial({
             color: 0xffffff
         });
@@ -138,22 +138,26 @@ class ThreejsExample {
 
     createSpotLight() {
         this.spotLight = new SpotLight('#eeeeee');
+        this.spotLight.visible = false;
         this.spotLight.position.set(0, 5, 0);
         this.spotLight.target = this.ground;
+        this.spotLight.distance = 10; // 0 là vô hạn
+        this.spotLight.angle = Math.PI * 0.1;
         this.spotLight.castShadow = true;
         this.spotLight.shadow.camera.near = 1;
-        this.spotLight.shadow.camera.far = 50;
-        this.spotLight.shadow.camera.fov = 120;
-        this.spotLight.distance = 0;
-        this.spotLight.angle = Math.PI * 0.1;
-        this.spotLight.visible = false;
+        this.spotLight.shadow.camera.far = 12;
+        this.spotLight.shadow.camera.fov = 20;
 
         this.spotLightHelper = new SpotLightHelper(this.spotLight);
         this.spotLightHelper.visible = false;
 
+        this.spotCameraHelper = new CameraHelper(this.spotLight.shadow.camera);
+        this.spotCameraHelper.visible = false;
+
         this.scene.add(
             this.spotLight,
-            this.spotLightHelper
+            this.spotLightHelper,
+            this.spotCameraHelper
         );
     }
 
@@ -192,14 +196,14 @@ class ThreejsExample {
         this.directionalMarker.position.set(-5, 10, -4);
 
         this.directionalLight = new DirectionalLight('#eeeeee');
-        // this.directionalLight.intensity = 0.5;
+        this.directionalLight.intensity = 1.5;
         this.directionalLight.castShadow = true;
         this.directionalLight.shadow.camera.near = 2;
-        this.directionalLight.shadow.camera.far = 80;
-        this.directionalLight.shadow.camera.left = -30;
-        this.directionalLight.shadow.camera.right = 30;
-        this.directionalLight.shadow.camera.top = 30;
-        this.directionalLight.shadow.camera.bottom = -30;
+        this.directionalLight.shadow.camera.far = 15;
+        this.directionalLight.shadow.camera.left = -3;
+        this.directionalLight.shadow.camera.right = 3;
+        this.directionalLight.shadow.camera.top = 3;
+        this.directionalLight.shadow.camera.bottom = -3;
         this.directionalLight.shadow.mapSize.width = 1024;
         this.directionalLight.shadow.mapSize.height = 1024;
         this.directionalLight.visible = false;
@@ -212,8 +216,12 @@ class ThreejsExample {
             this.directionalLight.position.copy(this.directionalMarker.position);
         };
 
+        this.directionalCameraHelper = new CameraHelper(this.directionalLight.shadow.camera);
+        this.directionalCameraHelper.visible = false;
+
         this.scene.add(this.directionalLight);
         this.scene.add(this.directionalMarker);
+        this.scene.add(this.directionalCameraHelper);
     }
 
     createHemisphereLight() {
@@ -224,8 +232,8 @@ class ThreejsExample {
     }
 
     createRectAreaLight() {
-        this.rectAreaLight = new RectAreaLight(0xff00ff, 30, 2, 5);
-        this.rectAreaLight.position.set(-1, 1, -3.5);
+        this.rectAreaLight = new RectAreaLight(0xff00ff, 10, 2, 5);
+        this.rectAreaLight.position.set(0, 2.5, -2);
         this.rectAreaLight.visible = false;
         // this.rectAreaLight.lookAt(this.ground);
         this.rectAreaLight.lookAt(0, 0, 0);
@@ -248,6 +256,7 @@ class ThreejsExample {
             spotTarget: 'Ground',
             pointColor: this.pointLight.color.getHex(),
             directionalColor: this.directionalLight.color.getHex(),
+            directionalTarget: 'Ground',
             hemisphereColor: this.hemisphereLight.color.getHex(),
             hemisphereGroundColor: this.hemisphereLight.groundColor.getHex(),
             rectAreaColor: this.rectAreaLight.color.getHex()
@@ -275,10 +284,12 @@ class ThreejsExample {
                 this.spotLight.color.set(color);
             });
         spotFolder.add(this.spotLight, 'intensity', 0, 5);
-        spotFolder.add(this.spotLightHelper, 'visible')
-            .name('helper');
         spotFolder.add(this.spotLight, 'castShadow');
+        spotFolder.add(this.spotLight, 'angle', 0, Math.PI);
+        spotFolder.add(this.spotLight, 'penumbra', 0, 1);
+        spotFolder.add(this.spotLight, 'distance', 0, 20);
         spotFolder.add(controls, 'spotTarget', ['Ground', 'Sphere', 'Cube'])
+            .name('target')
             .onChange(value => {
                 switch (value) {
                 case 'Ground':
@@ -292,18 +303,24 @@ class ThreejsExample {
                     break;
                 }
             });
+        spotFolder.add(this.spotLightHelper, 'visible')
+            .name('helper');
+        spotFolder.add(this.spotCameraHelper, 'visible')
+            .name('camera');
         if (selectedLight == 'Spot') {
             spotFolder.open();
         }
 
         const pointFolder = gui.addFolder('PointLight');
         pointFolder.add(this.pointLight, 'visible');
+        pointFolder.add(this.pointLight, 'castShadow');
         pointFolder.addColor(controls, 'pointColor')
             .name('color')
             .onChange(color => {
                 this.pointLight.color.set(color);
             });
         pointFolder.add(this.pointLight, 'intensity', 0, 3);
+        pointFolder.add(this.pointLight, 'distance', 0, 12); // 0 là vô hạn
         pointFolder.add(this.pointMarker, 'visible')
             .name('marker');
         if (selectedLight == 'Point') {
@@ -312,14 +329,33 @@ class ThreejsExample {
 
         const directionalFolder = gui.addFolder('DirectionalLight');
         directionalFolder.add(this.directionalLight, 'visible');
+        directionalFolder.add(this.directionalLight, 'castShadow');
         directionalFolder.addColor(controls, 'directionalColor')
             .name('color')
             .onChange(color => {
                 this.directionalLight.color.set(color);
             });
         directionalFolder.add(this.directionalLight, 'intensity', 0, 5);
+        directionalFolder.add(controls, 'directionalTarget', ['Ground', 'Sphere', 'Cube'])
+            .name('target')
+            .onChange(target => {
+                switch (target) {
+                case 'Ground':
+                    this.directionalLight.target = this.ground;
+                    break;
+                case 'Sphere':
+                    this.directionalLight.target = this.sphere;
+                    break;
+                case 'Cube':
+                    this.directionalLight.target = this.cube;
+                    break;
+                }
+            });
+
         directionalFolder.add(this.directionalMarker, 'visible')
             .name('marker');
+        directionalFolder.add(this.directionalCameraHelper, 'visible')
+            .name('camera');
         if (selectedLight == 'Directional') {
             directionalFolder.open();
         }
@@ -351,7 +387,7 @@ class ThreejsExample {
             .onChange(color => {
                 this.rectAreaLight.color.set(color);
             });
-        rectAreaFolder.add(this.rectAreaLight, 'intensity', 0, 1000);
+        rectAreaFolder.add(this.rectAreaLight, 'intensity', 0, 70);
         if (selectedLight == 'RectArea') {
             rectAreaFolder.open();
         }
@@ -407,18 +443,24 @@ class ThreejsExample {
             break;
         case 'Spot':
             this.spotLight.visible = true;
+            this.spotLightHelper.visible = true;
+            this.spotCameraHelper.visible = true;
             break;
         case 'Point':
             this.pointLight.visible = true;
+            this.pointMarker.visible = true;
             break;
         case 'Directional':
             this.directionalLight.visible = true;
+            this.directionalMarker.visible = true;
+            this.directionalCameraHelper.visible = true;
             break;
         case 'Hemisphere':
             this.hemisphereLight.visible = true;
             break;
         case 'RectArea':
             this.rectAreaLight.visible = true;
+            this.rectAreaMarker.visible = true;
             break;
         }
     }

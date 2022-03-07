@@ -1906,8 +1906,6 @@ PointLight có một số các thuộc tính giống như SpotLight mà bạn c�
 
 Point: tương tự như bóng đèn, chiếu theo tất cả các chiều và có khoảng giới hạn
 
-[Ví dụ 05.02 - Point Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-03-point-light.html)
-
 [Ví dụ 05.00 - Point Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#Point)
 
 SCREENSHOT
@@ -1916,11 +1914,7 @@ SCREENSHOT
 
 Đây là nguồn sáng mà các tia sáng chiếu song song theo một chiều, ví dụ như ánh sáng mặt trời. Sự khác nhau lớn nhất giữa DirectionalLight và SpotLight mà tia sáng sẽ không bị giảm cường độ nếu khoảng cách từ nguồn sáng và đối tượng là xa. Toàn bộ không gian được DirectionalLight chiếu với cùng một cường độ.
 
-
-
-[Ví dụ 05.04 - Directional Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-04-directional-light.html)
-
-[Ví dụ 05.00 - Directional](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#Directional)
+[Ví dụ 05.00 - Directional Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#Directional)
 
 SCREENSHOT
 
@@ -1937,8 +1931,6 @@ intensity: cường độ của cả color và groundColor
 
 
 Hemisphere: ánh sáng ambient (không direction) từ trần hoặc sàn
-
-[Ví dụ 05.05 - Hemisphere Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-05-hemisphere-light.html)
 
 [Ví dụ 05.00 - Hemisphere Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#Hemisphere)
 
