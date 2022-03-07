@@ -1870,7 +1870,7 @@ AmbientLight có hai thuộc tính quan trọng là `color` (màu sắc của ng
 
 Bạn không cần phải chỉ định vị trí của AmbientLight.
 
-[Ví dụ 05.00 - Ambient Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#Ambient)
+[Ví dụ  Ambient Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01.html#Ambient)
 
 SCREENSHOT
 
@@ -1892,7 +1892,7 @@ power
 
 decay
 
-[Ví dụ 05.00 - Spot Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#Spot)
+[Ví dụ Spot Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01.html#Spot)
 
 SCREENSHOT
 
@@ -1906,7 +1906,7 @@ PointLight có một số các thuộc tính giống như SpotLight mà bạn c�
 
 Point: tương tự như bóng đèn, chiếu theo tất cả các chiều và có khoảng giới hạn
 
-[Ví dụ 05.00 - Point Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#Point)
+[Ví dụ Point Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01.html#Point)
 
 SCREENSHOT
 
@@ -1914,7 +1914,7 @@ SCREENSHOT
 
 Đây là nguồn sáng mà các tia sáng chiếu song song theo một chiều, ví dụ như ánh sáng mặt trời. Sự khác nhau lớn nhất giữa DirectionalLight và SpotLight mà tia sáng sẽ không bị giảm cường độ nếu khoảng cách từ nguồn sáng và đối tượng là xa. Toàn bộ không gian được DirectionalLight chiếu với cùng một cường độ.
 
-[Ví dụ 05.00 - Directional Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#Directional)
+[Ví dụ Directional Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01.html#Directional)
 
 SCREENSHOT
 
@@ -1932,7 +1932,7 @@ intensity: cường độ của cả color và groundColor
 
 Hemisphere: ánh sáng ambient (không direction) từ trần hoặc sàn
 
-[Ví dụ 05.00 - Hemisphere Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#Hemisphere)
+[Ví dụ Hemisphere Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01.html#Hemisphere)
 
 SCREENSHOT
 
@@ -1946,39 +1946,17 @@ width
 
 height
 
-
-
-[Ví dụ 05.06 - Rect Area Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-06-area-light.html)
-
-[Ví dụ 05.00 - Rect Area Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-00.html#RectArea)
+[Ví dụ Rect Area Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01.html#RectArea)
 
 SCREENSHOT
 
 
 
-### LensFlare
-
-[Ví dụ 05.07 - Lens Flare](https://static.lockex1987.com/learn-threejs/chapter-05/05-07-lensflares.html)
-
-SCREENSHOT
-
-### Chương 7 - Shadow
-
-Tạo bóng: cast và receive
-
-renderer.shadowMap.enabled = true;
-
-light.castShadow = true;
-
-mesh.castShadow = true;
-
-plane.receiveShadow = true;
-
-## Chương 8 - 3D Text
+## Chương 6 - 3D Text
 
 3D text
 
-## Chương 9 - Texture
+## Chương 7 - Texture
 
  Từ canvas
 
@@ -2009,7 +1987,19 @@ glTF files come in standard and binary form. These have different extensions:
 
 Định dạng OBJ cũng rất phổ biến.
 
-## Chương 9 - Các ví dụ lẻ
+## Chương 9 - Shadow
+
+Tạo bóng: cast và receive
+
+renderer.shadowMap.enabled = true;
+
+light.castShadow = true;
+
+mesh.castShadow = true;
+
+plane.receiveShadow = true;
+
+## Chương 10 - Các ví dụ lẻ
 
 Tự tạo hình lập phương bằng các điểm và các mặt (tạo hình tam giác cho đơn giản).
 

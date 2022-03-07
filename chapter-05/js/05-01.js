@@ -235,15 +235,15 @@ class ThreejsExample {
         this.rectAreaLight = new RectAreaLight(0xff00ff, 10, 2, 5);
         this.rectAreaLight.position.set(0, 2.5, -2);
         this.rectAreaLight.visible = false;
-        // this.rectAreaLight.lookAt(this.ground);
+        // this.rectAreaLight.lookAt(this.ground.position);
         this.rectAreaLight.lookAt(0, 0, 0);
         this.scene.add(this.rectAreaLight);
 
         const planeGeometry = new BoxGeometry(2, 5, 0);
-        const planeMaterial = new MeshBasicMaterial({
+        this.rectAreaMarkerMaterial = new MeshBasicMaterial({
             color: 0xff00ff
         });
-        this.rectAreaMarker = new Mesh(planeGeometry, planeMaterial);
+        this.rectAreaMarker = new Mesh(planeGeometry, this.rectAreaMarkerMaterial);
         this.rectAreaMarker.position.copy(this.rectAreaLight.position);
         this.rectAreaMarker.visible = false;
         this.scene.add(this.rectAreaMarker);
@@ -386,6 +386,7 @@ class ThreejsExample {
             .name('color')
             .onChange(color => {
                 this.rectAreaLight.color.set(color);
+                this.rectAreaMarkerMaterial.color.set(color);
             });
         rectAreaFolder.add(this.rectAreaLight, 'intensity', 0, 70);
         if (selectedLight == 'RectArea') {
