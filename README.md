@@ -1840,7 +1840,7 @@ Khi trình duyệt (thẻ canvas) bị resize, bạn cũng nên gọi phương t
 
 Ở thế giới thật, các tia sáng có thể chiếu thẳng trực tiếp vào đối tượng, hoặc có thể va chạm vào các bề mặt khác nhau và phản xạ hoặc khuếch tán trước khi chạm vào đối tượng. Tuy nhiên, các máy tính hiện nay không thể có đủ sức mạnh để mô phỏng toàn bộ việc này ở real-time. Các model, thuật toán chỉ có thể mô phỏng gần giống nhất, chấp nhận được trong từng trường hợp cụ thể.
 
-Three.js có các kiểu Light sau:
+Three.js có các kiểu Light (nguồn sáng) sau:
 
 - AmbientLight
 - HemisphereLight
@@ -1861,7 +1861,7 @@ Chúng ta có thể thấy các đối tượng chỉ là các khối màu đen,
 
 ### AmbientLight
 
-Đây là nguồn sáng cơ bản. Màu sáng của nó được áp dụng toàn cục, kết hợp với màu của đối tượng. Với nguồn sáng này, các tia sáng sẽ không có hướng, không tạo bóng. Mọi đối tượng đều bị tác động bởi nguồn sáng này như nhau, bất chấp vị trí, hình dáng của đối tượng. Bạn sẽ thường không chỉ sử dụng mỗi một AmbientLight mà sẽ kết hợp với nó với loại khác như SpotLight, DirectionalLight,...
+Đây là nguồn sáng cơ bản. Màu sắc của nó được áp dụng toàn cục, kết hợp với màu của đối tượng. Với nguồn sáng này, các tia sáng sẽ không có hướng, không tạo bóng. Mọi đối tượng đều bị tác động bởi nguồn sáng này như nhau, bất chấp vị trí, hình dáng của đối tượng. Bạn sẽ thường không chỉ sử dụng mỗi một AmbientLight mà sẽ kết hợp với nó với loại khác như SpotLight, DirectionalLight,...
 
 AmbientLight có hai thuộc tính quan trọng là:
 
@@ -1891,7 +1891,6 @@ HemisphereLight cũng có các thuộc tính `color`, `intensity` như AmbientLi
 - `groundColor`: màu sắc chiếu từ dưới lên (màu từ mặt đất).
 
 Thuộc tính `color` là màu sắc chiếu từ phía trên xuống (màu từ bầu trời).
-
 
 ```javascript
 const skyColor = 0xf0e424;
@@ -1948,8 +1947,6 @@ Chúng ta cũng cần gọi `directionalLightHelper.update()` ở trong vòng l�
 
 Đây là nguồn sáng mà các tia sáng tỏa ra tất cả các hướng từ một điểm trong không gian, ví dụ bóng đèn tròn.
 
-Point: tương tự như bóng đèn, chiếu theo tất cả các chiều và có khoảng giới hạn
-
 PointLight có một số các thuộc tính quan trọng sau:
 
 - `castShadow`: có tạo bóng không.
@@ -1996,8 +1993,6 @@ spotLight.castShadow = true;
 spotLight.penumbra = 0.4;
 ````
 
-Chúng ta có thể thêm SpotLightHelper vào cảnh.
-
 [Ví dụ Spot Light](https://static.lockex1987.com/learn-threejs/chapter-05/05-01-lights.html#Spot)
 
 ![Spot Light](images/light-spot.png)
@@ -2021,7 +2016,7 @@ RectAreaLight có các thuộc tính sau:
 - `height`: độ cao hình chữ nhật.
 - `position`: vị trí nguồn sáng.
 
-Không giống như DirectionalLight và SpotLight, RectAreaLight không sử dụng thuộc tính `target`. Nó sử dụng góc xoay để chỉ định hướng các tia sáng, bạn có thể điều chỉnh bằng phương thức `lookAt()`.
+Không giống như DirectionalLight và SpotLight, RectAreaLight không sử dụng thuộc tính `target`. Nó sử dụng góc xoay để chỉ định hướng các tia sáng, bạn có thể điều chỉnh bằng thuộc tính `rotation` hoặc phương thức `lookAt()`.
 
 RectAreaLightHelper phải là con của đối tượng RectAreaLight, không phải con của đối tượng Scene như các Helper khác.
 
