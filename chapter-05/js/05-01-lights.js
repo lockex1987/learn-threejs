@@ -19,6 +19,7 @@ import {
     RectAreaLight,
     // RectAreaLightHelper,
     Mesh,
+    MathUtils,
     CameraHelper,
     sRGBEncoding,
     ReinhardToneMapping
@@ -31,14 +32,44 @@ import { RectAreaLightHelper } from 'https://unpkg.com/three@0.137.5/examples/js
 // import { GUI } from 'https://unpkg.com/dat.gui@0.7.7/build/dat.gui.module.js';
 import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.16/+esm';
 
+
+class ColorGUIHelper {
+    constructor(object, prop) {
+        this.object = object;
+        this.prop = prop;
+    }
+
+    get value() {
+        return `#${this.object[this.prop].getHexString()}`;
+    }
+
+    set value(hexString) {
+        this.object[this.prop].set(hexString);
+    }
+}
+
+
+class DegRadHelper {
+    constructor(obj, prop) {
+        this.obj = obj;
+        this.prop = prop;
+    }
+
+    get value() {
+        return MathUtils.radToDeg(this.obj[this.prop]);
+    }
+
+    set value(v) {
+        this.obj[this.prop] = MathUtils.degToRad(v);
+    }
+}
+
+
 class ThreejsExample {
     constructor(canvas) {
         this.createScene();
         this.createCamera(canvas);
         this.createRenderer(canvas);
-
-        RectAreaLightUniformsLib.init(); // phải có cái này thì mới tạo bóng ở sàn được
-
         this.createCube();
         this.createSphere();
         this.createGround();
@@ -156,7 +187,7 @@ class ThreejsExample {
     }
 
     createAmbientLight() {
-        const color = '#d2d2d2';
+        const color = 0xd2d2d2;
         const intensity = 1;
         this.ambientLight = new AmbientLight(color, intensity);
         this.ambientLight.visible = false;
@@ -165,23 +196,26 @@ class ThreejsExample {
 
     createHemisphereLight() {
         this.hemisphereLight = new HemisphereLight(0xf0e424, 0xd41384, 0.6);
-        this.hemisphereLight.position.set(0, 5, 0);
+        // this.hemisphereLight.position.set(0, 5, 0);
         this.hemisphereLight.visible = false;
         this.scene.add(this.hemisphereLight);
     }
 
     createDirectionalLight() {
-        this.directionalLight = new DirectionalLight('#eeeeee', 1.5);
-        this.directionalLight.visible = false;
+        this.directionalLight = new DirectionalLight(0xeeeeee, 1.5);
         // this.directionalLight.intensity = 1.5;
-        this.directionalLight.position.set(-5, 10, -4);
+        this.directionalLight.visible = false;
         this.directionalLight.castShadow = true;
+        this.directionalLight.position.set(-5, 10, -4);
+
+        // Phải cho đủ nếu không bóng sẽ bị cắt
         this.directionalLight.shadow.camera.near = 2;
-        this.directionalLight.shadow.camera.far = 15;
-        this.directionalLight.shadow.camera.left = -3;
-        this.directionalLight.shadow.camera.right = 3;
-        this.directionalLight.shadow.camera.top = 3;
-        this.directionalLight.shadow.camera.bottom = -3;
+        this.directionalLight.shadow.camera.far = 20;
+        this.directionalLight.shadow.camera.left = -5;
+        this.directionalLight.shadow.camera.right = 5;
+        this.directionalLight.shadow.camera.top = 5;
+        this.directionalLight.shadow.camera.bottom = -5;
+
         this.directionalLight.shadow.mapSize.width = 1024;
         this.directionalLight.shadow.mapSize.height = 1024;
 
@@ -209,11 +243,12 @@ class ThreejsExample {
     }
 
     createPointLight() {
-        this.pointLight = new PointLight('#eeeeee');
+        this.pointLight = new PointLight(0xeeeeee);
         this.pointLight.visible = false;
-        this.pointLight.position.set(0, 3, 0);
-        this.pointLight.decay = 0.1;
         this.pointLight.castShadow = true;
+        this.pointLight.position.set(0, 3, 0);
+        // this.pointLight.decay = 0.1;
+
         this.pointLight.shadow.camera.near = 0.1;
         this.pointLight.shadow.camera.far = 12;
         this.pointLight.shadow.mapSize.width = 1024;
@@ -234,13 +269,15 @@ class ThreejsExample {
     }
 
     createSpotLight() {
-        this.spotLight = new SpotLight('#eeeeee');
+        this.spotLight = new SpotLight(0xeeeeee);
         this.spotLight.visible = false;
+        this.spotLight.castShadow = true;
         this.spotLight.position.set(0, 5, 0);
         this.spotLight.target = this.ground;
         this.spotLight.distance = 10; // 0 là vô hạn
         this.spotLight.angle = Math.PI * 0.1;
-        this.spotLight.castShadow = true;
+        this.spotLight.penumbra = 0.4;
+
         this.spotLight.shadow.camera.near = 1;
         this.spotLight.shadow.camera.far = 12;
         this.spotLight.shadow.camera.fov = 20;
@@ -259,6 +296,9 @@ class ThreejsExample {
     }
 
     createRectAreaLight() {
+        // Phải có cái này thì mới tạo bóng ở sàn được
+        RectAreaLightUniformsLib.init();
+
         this.rectAreaLight = new RectAreaLight(0xff00ff, 5, 2, 5);
         this.rectAreaLight.position.set(0, 2.5, -2);
         this.rectAreaLight.visible = false;
@@ -405,9 +445,9 @@ class ThreejsExample {
                         break;
                     }
                 });
+            spotFolder.add(this.spotLight, 'distance', 0, 20);
             spotFolder.add(this.spotLight, 'angle', 0, Math.PI);
             spotFolder.add(this.spotLight, 'penumbra', 0, 1);
-            spotFolder.add(this.spotLight, 'distance', 0, 20);
             // spotFolder.add(this.spotCameraHelper, 'visible').name('camera');
             if (selectedLight == 'Spot') {
                 spotFolder.open();
@@ -420,11 +460,23 @@ class ThreejsExample {
             const rectAreaFolder = gui.addFolder('RectAreaLight');
             rectAreaFolder.add(this.rectAreaLight, 'visible');
             rectAreaFolder.add(this.rectAreaLight, 'intensity', 0, 70);
+            /*
             rectAreaFolder.addColor(controls, 'rectAreaColor')
                 .name('color')
                 .onChange(color => {
                     this.rectAreaLight.color.set(color);
                 });
+            */
+            rectAreaFolder.addColor(new ColorGUIHelper(this.rectAreaLight, 'color'), 'value')
+                .name('color');
+            rectAreaFolder.add(this.rectAreaLight, 'width', 1, 20);
+            rectAreaFolder.add(this.rectAreaLight, 'height', 1, 20);
+            rectAreaFolder.add(new DegRadHelper(this.rectAreaLight.rotation, 'x'), 'value', -180, 180)
+                .name('x rotation');
+            rectAreaFolder.add(new DegRadHelper(this.rectAreaLight.rotation, 'y'), 'value', -180, 180)
+                .name('y rotation');
+            rectAreaFolder.add(new DegRadHelper(this.rectAreaLight.rotation, 'z'), 'value', -180, 180)
+                .name('z rotation');
             if (selectedLight == 'RectArea') {
                 rectAreaFolder.open();
             } else {
@@ -452,9 +504,9 @@ class ThreejsExample {
     render(ms) {
         this.orbitControls.update();
 
-        this.spotLightHelper.update();
-        this.pointLightHelper.update();
         this.directionalLightHelper.update();
+        this.pointLightHelper.update();
+        this.spotLightHelper.update();
 
         this.update(ms);
         this.renderer.render(this.scene, this.camera);
