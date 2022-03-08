@@ -38,7 +38,7 @@ Các bài viết trên Viblo:
 
 [Three.js - Viblo](https://viblo.asia/tags/threejs)
 
-## Chương 1 - Tạo cảnh 3D đầu tiên với Three.js
+## Chương 1 - Tạo cảnh 3D đầu tiên
 
 ### Các yêu cầu để sử dụng Three.js
 
@@ -1108,7 +1108,7 @@ render(ms = 0) {
 
 [Ví dụ 01.08 - Animation theo khoảng thời gian đã trôi qua](https://static.lockex1987.com/learn-threejs/chapter-01/01-08-animation-by-elapsed-time.html)
 
-## Chương 2 - Các thành phần cơ bản tạo nên một cảnh 3D trong Three.js
+## Chương 2 - Các thành phần cơ bản
 
 Trong chương này, chúng ta sẽ cùng tìm hiểu về các thành phần như Scene, Camera, Renderer, Mesh, Geometry. Trước đó, chúng ta cũng tìm hiểu về hệ tọa độ trong Three.js.
 
@@ -2080,7 +2080,17 @@ glTF files come in standard and binary form. These have different extensions:
 
 Định dạng OBJ cũng rất phổ biến.
 
-## Chương 9 - Shadow
+\- - - Hết tập 1: Cơ bản - - -
+
+Shader
+
+Globe
+
+Chart
+
+Export video
+
+## Shadow
 
 Shadow tốn nhiều hiệu năng.
 
@@ -2096,11 +2106,11 @@ plane.receiveShadow = true;
 
 https://threejs.org/manual/#en/shadows
 
-## Chương 10 - Các ví dụ lẻ
+## Các ví dụ lẻ
 
 Tự tạo hình lập phương bằng các điểm và các mặt (tạo hình tam giác cho đơn giản).
 
-
+Phần trăm tải
 
 [40 | Blocky Cutie](https://codepen.io/yitliu/pen/YzXOzMg)
 
@@ -2115,8 +2125,6 @@ Tự tạo hình lập phương bằng các điểm và các mặt (tạo hình 
 [Solar system](https://static.lockex1987.com/learn-threejs/old/solar-system.html)
 
 [Tank](https://static.lockex1987.com/learn-threejs/old/tank.html)
-
-\- - - Hết tập 1: Cơ bản - - -
 
 ## Physics
 
