@@ -2049,9 +2049,59 @@ rectAreaLight.lookAt(0, 0, 0);
 
 3D text
 
+[Ví dụ 06.01 - Advanced 3D geometries - Convex Hull](file:///home/lockex1987/projects/lockex1987.github.io/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/01-advanced-3d-geometries-convex.html)
+
+[Ví dụ 06.02 - Advanced 3D geometries - Lathe](file:///home/lockex1987/projects/lockex1987.github.io/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/02-advanced-3d-geometries-lathe.html)
+
+[Ví dụ 06.03 - Extrude Geometry](file:///home/lockex1987/projects/lockex1987.github.io/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/03-extrude-geometry.html)
+
+[Ví dụ 06.04 - Extrude TubeGeometry](file:///home/lockex1987/projects/lockex1987.github.io/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/04-extrude-tube.html)
+
+[Ví dụ 06.05 - Extrude SVG](file:///home/lockex1987/projects/lockex1987.github.io/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/05-extrude-svg.html)
+
+[Ví dụ 06.06 - Parametric geometries](file:///home/lockex1987/projects/lockex1987.github.io/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/06-parametric-geometries.html)
+
+[Ví dụ 06.07 - Text geometry](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/07-text-geometry.html)
+
+[Ví dụ 06.08 - Binary operations](file:///home/lockex1987/projects/lockex1987.github.io/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/08-binary-operations.html)
+
+[three.js webgl - simple text from json](http://localhost:8000/chapter-06/06-01-font-loader.html)
+
+[3D Text with unicode · Issue #5243 · mrdoob/three.js](https://github.com/mrdoob/three.js/issues/5243)
+
+[Create a 3D text using Three.js!](https://blog.deveshb.me/create-a-3d-text-using-threejs)
+
+[Color ME - Trường học thiết kế colorME](https://colorme.vn/blog/typeface-la-gi-nhung-quy-tac-quan-trong-khi-chon-typeface)
+
+[three.js Display Chinese font and tweet application - 文章整合](https://chowdera.com/2021/01/20210107124943895w.html)
+
+[Facetype.js](https://gero3.github.io/facetype.js/)
+
+[ThreeJS secretly supports True Type Fonts](https://blog.mozvr.com/threejs-secretly-supports-true-type-fonts/)
+
+[three.js/TTFLoader.js at master · mrdoob/three.js](https://github.com/mrdoob/three.js/blob/master/examples/js/loaders/TTFLoader.js)
+
+[three.js/TTFLoader.js at master · mrdoob/three.js](https://github.com/mrdoob/three.js/blob/master/examples/jsm/loaders/TTFLoader.js)
+
+[three.js/opentype.module.min.js at master · mrdoob/three.js](https://github.com/mrdoob/three.js/blob/master/examples/jsm/libs/opentype.module.min.js)
+
+[Logo with GodRays Effect | Three.js Postprocessing Tutorial - Red Stapler](https://redstapler.co/godrays-three-js-post-processing-tutorial/)
+
+[ThreeJS Hands-ons — How to make your own Bat Signal | by Franky Hung | Geek Culture | Medium](https://medium.com/geekculture/threejs-hands-ons-how-to-make-your-own-bat-signal-c27e96b49f2d)
+
 ## Chương 7 - Texture
 
- Từ canvas
+Từ canvas
+
+[Ví dụ MeshBasicMaterial](http://localhost:8000/chapter-07/07-01-texture.html)
+
+[File:Texture mapping demonstration animation.gif - Wikipedia](https://en.m.wikipedia.org/wiki/File:Texture_mapping_demonstration_animation.gif)
+
+[Texture mapping - Wikipedia](https://en.m.wikipedia.org/wiki/Texture_mapping)
+
+[A Brief Introduction to Texture Mapping | Discover three.js](https://discoverthreejs.com/book/first-steps/textures-intro/)
+
+[Textures - three.js manual](https://threejs.org/manual/#en/textures)
 
 ### Texture đơn giản
 
@@ -2069,6 +2119,32 @@ Thuộc tính là `matcap`.
 
 ## Chương 8 - Load model
 
+[Model Loader](http://localhost:8000/chapter-08/08-01-model-loader.html)
+
+[Example 09.14 - gltf loader](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-09/14-animation-from-gltf.html)
+
+[3D Models for Free - Free3D.com](https://free3d.com/)
+
+[Isometric Room - Buy Royalty Free 3D model by AVR Creative (@avrcreative) [703adb8]](https://sketchfab.com/3d-models/isometric-room-703adb8138314218a64142dd73d3c06f)
+
+[Explore 3D Models - Sketchfab](https://sketchfab.com/search?q=vietnam&type=models)
+
+[Ho Chi Minh, Vietnam - 3D city model - 3D model by 3D City Models (@3d-city-models) [6ac6c82]](https://sketchfab.com/3d-models/ho-chi-minh-vietnam-3d-city-model-6ac6c821374b4113a3c2fd105be4abb8)
+
+[Loading 3D models – three.js docs](https://threejs.org/docs/#manual/en/introduction/Loading-3D-models)
+
+[Load 3D Models in glTF Format | Discover three.js](https://discoverthreejs.com/book/first-steps/load-models/)
+
+[Three.js .glTF 3D Model Display](https://codepen.io/siouxcitizen/pen/QroPwJ)
+
+[Add 3D Model to WebSite in 5 Minutes - Three.js Tutorial - Red Stapler](https://redstapler.co/add-3d-model-to-website-threejs/)
+
+[glTF Viewer](https://gltf-viewer.donmccurdy.com/)
+
+[GLTF Model Loader - Three.js Tutorials](https://sbcode.net/threejs/loaders-gltf/)
+
+[Car Physics - Three.js Tutorials](https://sbcode.net/threejs/physics-car/)
+
 Data loader: binary, image, JSON, scene
 
 Định dạng glTF (GL Transmission Format), có đuôi là glb hoặc gltf.
@@ -2082,13 +2158,53 @@ glTF files come in standard and binary form. These have different extensions:
 
 \- - - Hết tập 1: Cơ bản - - -
 
-Shader
+## Ebook
 
-Globe
+[Định dạng file Epub](https://cttd.tk/posts/it%20-%20epub%20format/)
 
-Chart
+[Export - Typora Support](https://support.typora.io/Export/)
 
-Export video
+[Self-Publishing via Markdown · GitHub](https://gist.github.com/caseywatts/3d8150fe04e0d8462cfc4d51b9856d39#:~:text=Markdown%20to%20eBook,the%20kindlegen%20command%20line%20command.)
+
+[Pandoc - Creating an ebook with pandoc](https://pandoc.org/epub.html)
+
+[Creating an eBook with Pandoc and Markdown](https://www.thepolyglotdeveloper.com/2019/10/creating-ebook-pandoc-markdown/)
+
+[GitHub - karlseguin/the-little-go-book](https://github.com/karlseguin/the-little-go-book)
+
+[the-little-go-book/Makefile at master · karlsegui…](https://github.com/karlseguin/the-little-go-book/blob/master/Makefile)
+
+[Pandoc - Pandoc User’s Guide](https://pandoc.org/MANUAL.html#epub-metadata)
+
+[How to remove epub table of contents link to title page created by pandoc - Stack Overflow](https://stackoverflow.com/questions/31297646/how-to-remove-epub-table-of-contents-link-to-title-page-created-by-pandoc)
+
+[epub - How can I prevent pandoc from inserting an h1 element of my title in the content - Stack Overflow](https://stackoverflow.com/questions/67508187/how-can-i-prevent-pandoc-from-inserting-an-h1-element-of-my-title-in-the-conte)
+
+[Customizing pandoc to generate beautiful pdf and epub from markdown](https://learnbyexample.github.io/customizing-pandoc/)
+
+[What can I control with YAML header options in pandoc? - Stack Overflow](https://stackoverflow.com/questions/26395374/what-can-i-control-with-yaml-header-options-in-pandoc)
+
+[The Greatest CSS Tricks Vol. I eBook (PDF and EPUB) | CSS-Tricks - CSS-Tricks](https://css-tricks.com/the-greatest-css-tricks-vol-i-ebook-pdf-and-epub/)
+
+[baldurbjarnason/book-tricks: A starting point for ebook creation](https://github.com/baldurbjarnason/book-tricks)
+
+[book-tricks/Makefile at master · baldurbjarnason/book-tricks](https://github.com/baldurbjarnason/book-tricks/blob/master/Makefile)
+
+[github - Pandoc : set document title to first title - Stack Overflow](https://stackoverflow.com/questions/56004886/pandoc-set-document-title-to-first-title)
+
+[Release pandoc 2.17.1.1 · jgm/pandoc](https://github.com/jgm/pandoc/releases/tag/2.17.1.1)
+
+[themsaid/ibis: A PHP tool that helps you write eBooks in markdown and convert to PDF.](https://github.com/themsaid/ibis)
+
+[Free Laravel Tips and Tricks eBook](https://devdojo.com/bobbyiliev/free-laravel-tips-and-tricks-ebook#chapters)
+
+## Shader
+
+## Globe
+
+## Chart
+
+## Export video
 
 ## Shadow
 
