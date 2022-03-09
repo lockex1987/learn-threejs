@@ -26,10 +26,10 @@ function init() {
     const ttfFontUrl = '../fonts/roboto/roboto-regular.ttf';
 
     const loader = new TTFLoader();
-    const fontLoader1 = new FontLoader();
+    const anotherFontLoader = new FontLoader();
     loader.load(ttfFontUrl, ttf => {
         // console.log(ttf);
-        const font = fontLoader1.parse(ttf);
+        const font = anotherFontLoader.parse(ttf);
         // console.log(font);
         createText(font);
     });

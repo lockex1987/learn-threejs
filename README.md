@@ -2049,6 +2049,20 @@ rectAreaLight.lookAt(0, 0, 0);
 
 3D text
 
+[Create a 3D text using Three.js!](https://blog.deveshb.me/create-a-3d-text-using-threejs)
+
+[three.js examples](https://threejs.org/examples/?q=text#webgl_loader_ttf)
+
+[three.js examples](https://threejs.org/examples/?q=text#webgl_geometry_text)
+
+[three.js examples](https://threejs.org/examples/?q=text#webgl_geometry_text_shapes)
+
+[three.js examples](https://threejs.org/examples/?q=text#webgl_geometry_text_stroke)
+
+[3D text](http://localhost:8000/chapter-06/06-02-text-geometry.html)
+
+[Ví dụ 02.03 - Primitives](http://localhost:8000/chapter-02/02-03-primitives.html)
+
 [Ví dụ 06.01 - Advanced 3D geometries - Convex Hull](file:///home/lockex1987/projects/lockex1987.github.io/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/01-advanced-3d-geometries-convex.html)
 
 [Ví dụ 06.02 - Advanced 3D geometries - Lathe](file:///home/lockex1987/projects/lockex1987.github.io/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/02-advanced-3d-geometries-lathe.html)
@@ -2068,8 +2082,6 @@ rectAreaLight.lookAt(0, 0, 0);
 [three.js webgl - simple text from json](http://localhost:8000/chapter-06/06-01-font-loader.html)
 
 [3D Text with unicode · Issue #5243 · mrdoob/three.js](https://github.com/mrdoob/three.js/issues/5243)
-
-[Create a 3D text using Three.js!](https://blog.deveshb.me/create-a-3d-text-using-threejs)
 
 [Color ME - Trường học thiết kế colorME](https://colorme.vn/blog/typeface-la-gi-nhung-quy-tac-quan-trong-khi-chon-typeface)
 
