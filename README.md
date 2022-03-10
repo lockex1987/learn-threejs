@@ -2047,7 +2047,181 @@ rectAreaLight.lookAt(0, 0, 0);
 
 ## Chương 6 - 3D Text
 
-3D text
+Trong các bài trước, chúng ta đã tìm hiểu cách tạo các đối tượng 3D có dạng hình khối. Vậy thế còn các đối tượng có dạng văn bản thì sao? Với các đối tượng đó, Three.js sẽ xử lý từ dạng 2D, sau đó cho nó NỔI LÊN (extrude) để chuyển thành dạng 3D. Chúng ta có thể áp dụng kỹ thuật này cho các dạng 2D như font, SVG, shape.
+
+### Định dạng Typeface
+
+Three.js cung cấp sẵn một số file font mẫu ở thư mục `examples/fonts` như gentilis, optimer,...:
+
+```
+examples/
+└── fonts
+    ├── droid
+    │   ├── droid_sans_bold.typeface.json
+    │   ├── droid_sans_mono_regular.typeface.json
+    │   ├── droid_sans_regular.typeface.json
+    │   ├── droid_serif_bold.typeface.json
+    │   ├── droid_serif_regular.typeface.json
+    │   ├── NOTICE
+    │   └── README.txt
+    ├── gentilis_bold.typeface.json
+    ├── gentilis_regular.typeface.json
+    ├── LICENSE
+    ├── open-sans
+    │   ├── open-sans.css
+    │   ├── open-sans-v15-cyrillic-ext_greek_greek-ext_cyrillic_latin_latin-ext_vietnamese-regular.woff
+    │   └── open-sans-v15-cyrillic-ext_greek_greek-ext_cyrillic_latin_latin-ext_vietnamese-regular.woff2
+    ├── optimer_bold.typeface.json
+    ├── optimer_regular.typeface.json
+    ├── README.md
+    ├── tabler-icons
+    │   ├── fonts
+    │   │   ├── tabler-icons.eot
+    │   │   ├── tabler-icons.svg
+    │   │   ├── tabler-icons.ttf
+    │   │   ├── tabler-icons.woff
+    │   │   └── tabler-icons.woff2
+    │   └── tabler-icons.min.css
+    └── ttf
+        ├── kenpixel.ttf
+        └── README.md
+```
+
+
+
+Chúng ta có thể convert các font sang định dạng Typeface online ở [gero3.github.io/facetype.js](https://gero3.github.io/facetype.js/).
+
+
+
+### FontLoader
+
+Chúng ta sẽ sử dụng class [FontLoader](https://threejs.org/docs/?q=Font#examples/en/loaders/FontLoader) để tải một font chữ ở định dạng JSON. Đối tượng Font là một mảng các [Shape](https://threejs.org/docs/#api/en/extras/core/Shape) đại diện cho từng ký tự.
+
+Chúng ta load class FontLoader từ file ở thư mục `examples`:
+
+```javascript
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+```
+
+Sau đó, chúng ta khởi tạo một đối tượng:
+
+```javascript
+const fontLoader = new FontLoader();
+```
+
+Class FontLoader có hai phương thức quan trọng là `load()` và `parse()`.
+
+Phương thức `load(url: String, onLoad: Function, onProgress: Function, onError: Function): undefined` sẽ bắt đầu tải file font.
+
+- `url`: Đường dẫn tới file JSON Typeface.
+- `onLoad`: Hàm gọi khi đã tải xong. Hàm có tham số là đối tượng Font đã tải.
+- `onProgress`: Hàm gọi trong tiến trình tải. Tham số là một đối tượng XMLHttpRequest, trong đó có chứa các thuộc tính total và loaded là các dung lượng đo bằng byte.
+- `onError`: Hàm gọi khi có lỗi.
+
+Phương thức `parse(json: Object): Font` để chuyển đối tượng JavaScript thành đối tượng Font.
+
+Ví dụ:
+
+```javascript
+fontLoader.load(
+	// URL
+	'fonts/gentilis_bold.typeface.json',
+
+	// onLoad callback
+	font => {
+		// Làm gì đó với đối tượng font đã được tải xong
+		console.log(font);
+	},
+
+	// onProgress callback
+	xhr => {
+		console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+	},
+
+	// onError callback
+	err => {
+		console.log('Đã có lỗi xảy ra');
+	}
+);
+```
+
+
+
+
+
+### TextGeometry
+
+Để tạo một đối tượng văn bản mà có thể thêm vào cảnh 3D, chúng ta cũng vẫn cần tạo một Mesh. Mesh sẽ được tạo từ Material và Geometry. Chúng ta có thể sử dụng bất cứ Material như MeshBasicMaterial, MeshStandardMaterial,... Với Geometry và đối tượng văn bản, chúng ta cần sử dụng [TextTGeometry](https://threejs.org/docs/?q=TextGeometry#examples/en/geometries/TextGeometry).
+
+Chúng ta tải class TextGeometry từ file ở thư mục `examples`:
+
+```javascript
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+```
+
+Class TextGeometry sẽ sinh đoạn văn bản thành một đối tượng Geometry duy nhất. Chúng ta khởi tạo như sau:
+
+```javascript
+// Văn bản cần hiển thị
+const text = 'Hello Three.js!';
+
+// Các tham số tùy chọn
+const parameters = {
+    font: font,
+    size: 80,
+    height: 5,
+    curveSegments: 12,
+    bevelEnabled: true,
+    bevelThickness: 10,
+    bevelSize: 8,
+    bevelOffset: 0,
+    bevelSegments: 5
+};
+
+const textGeometry = new TextGeometry(text, parameters);
+```
+
+Các thuộc tính mà chúng ta có thể truyền vào ở tham số `parameters` là:
+
+- `font`: Đối tượng Font. Có thể được tải bằng phương thức FontLoader.load().
+- `size`: Float. Kích thước của văn bản.
+- `height`: Float. Độ dày mà văn bản nổi lên.
+- `curveSegments`: Integer. Số cá điểm trên các đường cong.
+- `bevelEnabled`: Boolean. Có sử dụng cạnh xiên ở mép không.
+- `bevelThickness`: Float. Độ sâu của cạnh xiên.
+- `bevelSize`: Float. Khoảng cách từ outline của văn bản đến cạnh xiên.
+- `bevelOffset`: Float. Từ vị trí nào của outline của văn bản mà cạnh xiên bắt đầu.
+- `bevelSegments`: Integer. Số segment của cạnh xiên.
+
+Cạnh xiên là cạnh nằm giữa mặt phẳng 2D ban đầu và mặt phẳng nổi lên.
+
+![Bevel](images/bevel.jpg)
+
+Văn bản có thể dài ngắn khác nhau, có thể trên một hoặc nhiều dòng. Chúng ta có thể sử dụng phương thức center() để căn giữa văn bản.
+
+
+
+### Thao tác với file TTF
+
+Lỗi tiếng Việt
+
+Font TTF phải hỗ trợ tiếng Việt
+
+Sử dụng tool để convert
+
+Sử dụng trực tiếp
+
+
+
+[Ví dụ 3D Text](https://static.lockex1987.com/learn-threejs/chapter-06/06-02-text-geometry.html)
+
+
+
+
+
+[ExtrudeGeometry – three.js docs](https://threejs.org/docs/?q=TextGeometry#api/en/geometries/ExtrudeGeometry)
+
+
 
 [Create a 3D text using Three.js!](https://blog.deveshb.me/create-a-3d-text-using-threejs)
 
@@ -2081,9 +2255,9 @@ rectAreaLight.lookAt(0, 0, 0);
 
 [three.js webgl - simple text from json](http://localhost:8000/chapter-06/06-01-font-loader.html)
 
-[3D Text with unicode · Issue #5243 · mrdoob/three.js](https://github.com/mrdoob/three.js/issues/5243)
 
-[Color ME - Trường học thiết kế colorME](https://colorme.vn/blog/typeface-la-gi-nhung-quy-tac-quan-trong-khi-chon-typeface)
+
+
 
 [three.js Display Chinese font and tweet application - 文章整合](https://chowdera.com/2021/01/20210107124943895w.html)
 
@@ -2099,7 +2273,7 @@ rectAreaLight.lookAt(0, 0, 0);
 
 [Logo with GodRays Effect | Three.js Postprocessing Tutorial - Red Stapler](https://redstapler.co/godrays-three-js-post-processing-tutorial/)
 
-[ThreeJS Hands-ons — How to make your own Bat Signal | by Franky Hung | Geek Culture | Medium](https://medium.com/geekculture/threejs-hands-ons-how-to-make-your-own-bat-signal-c27e96b49f2d)
+
 
 ## Chương 7 - Texture
 
@@ -2170,6 +2344,12 @@ glTF files come in standard and binary form. These have different extensions:
 
 \- - - Hết tập 1: Cơ bản - - -
 
+## Phụ lục
+
+### Danh sách ví dụ
+
+x
+
 ## Ebook
 
 [Định dạng file Epub](https://cttd.tk/posts/it%20-%20epub%20format/)
@@ -2239,6 +2419,8 @@ https://threejs.org/manual/#en/shadows
 Tự tạo hình lập phương bằng các điểm và các mặt (tạo hình tam giác cho đơn giản).
 
 Phần trăm tải
+
+3D Logo NVH
 
 [40 | Blocky Cutie](https://codepen.io/yitliu/pen/YzXOzMg)
 

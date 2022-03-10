@@ -54,7 +54,7 @@ class ThreejsExample {
         const cube = new Mesh(cubeGeometry, cubeMaterial);
         // cube.position.set(-4, 3, 0);
         cube.tick = (ms) => {
-            cube.rotation.y = ms * Math.PI / 1000;
+            cube.rotation.y = (ms / 1000) * Math.PI;
         };
         return cube;
     }

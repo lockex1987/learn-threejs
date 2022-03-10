@@ -1,122 +1,228 @@
-import * as THREE from 'https://unpkg.com/three@0.137.5/build/three.module.js';
+import {
+    Scene,
+    PerspectiveCamera,
+    WebGLRenderer,
+    Color,
+    MeshStandardMaterial,
+    Mesh,
+    HemisphereLight,
+    PointLight,
+    DirectionalLight
+} from 'https://unpkg.com/three@0.137.5/build/three.module.js';
+
 import { OrbitControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/OrbitControls.js';
-import { FontLoader } from 'https://unpkg.com/three@0.137.5/examples/jsm/loaders/FontLoader.js';
+import { GUI } from 'https://unpkg.com/three@0.137.5/examples/jsm/libs/lil-gui.module.min.js';
+import { FontLoader, Font } from 'https://unpkg.com/three@0.137.5/examples/jsm/loaders/FontLoader.js';
+import { TTFLoader } from 'https://unpkg.com/three@0.137.5/examples/jsm/loaders/TTFLoader.js';
 import { TextGeometry } from 'https://unpkg.com/three@0.137.5/examples/jsm/geometries/TextGeometry.js';
 
-// Canvas
-const canvas = document.querySelector('canvas.webgl');
-
-// Scene
-const scene = new THREE.Scene();
 
 /**
- * Fonts
+ * Promisify font loading.
  */
-const fontLoader = new FontLoader();
+function loadFontAsync(fontName, fontWeight) {
+    const url = 'https://threejs.org/examples/fonts/' + fontName + '_' + fontWeight + '.typeface.json';
+    const fontLoader = new FontLoader();
+    return new Promise((resolve, reject) => {
+        fontLoader.load(url, resolve, undefined, reject);
+    });
+}
 
-fontLoader.load(
-    'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json',
-    (font) => {
-        const textGeometry = new TextGeometry(
-            'Devesh',
-            {
-                font: font,
-                size: 0.5,
-                height: 0.2,
-                curveSegments: 6,
-                bevelEnabled: true,
-                bevelThickness: 0.03,
-                bevelSize: 0.02,
-                bevelOffset: 0,
-                bevelSegments: 4
-            }
-        );
 
-        textGeometry.center();
+class ThreejsExample {
+    constructor(canvas) {
+        this.createScene();
+        this.createCamera(canvas);
+        this.createRenderer(canvas);
+        this.createLights();
 
-        const textMaterial = new THREE.MeshNormalMaterial();
-        // textMaterial.wireframe = true
-        const text = new THREE.Mesh(textGeometry, textMaterial);
-        scene.add(text);
+        this.textMaterial = new MeshStandardMaterial({
+            color: 0x156289,
+            emissive: 0x072534,
+            roughness: 0
+        });
 
-        const donutGeometry = new THREE.TorusBufferGeometry(0.3, 0.2, 20, 45);
-        const donutMaterial = new THREE.MeshNormalMaterial();
+        this.controls = {
+            text: 'Tiếng Việt', // Hello Three.js!
+            font: 'roboto'
+        };
+        this.parameters = {
+            size: 0.25,
+            height: 0.1,
+            curveSegments: 6,
+            bevelEnabled: false,
+            bevelThickness: 0.03,
+            bevelSize: 0.02,
+            bevelOffset: 0,
+            bevelSegments: 4
+        };
 
-        for (let i = 0; i < 100; i++) {
-            const donut = new THREE.Mesh(donutGeometry, donutMaterial);
+        this.fontMap = {
+            optimer: null,
+            gentilis: null,
+            // helvetiker: null,
+            droid_sans: null,
+            droid_serif: null,
+            roboto: null
+        };
+        this.loadFont();
+        // this.loadTtf();
+        this.loadMultipleFonts();
 
-            donut.position.x = (Math.random() - 0.5) * 10;
-            donut.position.y = (Math.random() - 0.5) * 10;
-            donut.position.z = (Math.random() - 0.5) * 10;
-
-            donut.rotation.x = Math.random() * Math.PI;
-            donut.rotation.y = Math.random() * Math.PI;
-
-            const scale = Math.random();
-            donut.scale.set(scale, scale, scale);
-
-            scene.add(donut);
-        }
+        this.createOrbitControls();
+        this.createControlsGui();
+        this.handleResize();
     }
-);
 
-/**
- * Sizes
- */
-const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
-};
+    createScene() {
+        this.scene = new Scene();
+        this.scene.background = new Color(0xFFFFFF);
+    }
 
-window.addEventListener('resize', () => {
-    // Update sizes
-    sizes.width = window.innerWidth;
-    sizes.height = window.innerHeight;
+    createCamera(canvas) {
+        const aspect = canvas.clientWidth / canvas.clientHeight;
+        this.camera = new PerspectiveCamera(45, aspect, 0.1, 15);
+        this.camera.position.z = 2;
+    }
 
-    // Update camera
-    camera.aspect = sizes.width / sizes.height;
-    camera.updateProjectionMatrix();
+    createRenderer(canvas) {
+        this.renderer = new WebGLRenderer({
+            canvas,
+            antialias: true
+        });
+        const pixelRatio = window.devicePixelRatio;
+        this.renderer.setSize(canvas.clientWidth * pixelRatio, canvas.clientHeight * pixelRatio, false);
+    }
 
-    // Update renderer
-    renderer.setSize(sizes.width, sizes.height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-});
+    createLights() {
+        const hemisphereLight = new HemisphereLight(0xffffff, 0xaaaaaa, 0.5);
+        this.scene.add(hemisphereLight);
 
-/**
- * Camera
- */
-// Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
-camera.position.x = 1;
-camera.position.y = 1;
-camera.position.z = 2;
-scene.add(camera);
+        const directionalLight = new DirectionalLight(0xeeeeee, 0.5);
+        directionalLight.position.set(0, 2, 5);
+        this.scene.add(directionalLight);
 
-// Controls
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
+        const pointLight = new PointLight(0xffffff, 0.5);
+        pointLight.position.set(0, 0.05, 2);
+        this.scene.add(pointLight);
+    }
 
-/**
- * Renderer
- */
-const renderer = new THREE.WebGLRenderer({
-    canvas: canvas
-});
-renderer.setSize(sizes.width, sizes.height);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    loadFont() {
+        const fontLoader = new FontLoader();
+        // const url = 'https://threejs.org/examples/fonts/optimer_regular.typeface.json';
+        // const url = '../fonts/roboto/roboto_regular_all.typeface.json';
+        const url = '../fonts/roboto/roboto_regular_some.typeface.json';
+        const onLoaded = font => {
+            // console.log(font);
+            // console.log(font.data.glyphs);
+            this.font = font;
+            this.createText();
+        };
+        const onProgress = xhr => {
+            // console.log(xhr.loaded, xhr.total, (xhr.loaded / xhr.total * 100) + '% loaded');
+        };
+        fontLoader.load(url, onLoaded, onProgress);
+    }
 
-/**
- * Animate
- */
-const tick = () => {
-    // Update controls
-    controls.update();
+    async loadMultipleFonts() {
+        this.fontMap.optimer = await loadFontAsync('optimer', 'bold');
+        this.fontMap.gentilis = await loadFontAsync('gentilis', 'bold');
+        this.fontMap.droid_sans = await loadFontAsync('droid/droid_sans', 'bold');
+        this.fontMap.droid_serif = await loadFontAsync('droid/droid_serif', 'bold');
+    }
 
-    // Render
-    renderer.render(scene, camera);
+    loadTtf() {
+        const url = '../fonts/roboto/roboto-regular.ttf';
+        const onLoaded = ttf => {
+            this.font = new Font(ttf);
+            this.fontMap.roboto = this.font;
+            this.createText();
+        };
+        const ttfLoader = new TTFLoader();
+        ttfLoader.load(url, onLoaded);
+    }
 
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick);
-};
+    createTextGeometry() {
+        const text = this.controls.text;
+        const parameters = {
+            font: this.font,
+            ...this.parameters
+        };
+        const textGeometry = new TextGeometry(text, parameters);
+        textGeometry.center();
+        return textGeometry;
+    }
 
-tick();
+    createText() {
+        const textGeometry = this.createTextGeometry();
+        this.textMesh = new Mesh(textGeometry, this.textMaterial);
+        this.textMesh.tick = ms => {
+            this.textMesh.rotation.y = (ms / 1000) * Math.PI * 0.05;
+        };
+        this.scene.add(this.textMesh);
+
+        requestAnimationFrame(this.render.bind(this));
+    }
+
+    createOrbitControls() {
+        this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
+        this.orbitControls.enableDamping = true;
+    }
+
+    createControlsGui() {
+        const reloadTextGeometry = () => {
+            const textGeometry = this.createTextGeometry();
+            this.textMesh.geometry.dispose();
+            this.textMesh.geometry = textGeometry;
+        };
+
+        const gui = new GUI();
+        gui.add(this.textMaterial, 'wireframe');
+        gui.add(this.controls, 'text').onChange(reloadTextGeometry);
+        gui.add(this.controls, 'font', ['optimer', 'gentilis', 'droid_sans', 'droid_serif', 'roboto'])
+            .onChange(fontName => {
+                this.font = this.fontMap[fontName];
+                this.scene.remove(this.textMesh);
+                this.createText();
+            });
+
+        gui.add(this.parameters, 'size', 0, 0.5, 0.01).onChange(reloadTextGeometry);
+        gui.add(this.parameters, 'height', 0, 0.3, 0.01).onChange(reloadTextGeometry);
+        gui.add(this.parameters, 'curveSegments', 1, 10, 1).onChange(reloadTextGeometry);
+        gui.add(this.parameters, 'bevelEnabled').onChange(reloadTextGeometry);
+        gui.add(this.parameters, 'bevelThickness', 0.0, 0.2).onChange(reloadTextGeometry);
+        gui.add(this.parameters, 'bevelSize', 0, 0.05).onChange(reloadTextGeometry);
+        gui.add(this.parameters, 'bevelOffset', -0.02, 0.02).onChange(reloadTextGeometry);
+        gui.add(this.parameters, 'bevelSegments', 1, 5, 1).onChange(reloadTextGeometry);
+    }
+
+    update(ms) {
+        this.textMesh.tick(ms);
+    }
+
+    render(ms) {
+        this.orbitControls.update();
+        this.update(ms);
+        this.renderer.render(this.scene, this.camera);
+        requestAnimationFrame(this.render.bind(this));
+    }
+
+    handleResize() {
+        window.addEventListener('resize', () => {
+            this.onResize();
+        });
+    }
+
+    onResize() {
+        const canvas = this.renderer.domElement;
+        const pixelRatio = window.devicePixelRatio;
+        const aspect = canvas.clientWidth / canvas.clientHeight;
+        this.camera.aspect = aspect;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(canvas.clientWidth * pixelRatio, canvas.clientHeight * pixelRatio, false);
+    }
+}
+
+
+new ThreejsExample(document.querySelector('#webglOutput'));
+

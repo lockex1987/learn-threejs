@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/OrbitControls.js';
-import { FontLoader } from 'https://unpkg.com/three@0.137.5/examples/jsm/loaders/FontLoader.js';
+import { FontLoader, Font } from 'https://unpkg.com/three@0.137.5/examples/jsm/loaders/FontLoader.js';
 import { TTFLoader } from 'https://unpkg.com/three@0.137.5/examples/jsm/loaders/TTFLoader.js';
 
 
@@ -25,11 +25,12 @@ function init() {
     const fontUrl = '../fonts/helvetiker/helvetiker_regular.typeface.json';
     const ttfFontUrl = '../fonts/roboto/roboto-regular.ttf';
 
-    const loader = new TTFLoader();
+    const ttfLoader = new TTFLoader();
     const anotherFontLoader = new FontLoader();
-    loader.load(ttfFontUrl, ttf => {
+    ttfLoader.load(ttfFontUrl, ttf => {
         // console.log(ttf);
         const font = anotherFontLoader.parse(ttf);
+        // const font = new Font(ttf);
         // console.log(font);
         createText(font);
     });

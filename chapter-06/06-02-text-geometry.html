@@ -1,31 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D text</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
-
-        html,
-        body {
-            overflow: hidden;
-        }
-
-        .webgl {
-            position: fixed;
-            top: 0;
-            left: 0;
-            outline: none;
-        }
-    </style>
+    <title>Ví dụ 3D Text</title>
+    <link rel="icon" href="../images/logo.svg" />
+    <link rel="stylesheet" href="../css/style.css" />
 </head>
 
 <body>
-    <canvas class="webgl"></canvas>
+    <canvas id="webglOutput"></canvas>
 
     <script type="importmap">
         {
@@ -34,6 +18,7 @@
             }
         }
     </script>
+
     <script src="js/06-02-text-geometry.js" type="module"></script>
 </body>
 </html>
