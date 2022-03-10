@@ -2217,6 +2217,8 @@ Sử dụng trực tiếp
 
 
 
+[Pen1](https://codepen.io/chrisjdesigner/pen/MWbKxyb)
+
 
 
 [ExtrudeGeometry – three.js docs](https://threejs.org/docs/?q=TextGeometry#api/en/geometries/ExtrudeGeometry)
@@ -2279,6 +2281,8 @@ Sử dụng trực tiếp
 
 Từ canvas
 
+Globe trái đất hình cầu (và hình lập phương)
+
 [Ví dụ MeshBasicMaterial](http://localhost:8000/chapter-07/07-01-texture.html)
 
 [File:Texture mapping demonstration animation.gif - Wikipedia](https://en.m.wikipedia.org/wiki/File:Texture_mapping_demonstration_animation.gif)
@@ -2293,6 +2297,10 @@ Từ canvas
 
 Thuộc tính map.
 
+Mỗi map xứng đáng một chương riêng.
+
+Thuộc tính alphaMap. Màu trắng là nhìn thấy. Màu đen là không.
+
 ### MeshMatcapMaterial
 
 Sử dụng Texture với các màu sắc và shading đã tính toán trước.
@@ -2302,6 +2310,40 @@ Trông không đơn sắc mà không cần ánh sáng. MatCap (Material Capture)
 Để ở Texture, hay một ví dụ Texture cơ bản ở đây luôn?
 
 Thuộc tính là `matcap`.
+
+[https://github.com/nidorx/matcaps](https://github.com/nidorx/matcaps)
+
+MeshToonMaterial
+
+gradientMap
+
+MeshStandardMaterial
+
+aoMap
+
+displacementMap
+
+metalnessMap
+
+roughnessMap
+
+normalMap
+
+alphaMap (cần thiết lập transparent bằng true)
+
+enviromentMap
+
+CubeTextureLoader load 6 ảnh
+
+[Poly Haven](https://polyhaven.com/)
+
+CC0 (số không) License
+
+Convert HDRI sang cube map online
+
+[HDRI to CubeMap](https://matheowis.github.io/HDRI-to-CubeMap/)
+
+
 
 ## Chương 8 - Load model
 
@@ -2341,6 +2383,12 @@ glTF files come in standard and binary form. These have different extensions:
 - Binary .glb files include all data in one single file.
 
 Định dạng OBJ cũng rất phổ biến.
+
+[Pen1](https://codepen.io/gianlucadeidda/pen/abLXWPZ)
+
+Điều chỉnh lại model cho về đúng chính giữa.
+
+
 
 \- - - Hết tập 1: Cơ bản - - -
 
@@ -2396,21 +2444,60 @@ x
 
 ## Chart
 
+[Pie](https://codepen.io/Developer_sunset/pen/mXbEGz)
+
+[Pie-2](https://codepen.io/talyYang/pen/bRbKRM)
+
+
+
 ## Export video
 
 ## Shadow
 
-Shadow tốn nhiều hiệu năng.
+Bóng tốn nhiều hiệu năng.
 
-Tạo bóng: cast và receive
+Phim ảnh cần hình ảnh trung thực, do đó render sẽ lâu, nhưng là render trước rồi chiếu sau, không phải real-time.
 
+Để có bóng, chúng ta cần:
+
+```javascript
 renderer.shadowMap.enabled = true;
-
 light.castShadow = true;
-
 mesh.castShadow = true;
-
 plane.receiveShadow = true;
+```
+
+Các loại nguồn sáng sau thì tạo bóng: DirectionalLight, PointLight, SpotLight. AmbientLight và HemisphereLight không tạo bóng.
+
+Cần tối ưu.
+
+Shadow map
+
+light.shadow.mapSize.width
+
+light.shadow.mapSize.height
+
+Kích thước nên là mũ 2.
+
+light.shadow.camera.near
+
+light.shadow.camera.far
+
+light.shadow.camera.top
+
+light.shadow.camera.left
+
+light.shadow.camera.right
+
+light.shadow.camera.bottom
+
+Sử dụng CameraHelper(light.shadow.camera)
+
+Các thuật toán tạo bóng: renderer.shadowMap.type
+
+Baking shadow: Tạo một Mesh để thể hiện bóng, di chuyển theo vật
+
+
 
 https://threejs.org/manual/#en/shadows
 
@@ -2445,6 +2532,8 @@ Phần trăm tải
 [Build a simple 2D physics engine for JavaScript games – IBM Developer](https://developer.ibm.com/tutorials/wa-build2dphysicsengine/)
 
 [Building a Physics-based 3D Menu with Cannon.js and Three.js - Codrops](https://tympanus.net/codrops/2019/12/10/building-a-physics-based-3d-menu-with-cannon-js-and-three-js/)
+
+
 
 
 
