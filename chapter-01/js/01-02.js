@@ -47,6 +47,8 @@ class ThreejsExample {
         const cubeMaterial = new MeshNormalMaterial();
         const cube = new Mesh(cubeGeometry, cubeMaterial);
         cube.position.set(-4, 3, 0);
+        // cube.rotation.x = 0.45;
+        // cube.rotation.y = -0.25;
         return cube;
     }
 

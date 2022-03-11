@@ -38,6 +38,72 @@ Các bài viết trên Viblo:
 
 [Three.js - Viblo](https://viblo.asia/tags/threejs)
 
+
+
+Inspiration:
+
+[Dyad Studios v5](https://www.dyadstudios.com)
+
+[Short           Trip - Alexander Perrin](https://alexanderperrin.com.au/paper/shorttrip/)
+
+[WindLand -           By Neotix](https://windland-neotix.vercel.app)
+
+[Tree](tree forest/index.html)
+
+[Aviator](aviator/index.html)
+
+Chương 1, *Tạo 3D Scene đầu tiên với Three.js*, bao gồm các        bước cơ bản mà bạn cần làm để bắt đầu với Three.js. Bạn sẽ tạo Three.js        Scene đầu tiên của mình, và ở cuối chương này bạn sẽ có thể tạo và        animate cảnh 3D trực tiếp trên trình duyệt. Animation loop.
+
+Chương 2, *Các thành phần cơ bản tạo nên một ứng dụng Three.js*,        giải thích các thành phần cơ bản mà bạn cần hiểu khi làm việc với        Three.js. Bạn sẽ học về Light (ánh sáng), Mesh, Geometry, Material,        Camera. Trong chương này, bạn cũng sẽ có overview về các loại Light khác        nhau mà Three.js cung cấp và các loại Camera mà bạn có thể sử dụng.
+
+Chương 3, *Làm việc với các nguồn Light trong Three.js*, đi sâu        vào các Light khác nhau. Chương gồm các ví dụ và giải thích cách sử dụng        SpotLight, DirectionLight, AmbientLight, PointLight, HemisphereLight,        AreaLight. Thêm vào đó, chương này cũng chỉ ra cách áp dụng hiệu ứng len        flare.
+
+Chương 4, *Làm việc với Material*, nói về các Material có sẵn        trong Three.js mà bạn có thể sử dụng trên Mesh. Chương chỉ ra tất cả các        thuộc tính bạn có thể cấu hình cho các trường hợp cụ thể.
+
+Chương 5, *Làm việc với Geometry*, là chương đầu tiên trong hai        chương mà sẽ khám phá tất cả các Geometry được cung cấp bởi Three.js.        Trong chương này, bạn sẽ học cách tạo và cấu hình các Geometry như        Plane, Circle, Shape, Cube, Sphere, Cylinder, Torus, TorusKnot, và        PolyHedron.
+
+Chương 6, *Geometry nâng cao và Binary Operation*, tiếp tục ở        nơi mà chương trước kết thúc. Chương này chỉ cho bạn cách cấu hình và sử        dụng các Geometry nâng cao hơn như Convex và Lathe. Trong chương này,        bạn cũng học cách extrude 3D Geometry từ 2D Shape và cách bạn tạo        Geometry mới bằng cách kết hợp các Geometry sử dụng Binary Operation.
+
+Chương 7, *Point và Sprite (Particle)*, giải thích cách sử dụng        Point và Sprite trong Three.js. Bạn sẽ học cách tạo một đám mây Point từ        đầu và từ các Geometry đã tồn tại. Trong chương này, bạn cũng học cách        bạn có thể điều chỉnh cách một Point đơn lẻ trông thế nào bằng cách sử        dụng Sprite và Material.
+
+Chương 8, *Tạo và tải các Mesh và Geometry nâng cao (Model)*,
+
+Chương 9, *Animation và di chuyển Camera*,
+
+Chương 10, *Tải và làm việc với Texture*,
+
+Chương 11, *Render Post-processing*,
+
+Buffer
+
+Organize, group, scene graph
+
+Chương 12, *Thêm vật lý và âm thanh*,
+
+Chương 13, *3D Globe Map*,
+
+Chương 14, *3D Chart*,
+
+Chương 15, Export video,
+
+[Demo](export-video.html)
+
+Chương 16, WebGL, bắt đầu tìm hiểu
+
+[WebGL tutorial - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial)
+
+[WebGL Fundamentals](https://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html)
+
+[Demo](webgl tutorial/sample1/index.html)
+
+Chương 17, Shader, tìm hiểu sâu về WebGL
+
+[List of common shading algorithms - Wikipedia](https://en.m.wikipedia.org/wiki/List_of_common_shading_algorithms)
+
+
+
+
+
 ## Chương 1 - Tạo cảnh 3D đầu tiên
 
 ### Các yêu cầu để sử dụng Three.js
@@ -2345,6 +2411,96 @@ Convert HDRI sang cube map online
 
 
 
+
+
+Shininess, bump, reflection.
+
+### Tải một Texture và áp dụng nó cho một Mesh
+
+Kích thước ảnh là mũ 2 (256x256, 512x512, 1024x1024).
+
+[Example           10.01 - Basic Textures](learn three.js/src/chapter-10/01-basic-texture.html)
+
+[Example           10.02 - Basic Textures DDS](learn three.js/src/chapter-10/02-basic-texture-dds.html)
+
+[Example           10.03 - Basic Textures PVR](learn three.js/src/chapter-10/03-basic-texture-pvr.html)
+
+[Example           10.04 - Basic Textures TGA](learn three.js/src/chapter-10/04-basic-texture-tga.html)
+
+[Example           10.05 - KTX Textures](learn three.js/src/chapter-10/05-basic-texture-ktx.html)
+
+[Example           10.06 - EXR Textures](learn three.js/src/chapter-10/06-basic-texture-exr.html)
+
+[Example           10.07 - HDR/RGBE Textures](learn three.js/src/chapter-10/07-basic-texture-rgbe.html)
+
+### Sử dụng một bump map để tạo vân
+
+[Example           10.08 - Bump map](learn three.js/src/chapter-10/08-bump-map.html)
+
+### Đạt tới chi tiết hơn với normal map
+
+[Example           10.09 - Normal map](learn three.js/src/chapter-10/09-normal-map.html)
+
+### Sử dụng displacement map để chỉnh vị trí của các đỉnh
+
+[Example           10.10 - Displacement map](learn three.js/src/chapter-10/10-displacement-map.html)
+
+### Thêm bóng subtle với ambient occlusion map
+
+[Example           10.11 - Ambient occlusion map](learn three.js/src/chapter-10/11-ao-map.html)
+
+### Tạo bóng giả sử dụng light map
+
+[Example           10.12 - Light map](learn three.js/src/chapter-10/12-light-map.html)
+
+### Kim loại và thô ráp
+
+[Example           10.13 - Metalness and Roughness](learn three.js/src/chapter-10/13-metal-roughness-map.html)
+
+### Alpha map
+
+[Example           10.14 - Alpha map](learn three.js/src/chapter-10/14-alpha-map.html)
+
+### Emissive map
+
+[Example           10.15 - Emissive](learn three.js/src/chapter-10/15-emissive-map.html)
+
+### Specular map
+
+THREE.MeshPhongMaterial cho shiny, THREE.MeshLambertMaterial cho không        shiny.
+
+Sử dụng specular map để chỉ định phần bóng, phần không bóng. Như trong        trường hợp quả địa cầu, đại dương bóng hơn đất liền.
+
+[Example           10.16 - Specular](learn three.js/src/chapter-10/16-specular-map.html)
+
+### Tạo phản xạ giả sử dụng environment map
+
+[Example           10.17 - Envmap static](learn three.js/src/chapter-10/17-env-map-static.html)
+
+[Example           10.18 - Envmap dynamic](learn three.js/src/chapter-10/18-env-map-dynamic.html)
+
+### Điều chỉnh UV map
+
+[Example           10.19 - UV Mapping](learn three.js/src/chapter-10/19-uv-mapping.html)
+
+[Example           10.20 - UV Mapping Manual](learn three.js/src/chapter-10/20-uv-mapping-manual.html)
+
+### Lặp wrap
+
+[Example           10.21 - Repeat wrapping](learn three.js/src/chapter-10/21-repeat-wrapping.html)
+
+### Render một canvas va sử dụng nó như Texture
+
+[Example           10.22 - Canvas Texture](learn three.js/src/chapter-10/22-canvas-texture.html)
+
+[Example           10.23 - Bump map from Canvas](learn three.js/src/chapter-10/23-canvas-texture-bump.html)
+
+### Sử dụng output từ một video làm Texture
+
+[Example           10.24 - Video texture](learn three.js/src/chapter-10/24-video-texture.html)
+
+[three.js           webgl - materials - video (test.html)](learn three.js/src/chapter-10/test.html)
+
 ## Chương 8 - Load model
 
 [Model Loader](http://localhost:8000/chapter-08/08-01-model-loader.html)
@@ -2398,6 +2554,38 @@ glTF files come in standard and binary form. These have different extensions:
 
 x
 
+### Tham khảo
+
+[Use           three.js to achieve a cool acid style 3D page - SegmentFault](https://segmentfault.com/a/1190000040753633/en)
+
+[How           We Made a WebGL and Three.js Splash Page for a Music Release](https://olitunes.com/webgl-threejs-music-tech/)
+
+[Creating the Effect of Transparent Glass and Plastic           in Three.js - Codrops](https://tympanus.net/codrops/2021/10/27/creating-the-effect-of-transparent-glass-and-plastic-in-three-js/)
+
+[WebGL           - Quick Guide](https://www.tutorialspoint.com/webgl/webgl_quick_guide.htm)
+
+[Three.js           Archives - Red Stapler](https://redstapler.co/tag/three-js/)
+
+[Beginning with 3D WebGL by Rachel Smith on CodePen](https://codepen.io/rachsmith/post/beginning-with-3d-webgl-pt-1-the-scene)
+
+[Three.js Journey           (có phí)](https://threejs-journey.com)
+
+[Bruno Simon - The ultimate Three.js course Updated           11-2021](https://freetutsdownload.com/bruno-simon-the-ultimate-three-js-course/)
+
+[Bruno Simon - The ultimate Three.js course Updated           11-2021 - Google Drive](https://drive.google.com/drive/folders/1Ck6XrcZvIbnBcdvpHrpHvouwLSXopm3-)
+
+[Three.js           Tutorials](https://sbcode.net/threejs/)
+
+[Three.js           Tutorial Crash Course - 2021 - YouTube](https://www.youtube.com/watch?v=YK1Sw_hnm58)
+
+[Three.js Tutorial for Beginners - YouTube](https://www.youtube.com/playlist?list=PLbu98QxRH81KkLTN00OXhD8Y-pRVgTCnM)
+
+[Three.js Tutorial Series - YouTube](https://www.youtube.com/playlist?list=PLRtjMdoYXLf6mvjCmrltvsD0j12ZQDMfE)
+
+[Explore 3D Models - Sketchfab](https://sketchfab.com/3d-models?features=downloadable&sort_by=-likeCount&cursor=cD0yMTE4)
+
+[Free 3D Models,           Download or Edit Online · Clara.io](https://clara.io/library)
+
 ## Ebook
 
 [Định dạng file Epub](https://cttd.tk/posts/it%20-%20epub%20format/)
@@ -2440,15 +2628,161 @@ x
 
 ## Shader
 
-## Globe
+## Globe Map
 
-## Chart
+Cần hiển thị được các nước.
+
+[Andrey Sitnik](https://sitnik.ru/en/)
+
+[ai/sitnik.ru:           My homepage content and scripts](https://github.com/ai/sitnik.ru)
+
+[Faster WebGL/Three.js 3D graphics           with OffscreenCanvas and Web Workers - DEV Community](https://dev.to/evilmartians/faster-webgl-three-js-3d-graphics-with-offscreencanvas-and-web-workers-43he)
+
+Demo
+
+- [3D Globe Map 1](3d globe/globe 1/index.html)
+- [3D             Globe với thư viện amCharts](../js - amcharts/examples/map-globe-with-projected-circles/index.html)
+- [Hàm             callback khi chọn nước](3d globe/examples/19 api on country picked.html)
+- [Chủ             động chọn nước](3d globe/examples/20 api switch country.html)
+- [WebGL Earth](3d globe/thematic mapping/index.html)
+- [Pure JS             with canvas](3d globe/pure js and canvas/index.html)
+- [World             Population Density](3d globe/world-population-density/index.html)
+- [Three.js Earth](3d globe/three-js-earth/index.html)
+
+Bắt đầu từ:
+
+[dataarts/webgl-globe:           WebGL Globe is a platform for visualizing latitude longitude based          information using WebGL](https://github.com/dataarts/webgl-globe)
+
+[WebGL           Globe - Experiments with Google](https://experiments.withgoogle.com/chrome/globe)
+
+Lấy cảm hứng từ trên:
+
+[vasturiano/three-globe:           WebGL Globe Data Visualization as a ThreeJS reusable 3D object](https://github.com/vasturiano/three-globe)
+
+Wrapper:
+
+[vasturiano/globe.gl:           UI component for Globe Data Visualization using ThreeJS/WebGL](https://github.com/vasturiano/globe.gl)
+
+[Globe.GL](https://globe.gl/)
+
+Hướng dẫn:
+
+[How To Make The Earth In WebGL? - Learning Three.js](http://learningthreejs.com/blog/2013/09/16/how-to-make-the-earth-in-webgl/)
+
+[Intermediate           Three.js Tutorial - Create a Globe with Custom Shaders - YouTube](https://www.youtube.com/watch?v=vM8M4QloVL0)
+
+
+​      
+
+[HTML5: Render open data on a 3D world globe with           Three.js](http://www.smartjava.org/content/html5-render-open-data-3d-world-globe-threejs/)
+
+Thư viện khác:
+
+[Gio.js](https://giojs.org/)
+
+![Gio logo](images/gio-logo.png)
+
+
+​      
+
+```
+$ cd new/sitnik.ru-main/
+$ npm install
+npm notice created a lockfile as package-lock.json. You should commit this file.
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@~2.3.2 (node_modules/rollup/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@2.3.2: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+npm WARN eslint-config-standard@16.0.3 requires a peer of eslint@^7.12.1 but none is installed. You must install peer dependencies yourself.
+npm WARN eslint-config-standard@16.0.3 requires a peer of eslint-plugin-promise@^4.2.1 || ^5.0.0 but none is installed. You must install peer dependencies yourself.
+
+added 572 packages from 333 contributors in 30.22s
+
+104 packages are looking for funding
+  run `npm fund` for details
+
+$ npm run build
+
+> @ build /home/huyennv9/new/sitnik.ru-main
+> NODE_ENV=production ./scripts/build.js
+
+✔ Load location 0 ms
+✔ Clean dist/ 2 ms
+✔ Save location cache 11 ms
+✔ Copy images 138 ms
+✔ Compile styles 220 ms
+✔ Bundle scripts 5387 ms
+✔ Update nginx.conf 136 ms
+✔ Compile HTML 137 ms
+✔ Precompess assets 18 ms
+$ npm run start
+
+> @ start /home/huyennv9/new/sitnik.ru-main
+> serve dist/
+
+WARNING: Checking for updates failed (use `--debug` to see full error)
+
+   ┌───────────────────────────────────────────────────┐
+   │                                                   │
+   │   Serving!                                        │
+   │                                                   │
+   │   - Local:            http://localhost:3000       │
+   │   - On Your Network:  http://172.16.40.196:3000   │
+   │                                                   │
+   │   Copied local address to clipboard!              │
+   │                                                   │
+   └───────────────────────────────────────────────────┘
+```
+
+
+​      
+
+
+
+
+​      
+
+
+
+
+
+## 3D Chart
 
 [Pie](https://codepen.io/Developer_sunset/pen/mXbEGz)
 
 [Pie-2](https://codepen.io/talyYang/pen/bRbKRM)
 
+Column (cube)
 
+Trục
+
+Label
+
+[Groundbreaking Skyscrapers - 3D model by USA TODAY           NETWORK (@EmergingTech) [fc64e66\]](https://sketchfab.com/3d-models/groundbreaking-skyscrapers-fc64e663a32342a187320e1f07aa476d)
+
+[Learning Three.js With Real World Challenges (that           have already been solved) - data analysis, data visualization,          three.js - Bocoup](https://bocoup.com/blog/learning-three-js-with-real-world-challenges-that-have-already-been-solved)
+
+[Three.js - wooden bar chart / David B. / Observable](https://observablehq.com/@bumbeishvili/three-js-wooden-bar-chart)
+
+[3D bar chart port / David B. / Observable](https://observablehq.com/@bumbeishvili/3d-bar-chart-port?collection=@bumbeishvili/3d)
+
+[3D           / David B. / Observable](https://observablehq.com/collection/@bumbeishvili/3d)
+
+[EVOLUTION           of WORLD'S TALLEST BUILDING: Size Comparison (1901-2022) - YouTube](https://www.youtube.com/watch?v=PuTqWxuAazI)
+
+[TOP           Richest Person Comparison (wealthiest people on the planet comparison)          - YouTube](https://www.youtube.com/watch?v=R6nSQBD-3aA)
+
+[Tallest           statue size comparison 3d animation - YouTube](https://www.youtube.com/watch?v=YEPJDkZRdJU)
+
+[MetaBallStudios           - YouTube](https://www.youtube.com/channel/UCQwFuQLnLocj5F7ZcmcuWYQ)
+
+Demo
+
+[Area chart](3d chart/area-chart/index.html)
+
+[3 axis](3d chart/3-axis/index.html)
+
+[Line chart](3d chart/line-chart/index.html)
+
+[Column chart](3d chart/column-chart/index.html)
 
 ## Export video
 
@@ -2537,5 +2871,105 @@ Phần trăm tải
 
 
 
+## Render Post-processing
 
+### Thiết lập Three.js cho post-processing
+
+[Example 11.01 - Basic Effect Composer](learn three.js/src/chapter-11/01-basic-effect-composer.html)
+
+Tạo THREE.EffectComposer
+
+Cấu hình THREE.EffectComposer
+
+Cập nhật vòng lặp render
+
+### Post-processing pass
+
+#### Post-processing pass đơn giản
+
+[Example           11.02 - Simple Pass Effects - 1](learn three.js/src/chapter-11/02-simple-pass-1.html)
+
+Film, Bloom, DotScreen.
+
+Sử dụng THREE.FilmPass để tạo hiệu ứng giống TV
+
+Thêm hiệu ứng boom với THREE.BloomPass
+
+Output Scene như là một tập các điểm
+
+Hiển thị đầu ra của nhiều renderer trên cùng màn hình
+
+Thêm pass đơn giản
+
+[Example           11.03 - Simple Pass Effects - 2](learn three.js/src/chapter-11/03-simple-pass-2.html)
+
+Outline, Glitch, Unreal, Halftone.
+
+### Luồng EffectComposer nâng cao sử dụng mark
+
+[Example 11.04 - Post processing masks](learn three.js/src/chapter-11/04-post-processing-masks.html)
+
+### Pass Bokeh nâng cao
+
+[Example           11.05 - Bokeh](learn three.js/src/chapter-11/05-bokeh.html)
+
+### Pass ambient occlusion nâng cao
+
+[Example           11.06 - Ambient Occlusion](learn three.js/src/chapter-11/06-ambient-occlusion.html)
+
+### Sử dụng THREE.ShaderPass cho các hiệu ứng điều chỉnh
+
+[Example           11.07 - Shader pass simple](learn three.js/src/chapter-11/07-shader-pass-simple.html)
+
+Shader đơn giản
+
+### Shader blur
+
+[Example           11.08 - Blur passes](learn three.js/src/chapter-11/08-shader-pass-blur.html)
+
+### Tạo post-processing shader điều chỉnh
+
+Điều chỉnh grayscale shader
+
+Tạo một bit shader điều chỉnh
+
+[Example           11.09 - Basic Effect Composer](learn three.js/src/chapter-11/09-shader-pass-custom.html)
+
+### Thừa một số file ví dụ (không chạy được)
+
+[Example 11.03 - Post processing masks](learn three.js/src/chapter-11/103-post-processing-masks.html)
+
+[Example           11.04 - Shader Pass simple](learn three.js/src/chapter-11/104-shaderpass-simple.html)
+
+[Example           11.04 - Shader Pass simple blur](learn three.js/src/chapter-11/105-shaderpass-blur.html)
+
+[Example 11.06 - Advanced](learn three.js/src/chapter-11/106-shaderpass-advanced.html)
+
+[Example           11.07 - custom shaderpass](learn three.js/src/chapter-11/107-shaderpass-custom.html)
+
+## Thêm vật lý và âm thanh
+
+Tạo một Three.js Scene cơ bản với vật lý
+
+[Example           12.01 - Dominos](learn three.js/src/chapter-12/01-dominos.html)
+
+Các thuộc tính Physi.js material
+
+[Example           12.02 - Material](learn three.js/src/chapter-12/02-material.html)
+
+Các hình Physi.js hỗ trợ
+
+[Example           12.03 - Shapes](learn three.js/src/chapter-12/03-shapes.html)
+
+Sử dụng ràng buộc giới hạn chuyển động của các đối tượng
+
+[Example           12.04 - Point Constraint](learn three.js/src/chapter-12/04-point-constraint.html)
+
+[Example           12.05 - Sliders and hinges](learn three.js/src/chapter-12/05-sliders-hinges.html)
+
+[Example           12.06 - DOF Constraint](learn three.js/src/chapter-12/06-dof-constraint.html)
+
+Thêm âm thanh
+
+[Example           12.07 - Audio](learn three.js/src/chapter-12/07-audio.html)
 
