@@ -2117,7 +2117,7 @@ Trong các bài trước, chúng ta đã tìm hiểu cách tạo các đối tư
 
 ### Định dạng Typeface
 
-Three.js cung cấp sẵn một số file font mẫu ở thư mục `examples/fonts` như gentilis, optimer,...:
+Three.js cung cấp sẵn một số file font mẫu ở thư mục `examples/fonts` như gentilis, helvetiker, optimer,...:
 
 ```
 examples/
@@ -2130,16 +2130,10 @@ examples/
     │   ├── droid_serif_regular.typeface.json
     │   ├── NOTICE
     │   └── README.txt
-    ├── gentilis_bold.typeface.json
-    ├── gentilis_regular.typeface.json
-    ├── LICENSE
     ├── open-sans
     │   ├── open-sans.css
     │   ├── open-sans-v15-cyrillic-ext_greek_greek-ext_cyrillic_latin_latin-ext_vietnamese-regular.woff
     │   └── open-sans-v15-cyrillic-ext_greek_greek-ext_cyrillic_latin_latin-ext_vietnamese-regular.woff2
-    ├── optimer_bold.typeface.json
-    ├── optimer_regular.typeface.json
-    ├── README.md
     ├── tabler-icons
     │   ├── fonts
     │   │   ├── tabler-icons.eot
@@ -2148,14 +2142,24 @@ examples/
     │   │   ├── tabler-icons.woff
     │   │   └── tabler-icons.woff2
     │   └── tabler-icons.min.css
-    └── ttf
-        ├── kenpixel.ttf
-        └── README.md
+    ├── ttf
+    │   ├── kenpixel.ttf
+    │   └── README.md
+    ├── gentilis_bold.typeface.json
+    ├── gentilis_regular.typeface.json
+    ├── helvetiker_bold.typeface.json
+    ├── helvetiker_regular.typeface.json
+    ├── LICENSE
+    ├── optimer_bold.typeface.json
+    ├── optimer_regular.typeface.json
+    └── README.md
 ```
 
 
 
-Chúng ta có thể convert các font sang định dạng Typeface online ở [gero3.github.io/facetype.js](https://gero3.github.io/facetype.js/).
+Chúng ta có thể convert các font sang định dạng Typeface online ở [gero3.github.io/facetype.js](https://gero3.github.io/facetype.js/). Bạn chỉ cần truy cập trang web này, tải file TTF, trang web sẽ export file facetype.json về cho bạn. File này chứa cách vẽ cho từng ký tự.
+
+SCREENSHOT
 
 
 
@@ -2539,6 +2543,8 @@ glTF files come in standard and binary form. These have different extensions:
 - Binary .glb files include all data in one single file.
 
 Định dạng OBJ cũng rất phổ biến.
+
+Animation.
 
 [Pen1](https://codepen.io/gianlucadeidda/pen/abLXWPZ)
 

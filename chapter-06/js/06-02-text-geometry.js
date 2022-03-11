@@ -38,6 +38,8 @@ class ThreejsExample {
 
         this.textMaterial = new MeshStandardMaterial({
             color: 0x156289,
+            // color: 0xd63384,
+            // color: 0x20c997,
             emissive: 0x072534,
             roughness: 0
         });
@@ -48,7 +50,7 @@ class ThreejsExample {
         };
         this.parameters = {
             size: 0.25,
-            height: 0.1,
+            height: 0.05,
             curveSegments: 6,
             bevelEnabled: false,
             bevelThickness: 0.03,
@@ -60,7 +62,7 @@ class ThreejsExample {
         this.fontMap = {
             optimer: null,
             gentilis: null,
-            // helvetiker: null,
+            helvetiker: null,
             droid_sans: null,
             droid_serif: null,
             roboto: null
@@ -116,6 +118,7 @@ class ThreejsExample {
             // console.log(font);
             // console.log(font.data.glyphs);
             this.font = font;
+            this.fontMap.roboto = this.font;
             this.createText();
         };
         const onProgress = xhr => {
@@ -125,8 +128,9 @@ class ThreejsExample {
     }
 
     async loadMultipleFonts() {
-        this.fontMap.optimer = await loadFontAsync('optimer', 'bold');
         this.fontMap.gentilis = await loadFontAsync('gentilis', 'bold');
+        this.fontMap.helvetiker = await loadFontAsync('helvetiker', 'bold');
+        this.fontMap.optimer = await loadFontAsync('optimer', 'bold');
         this.fontMap.droid_sans = await loadFontAsync('droid/droid_sans', 'bold');
         this.fontMap.droid_serif = await loadFontAsync('droid/droid_serif', 'bold');
     }
@@ -155,7 +159,16 @@ class ThreejsExample {
 
     createText() {
         const textGeometry = this.createTextGeometry();
-        this.textMesh = new Mesh(textGeometry, this.textMaterial);
+        // this.textMesh = new Mesh(textGeometry, this.textMaterial);
+        this.textMesh = new Mesh(textGeometry, [
+            this.textMaterial, // front
+            new MeshStandardMaterial({
+                color: 0xffc107,
+                // emissive: 0xffc107,
+                emissive: 0x444444,
+                roughness: 0
+            }) // side
+        ]);
         this.textMesh.tick = ms => {
             this.textMesh.rotation.y = (ms / 1000) * Math.PI * 0.05;
         };
@@ -179,7 +192,7 @@ class ThreejsExample {
         const gui = new GUI();
         gui.add(this.textMaterial, 'wireframe');
         gui.add(this.controls, 'text').onChange(reloadTextGeometry);
-        gui.add(this.controls, 'font', ['optimer', 'gentilis', 'droid_sans', 'droid_serif', 'roboto'])
+        gui.add(this.controls, 'font', ['gentilis', 'helvetiker', 'optimer', 'droid_sans', 'droid_serif', 'roboto'])
             .onChange(fontName => {
                 this.font = this.fontMap[fontName];
                 this.scene.remove(this.textMesh);
