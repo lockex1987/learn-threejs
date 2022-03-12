@@ -3,11 +3,7 @@
 import * as THREE from 'three';
 import Stats from 'https://threejs.org/examples/jsm/libs/stats.module.js';
 import { OrbitControls } from 'https://threejs.org/examples/jsm/controls/OrbitControls.js';
-
-
-// From d3-threeD.js
-const $d3g = {};
-d3threeD($d3g, THREE);
+import transformSVGPath from '../../js/d3-threeD.js';
 
 
 /// Part from g0v/twgeojson
@@ -19,7 +15,7 @@ const addGeoObject = function (group, svgObject) {
     const center = svgObject.center;
 
     for (let i = 0; i < paths.length; i++) {
-        const path = $d3g.transformSVGPath(paths[i]);
+        const path = transformSVGPath(paths[i]);
         const color = new THREE.Color(colors[i]);
         const material = new THREE.MeshLambertMaterial({
             color: color,

@@ -2332,9 +2332,15 @@ ttfLoader.load(url, onLoaded);
 
 ### SVG
 
+![Batman](images/batman.svg)
+
 ?
 
+
+
 3D map, 3D logo.
+
+[SVGLoader](https://threejs.org/docs/index.html?q=SVG#examples/en/loaders/SVGLoader), [d3-threeD](https://github.com/asutherland/d3-threeD).
 
 ## Chương 7 - Texture
 

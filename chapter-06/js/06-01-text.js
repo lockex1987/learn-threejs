@@ -3,11 +3,11 @@ import {
     PerspectiveCamera,
     WebGLRenderer,
     Color,
-    MeshStandardMaterial,
-    Mesh,
     HemisphereLight,
     PointLight,
-    DirectionalLight
+    DirectionalLight,
+    MeshStandardMaterial,
+    Mesh
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
 import { OrbitControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/OrbitControls.js';
@@ -141,8 +141,9 @@ class ThreejsExample {
     loadTtf() {
         const url = '../fonts/roboto/roboto-regular.ttf';
         const onLoaded = ttf => {
-            // this.font = new Font(ttf);
-            this.fontMap.roboto = this.font;
+            const font = new Font(ttf);
+            // this.font = font;
+            this.fontMap.roboto = font;
             // this.createText();
         };
         const ttfLoader = new TTFLoader();
@@ -260,4 +261,3 @@ class ThreejsExample {
 
 
 new ThreejsExample(document.querySelector('#webglOutput'));
-
