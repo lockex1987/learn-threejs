@@ -98,10 +98,9 @@ function loadSVG(url) {
     helper.rotation.x = Math.PI / 2;
     scene.add(helper);
 
-    const loader = new SVGLoader();
-
-    loader.load(url, function (data) {
-        const paths = data.paths;
+    const svgLoader = new SVGLoader();
+    svgLoader.load(url, svg => {
+        const paths = svg.paths;
 
         const group = new THREE.Group();
         group.scale.multiplyScalar(0.25);
@@ -113,7 +112,9 @@ function loadSVG(url) {
             const path = paths[i];
 
             const fillColor = path.userData.style.fill;
-            if (guiData.drawFillShapes && fillColor !== undefined && fillColor !== 'none') {
+            if (guiData.drawFillShapes
+                && fillColor !== undefined
+                && fillColor !== 'none') {
                 const material = new THREE.MeshBasicMaterial({
                     color: new THREE.Color().setStyle(fillColor).convertSRGBToLinear(),
                     opacity: path.userData.style.fillOpacity,
@@ -124,20 +125,18 @@ function loadSVG(url) {
                 });
 
                 const shapes = SVGLoader.createShapes(path);
-
                 for (let j = 0; j < shapes.length; j++) {
                     const shape = shapes[j];
-
                     const geometry = new THREE.ShapeGeometry(shape);
                     const mesh = new THREE.Mesh(geometry, material);
-
                     group.add(mesh);
                 }
             }
 
             const strokeColor = path.userData.style.stroke;
-
-            if (guiData.drawStrokes && strokeColor !== undefined && strokeColor !== 'none') {
+            if (guiData.drawStrokes
+                && strokeColor !== undefined
+                && strokeColor !== 'none') {
                 const material = new THREE.MeshBasicMaterial({
                     color: new THREE.Color().setStyle(strokeColor).convertSRGBToLinear(),
                     opacity: path.userData.style.strokeOpacity,
@@ -149,12 +148,9 @@ function loadSVG(url) {
 
                 for (let j = 0, jl = path.subPaths.length; j < jl; j++) {
                     const subPath = path.subPaths[j];
-
                     const geometry = SVGLoader.pointsToStroke(subPath.getPoints(), path.userData.style);
-
                     if (geometry) {
                         const mesh = new THREE.Mesh(geometry, material);
-
                         group.add(mesh);
                     }
                 }
@@ -162,7 +158,6 @@ function loadSVG(url) {
         }
 
         scene.add(group);
-
         render();
     });
 }

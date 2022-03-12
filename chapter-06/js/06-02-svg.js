@@ -8,12 +8,13 @@ import {
     DirectionalLight,
     ExtrudeGeometry,
     MeshStandardMaterial,
-    Mesh,
-    Group
+    Mesh
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
 import { OrbitControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/OrbitControls.js';
 import { GUI } from 'https://unpkg.com/three@0.137.5/examples/jsm/libs/lil-gui.module.min.js';
+import { SVGLoader } from 'https://unpkg.com/three@0.137.5/examples/jsm/loaders/SVGLoader.js';
+import { mergeBufferGeometries } from 'https://unpkg.com/three@0.137.5/examples/jsm/utils/BufferGeometryUtils.js';
 import transformSVGPath from '../../js/d3-threeD.js';
 
 
@@ -23,9 +24,14 @@ class ThreejsExample {
         this.createCamera(canvas);
         this.createRenderer(canvas);
         this.createLights();
+
+        this.controls = {
+            type: 'map'
+        };
         this.createSvg();
+
         this.createOrbitControls();
-        // this.createControlsGui();
+        this.createControlsGui();
         this.handleResize();
         requestAnimationFrame(this.render.bind(this));
     }
@@ -37,7 +43,7 @@ class ThreejsExample {
 
     createCamera(canvas) {
         const aspect = canvas.clientWidth / canvas.clientHeight;
-        this.camera = new PerspectiveCamera(45, aspect, 0.1, 15);
+        this.camera = new PerspectiveCamera(45, aspect, 0.1, 25);
         this.camera.position.z = 2;
     }
 
@@ -63,10 +69,38 @@ class ThreejsExample {
         this.scene.add(pointLight);
     }
 
-    parseSvg(svgString, scale, svgMaterial) {
+    createSvg() {
+        if (this.svgMesh) {
+            this.scene.remove(this.svgMesh);
+        }
+        if (this.controls.type == 'logo') {
+            this.createSvg1();
+        } else if (this.controls.type == 'map') {
+            this.createSvg2();
+        }
+    }
+
+    createSvg1() {
+        const svgString = document.querySelector('#batman-path').getAttribute('d');
+        const geometry = this.createGeometryFromSvgString(svgString);
+        this.createMesh(geometry);
+    }
+
+    createSvg2() {
+        // const svgUrl = '../images/batman_logo.svg';
+        const svgUrl = '../images/vietnamese_map.svg';
+        const svgLoader = new SVGLoader();
+        svgLoader.load(svgUrl, svg => {
+            const geometry = this.createGeometryFromSvgObject(svg);
+            geometry.rotateX(Math.PI);
+            this.createMesh(geometry);
+        });
+    }
+
+    createGeometryFromSvgString(svgString) {
+        const arr = [];
         const path = transformSVGPath(svgString);
         const shapes = path.toShapes(true);
-        const group = new Group();
         shapes.forEach(shape => {
             const options = {
                 depth: 2,
@@ -77,27 +111,50 @@ class ThreejsExample {
                 curveSegments: 12,
                 steps: 1
             };
-            const svgGeometry = new ExtrudeGeometry(shape, options);
-            svgGeometry.scale(scale, scale, scale);
-            svgGeometry.center();
-
-            const mesh = new Mesh(svgGeometry, svgMaterial);
-            group.add(mesh);
+            const piece = new ExtrudeGeometry(shape, options);
+            arr.push(piece);
         });
-        return group;
+        const geometry = mergeBufferGeometries(arr, true);
+        return geometry;
     }
 
-    createSvg() {
-        const svgString = document.querySelector('#batman-path').getAttribute('d');
-        const scale = 0.001;
+    createGeometryFromSvgObject(svg) {
+        const arr = [];
+        const paths = svg.paths;
+        paths.forEach(path => {
+            const shapes = SVGLoader.createShapes(path);
+            shapes.forEach(shape => {
+                const options = {
+                    depth: 2,
+                    bevelThickness: 2,
+                    bevelSize: 0.5,
+                    bevelSegments: 3,
+                    bevelEnabled: true,
+                    curveSegments: 12,
+                    steps: 1
+                };
+                const piece = new ExtrudeGeometry(shape, options);
+                arr.push(piece);
+            });
+        });
+        const geometry = mergeBufferGeometries(arr, true);
+        return geometry;
+    }
+
+    createMesh(geometry) {
+        const scale = 0.002;
         const svgMaterial = new MeshStandardMaterial({
             color: 0x156289,
             emissive: 0x072534,
             roughness: 0
         });
-        this.svgMesh = this.parseSvg(svgString, scale, svgMaterial);
+
+        geometry.center();
+        geometry.scale(scale, scale, scale);
+
+        this.svgMesh = new Mesh(geometry, svgMaterial);
         this.svgMesh.tick = ms => {
-            this.svgMesh.rotation.y = (ms / 1000) * Math.PI * 0.05;
+            // this.svgMesh.rotation.y = (ms / 1000) * Math.PI * 0.05;
         };
         this.scene.add(this.svgMesh);
     }
@@ -105,52 +162,24 @@ class ThreejsExample {
     createOrbitControls() {
         this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
         this.orbitControls.enableDamping = true;
-
-        // Khóa góc xoay theo chiều dọc
-        // Chỉ xoay được theo trục Y
-        this.orbitControls.minPolarAngle = Math.PI / 2;
-        this.orbitControls.maxPolarAngle = Math.PI / 2;
     }
 
-    // TODO: Chưa dùng
     createControlsGui() {
-        const reloadTextGeometry = () => {
-            const textGeometry = this.createTextGeometry();
-            this.svgMesh.geometry.dispose();
-            this.svgMesh.geometry = textGeometry;
-        };
-
         const gui = new GUI();
-        gui.add(this.textMaterial, 'wireframe');
-        gui.add(this.controls, 'text').onChange(reloadTextGeometry);
-        const fonts = [
-            'gentilis',
-            'helvetiker',
-            'optimer',
-            'droid_sans',
-            'droid_serif',
-            'roboto',
-            'but_long'
+        const types = [
+            'logo',
+            'map'
         ];
-        gui.add(this.controls, 'font', fonts)
-            .onChange(fontName => {
-                this.font = this.fontMap[fontName];
-                this.scene.remove(this.svgMesh);
+        gui.add(this.controls, 'type', types)
+            .onChange(() => {
                 this.createSvg();
             });
-
-        gui.add(this.parameters, 'size', 0, 0.5, 0.01).onChange(reloadTextGeometry);
-        gui.add(this.parameters, 'height', 0, 0.3, 0.01).onChange(reloadTextGeometry);
-        gui.add(this.parameters, 'curveSegments', 1, 10, 1).onChange(reloadTextGeometry);
-        gui.add(this.parameters, 'bevelEnabled').onChange(reloadTextGeometry);
-        gui.add(this.parameters, 'bevelThickness', 0.0, 0.2).onChange(reloadTextGeometry);
-        gui.add(this.parameters, 'bevelSize', 0, 0.05).onChange(reloadTextGeometry);
-        gui.add(this.parameters, 'bevelOffset', -0.02, 0.02).onChange(reloadTextGeometry);
-        gui.add(this.parameters, 'bevelSegments', 1, 5, 1).onChange(reloadTextGeometry);
     }
 
     update(ms) {
-        this.svgMesh.tick(ms);
+        if (this.svgMesh) {
+            this.svgMesh.tick(ms);
+        }
     }
 
     render(ms) {

@@ -2332,15 +2332,21 @@ ttfLoader.load(url, onLoaded);
 
 ### SVG
 
-![Batman](images/batman.svg)
+![Batman logo](images/batman_logo.svg)
+
+![Vietnamese map](images/vietnamese_map.svg)
 
 ?
-
-
 
 3D map, 3D logo.
 
 [SVGLoader](https://threejs.org/docs/index.html?q=SVG#examples/en/loaders/SVGLoader), [d3-threeD](https://github.com/asutherland/d3-threeD).
+
+[Ví dụ 3D SVG](https://static.lockex1987.com/learn-threejs/chapter-06/06-02-svg.html)
+
+TODO: SCREENSHOT map
+
+TODO: SCREENSHOT logo
 
 ## Chương 7 - Texture
 
