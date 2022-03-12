@@ -2336,8 +2336,6 @@ ttfLoader.load(url, onLoaded);
 
 3D map, 3D logo.
 
-Control chỉ xoay theo trục y?
-
 ## Chương 7 - Texture
 
 Từ canvas

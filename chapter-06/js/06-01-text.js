@@ -183,6 +183,16 @@ class ThreejsExample {
     createOrbitControls() {
         this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
         this.orbitControls.enableDamping = true;
+
+        // Khóa góc xoay theo chiều ngang
+        // Không thể xoay theo trục Y
+        // this.orbitControls.minAzimuthAngle = Math.PI;
+        // this.orbitControls.maxAzimuthAngle = Math.PI;
+
+        // Khóa góc xoay theo chiều dọc
+        // Chỉ xoay được theo trục Y
+        this.orbitControls.minPolarAngle = Math.PI / 2;
+        this.orbitControls.maxPolarAngle = Math.PI / 2;
     }
 
     createControlsGui() {
