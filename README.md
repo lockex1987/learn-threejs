@@ -2113,11 +2113,15 @@ rectAreaLight.lookAt(0, 0, 0);
 
 ## Chương 6 - 3D Text
 
-Trong các bài trước, chúng ta đã tìm hiểu cách tạo các đối tượng 3D có dạng hình khối. Vậy thế còn các đối tượng có dạng văn bản thì sao? Với các đối tượng đó, Three.js sẽ xử lý từ dạng 2D, sau đó cho nó NỔI LÊN (extrude) để chuyển thành dạng 3D. Chúng ta có thể áp dụng kỹ thuật này cho các dạng 2D như font, SVG, shape.
+Trong các bài trước, chúng ta đã tìm hiểu cách tạo các đối tượng 3D có dạng hình khối. Vậy thế còn các đối tượng có dạng văn bản thì sao? Chúng ta không thể (hoặc rất khó) tạo từng ký tự văn bản bằng các hình khối cơ bản được. Với các đối tượng đó, Three.js sẽ xử lý từ dạng 2D với các API gần giống như SVG hoặc DOM canvas, sau đó cho nó NỔI LÊN (extrude) để chuyển thành dạng 3D. Chúng ta có thể áp dụng kỹ thuật này cho các dạng 2D như Typeface font, SVG, [Shape](https://threejs.org/docs/index.html?q=Shape#api/en/extras/core/Shape).
 
-### Định dạng Typeface
+### Định dạng Typeface font
 
-Three.js cung cấp sẵn một số file font mẫu ở thư mục `examples/fonts` như gentilis, helvetiker, optimer,...:
+Typeface font là một đối tượng JSON trong đó có thuộc tính `glyphs` là một mảng các ký tự. Với mỗi ký tự, chúng ta lại có thuộc tính `o` là cách vẽ cho ký tự đó. Đó chính là các chỉ thị tương tự như của SVG (`m` là move to, `l` là line to, `z` là kết thúc đường về điểm bắt đầu,...). Với các chỉ thị này, chúng ta có thể render các ký tự dưới dạng 2D.
+
+![Typeface format](images/typeface-format.png)
+
+Three.js cung cấp sẵn một số file font mẫu ở thư mục `examples/fonts` như gentilis, helvetiker, optimer, droid sans, droid serif,...:
 
 ```
 examples/
@@ -2149,25 +2153,25 @@ examples/
     ├── gentilis_regular.typeface.json
     ├── helvetiker_bold.typeface.json
     ├── helvetiker_regular.typeface.json
-    ├── LICENSE
     ├── optimer_bold.typeface.json
     ├── optimer_regular.typeface.json
+    ├── LICENSE
     └── README.md
 ```
 
+Các font mẫu đó có thể không đáp ứng được nhu cầu thẩm mỹ của chúng ta, một số font cũng không hỗ trợ tiếng Việt. Khi đó, chúng ta có thể convert một file font bất kỳ ở định dạng phổ biến là TTF sang định dạng Typeface bằng công cụ online sau:
 
+[gero3.github.io/facetype.js](https://gero3.github.io/facetype.js/)
 
-Chúng ta có thể convert các font sang định dạng Typeface online ở [gero3.github.io/facetype.js](https://gero3.github.io/facetype.js/). Bạn chỉ cần truy cập trang web này, tải file TTF, trang web sẽ export file facetype.json về cho bạn. File này chứa cách vẽ cho từng ký tự.
+Chúng ta chỉ cần truy cập trang web này, chọn file TTF của mình, nhấn nút Convert, trang web sẽ export file `facetype.json` về cho chúng ta.
 
-SCREENSHOT
-
-
+![Typeface convert online](images/typeface-convert-online.png)
 
 ### FontLoader
 
-Chúng ta sẽ sử dụng class [FontLoader](https://threejs.org/docs/?q=Font#examples/en/loaders/FontLoader) để tải một font chữ ở định dạng JSON. Đối tượng Font là một mảng các [Shape](https://threejs.org/docs/#api/en/extras/core/Shape) đại diện cho từng ký tự.
+Sau khi đã có file font rồi, chúng ta cần nạp nó vào ứng dụng. Chúng ta sẽ sử dụng class [FontLoader](https://threejs.org/docs/?q=Font#examples/en/loaders/FontLoader) để tải một file font ở định dạng Typeface.
 
-Chúng ta load class FontLoader từ file ở thư mục `examples`:
+Chúng ta import class FontLoader từ file ở thư mục `examples`:
 
 ```javascript
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
@@ -2181,14 +2185,12 @@ const fontLoader = new FontLoader();
 
 Class FontLoader có hai phương thức quan trọng là `load()` và `parse()`.
 
-Phương thức `load(url: String, onLoad: Function, onProgress: Function, onError: Function): undefined` sẽ bắt đầu tải file font.
+Phương thức `load(url: String, onLoad: Function, onProgress: Function, onError: Function): undefined` sẽ bắt đầu tải file font. Các tham số như sau:
 
-- `url`: Đường dẫn tới file JSON Typeface.
-- `onLoad`: Hàm gọi khi đã tải xong. Hàm có tham số là đối tượng Font đã tải.
-- `onProgress`: Hàm gọi trong tiến trình tải. Tham số là một đối tượng XMLHttpRequest, trong đó có chứa các thuộc tính total và loaded là các dung lượng đo bằng byte.
+- `url`: Đường dẫn tới file Typeface font.
+- `onLoad`: Hàm gọi khi đã tải xong. Hàm có tham số là đối tượng Font đã tải. Đối tượng Font là một mảng các [Shape](https://threejs.org/docs/#api/en/extras/core/Shape) đại diện cho từng ký tự.
+- `onProgress`: Hàm gọi trong tiến trình tải. Tham số là một đối tượng XMLHttpRequest, trong đó có chứa các thuộc tính `total` và `loaded` là các dung lượng đo bằng byte.
 - `onError`: Hàm gọi khi có lỗi.
-
-Phương thức `parse(json: Object): Font` để chuyển đối tượng JavaScript thành đối tượng Font.
 
 Ví dụ:
 
@@ -2215,15 +2217,27 @@ fontLoader.load(
 );
 ```
 
+Phương thức `parse(json: Object): Font` để chuyển đối tượng JavaScript sẵn có thành đối tượng Font.
 
+Phương thức `load()` ở trên đang được sử dụng dạng callback. Nếu muốn chúng ta có thể chuyển việc tải file font sang dạng async await với Promise bằng cách thêm hàm sau:
 
-
+```javascript
+/**
+ * Promisify font loading.
+ */
+function loadFontAsync(url) {
+    const fontLoader = new FontLoader();
+    return new Promise((resolve, reject) => {
+        fontLoader.load(url, resolve, undefined, reject);
+    });
+}
+```
 
 ### TextGeometry
 
-Để tạo một đối tượng văn bản mà có thể thêm vào cảnh 3D, chúng ta cũng vẫn cần tạo một Mesh. Mesh sẽ được tạo từ Material và Geometry. Chúng ta có thể sử dụng bất cứ Material như MeshBasicMaterial, MeshStandardMaterial,... Với Geometry và đối tượng văn bản, chúng ta cần sử dụng [TextTGeometry](https://threejs.org/docs/?q=TextGeometry#examples/en/geometries/TextGeometry).
+Để tạo một đối tượng văn bản mà có thể thêm vào cảnh 3D, chúng ta cũng vẫn cần tạo một Mesh. Mesh sẽ được tạo từ Material và Geometry. Chúng ta có thể sử dụng bất cứ Material nào như MeshBasicMaterial, MeshStandardMaterial,... Với Geometry là đối tượng văn bản, chúng ta cần sử dụng [TextTGeometry](https://threejs.org/docs/?q=TextGeometry#examples/en/geometries/TextGeometry).
 
-Chúng ta tải class TextGeometry từ file ở thư mục `examples`:
+Chúng ta import class TextGeometry từ file ở thư mục `examples`:
 
 ```javascript
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
@@ -2253,99 +2267,42 @@ const textGeometry = new TextGeometry(text, parameters);
 
 Các thuộc tính mà chúng ta có thể truyền vào ở tham số `parameters` là:
 
-- `font`: Đối tượng Font. Có thể được tải bằng phương thức FontLoader.load().
+- `font`: Đối tượng Font. Có thể được tải bằng phương thức FontLoader.load() mà chúng ta đã nói ở phần trước.
 - `size`: Float. Kích thước của văn bản.
 - `height`: Float. Độ dày mà văn bản nổi lên.
-- `curveSegments`: Integer. Số cá điểm trên các đường cong.
+- `curveSegments`: Integer. Số các điểm trên các đường cong.
 - `bevelEnabled`: Boolean. Có sử dụng cạnh xiên ở mép không.
 - `bevelThickness`: Float. Độ sâu của cạnh xiên.
 - `bevelSize`: Float. Khoảng cách từ outline của văn bản đến cạnh xiên.
 - `bevelOffset`: Float. Từ vị trí nào của outline của văn bản mà cạnh xiên bắt đầu.
 - `bevelSegments`: Integer. Số segment của cạnh xiên.
 
-Cạnh xiên là cạnh nằm giữa mặt phẳng 2D ban đầu và mặt phẳng nổi lên.
+Cạnh xiên là cạnh nằm giữa mặt phẳng 2D ban đầu và mặt phẳng nổi lên. Nó là cạnh mà mũi tên chỉ ở hình minh họa sau:
 
 ![Bevel](images/bevel.jpg)
 
-Văn bản có thể dài ngắn khác nhau, có thể trên một hoặc nhiều dòng. Chúng ta có thể sử dụng phương thức center() để căn giữa văn bản.
+Văn bản có thể dài ngắn khác nhau, có thể trên một hoặc nhiều dòng. Chúng ta có thể sử dụng phương thức `textGeometry.center()` để căn giữa văn bản về tọa độ (0, 0, 0).
 
+[Ví dụ 3D Text](https://static.lockex1987.com/learn-threejs/chapter-06/06-01-text.html)
 
+SCREENSHOT
 
-### Thao tác với file TTF
+### TTFLoader
 
-Lỗi tiếng Việt
+Chúng ta có thể convert file TTF sang file Typeface bằng công cụ online, sau đó sử dụng file Typeface; hoặc chúng ta có thể sử dụng file TTF trực tiếp bằng TTFLoader.
 
-Font TTF phải hỗ trợ tiếng Việt
+```javascript
+import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader.js';
 
-Sử dụng tool để convert
+const url = '....ttf';
+const onLoaded = ttf => {
+    const font = new Font(ttf);
+};
+const ttfLoader = new TTFLoader();
+ttfLoader.load(url, onLoaded);
+```
 
-Sử dụng trực tiếp
-
-
-
-[Ví dụ 3D Text](https://static.lockex1987.com/learn-threejs/chapter-06/06-02-text-geometry.html)
-
-
-
-[Pen1](https://codepen.io/chrisjdesigner/pen/MWbKxyb)
-
-
-
-[ExtrudeGeometry – three.js docs](https://threejs.org/docs/?q=TextGeometry#api/en/geometries/ExtrudeGeometry)
-
-
-
-[Create a 3D text using Three.js!](https://blog.deveshb.me/create-a-3d-text-using-threejs)
-
-[three.js examples](https://threejs.org/examples/?q=text#webgl_loader_ttf)
-
-[three.js examples](https://threejs.org/examples/?q=text#webgl_geometry_text)
-
-[three.js examples](https://threejs.org/examples/?q=text#webgl_geometry_text_shapes)
-
-[three.js examples](https://threejs.org/examples/?q=text#webgl_geometry_text_stroke)
-
-[3D text](http://localhost:8000/chapter-06/06-02-text-geometry.html)
-
-[Ví dụ 02.03 - Primitives](http://localhost:8000/chapter-02/02-03-primitives.html)
-
-[Ví dụ 06.01 - Advanced 3D geometries - Convex Hull](file:///home/lockex1987/projects/lockex1987.github.io/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/01-advanced-3d-geometries-convex.html)
-
-[Ví dụ 06.02 - Advanced 3D geometries - Lathe](file:///home/lockex1987/projects/lockex1987.github.io/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/02-advanced-3d-geometries-lathe.html)
-
-[Ví dụ 06.03 - Extrude Geometry](file:///home/lockex1987/projects/lockex1987.github.io/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/03-extrude-geometry.html)
-
-[Ví dụ 06.04 - Extrude TubeGeometry](file:///home/lockex1987/projects/lockex1987.github.io/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/04-extrude-tube.html)
-
-[Ví dụ 06.05 - Extrude SVG](file:///home/lockex1987/projects/lockex1987.github.io/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/05-extrude-svg.html)
-
-[Ví dụ 06.06 - Parametric geometries](file:///home/lockex1987/projects/lockex1987.github.io/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/06-parametric-geometries.html)
-
-[Ví dụ 06.07 - Text geometry](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/07-text-geometry.html)
-
-[Ví dụ 06.08 - Binary operations](file:///home/lockex1987/projects/lockex1987.github.io/posts/js%20-%20three.js/learn%20three.js/src/chapter-06/08-binary-operations.html)
-
-[three.js webgl - simple text from json](http://localhost:8000/chapter-06/06-01-font-loader.html)
-
-
-
-
-
-[three.js Display Chinese font and tweet application - 文章整合](https://chowdera.com/2021/01/20210107124943895w.html)
-
-[Facetype.js](https://gero3.github.io/facetype.js/)
-
-[ThreeJS secretly supports True Type Fonts](https://blog.mozvr.com/threejs-secretly-supports-true-type-fonts/)
-
-[three.js/TTFLoader.js at master · mrdoob/three.js](https://github.com/mrdoob/three.js/blob/master/examples/js/loaders/TTFLoader.js)
-
-[three.js/TTFLoader.js at master · mrdoob/three.js](https://github.com/mrdoob/three.js/blob/master/examples/jsm/loaders/TTFLoader.js)
-
-[three.js/opentype.module.min.js at master · mrdoob/three.js](https://github.com/mrdoob/three.js/blob/master/examples/jsm/libs/opentype.module.min.js)
-
-[Logo with GodRays Effect | Three.js Postprocessing Tutorial - Red Stapler](https://redstapler.co/godrays-three-js-post-processing-tutorial/)
-
-
+Ở đoạn code trên, chúng ta import class TTFLoader từ file ở thư mục `examples`, khởi tạo đối tượng TTFLoader, sau đó gọi phương thức `load()`. Khi load xong, chúng ta sẽ có đối tượng TTF mà chúng ta có thể chuyển về đối tượng Font bằng cách gọi `new Font(ttf)`. Sau đó, chúng ta có thể tạo TextGeometry, Mesh,... và xử lý tiếp.
 
 ## Chương 7 - Texture
 

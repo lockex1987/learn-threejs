@@ -46,7 +46,7 @@ class ThreejsExample {
 
         this.controls = {
             text: 'Tiếng Việt', // Hello Three.js!
-            font: 'roboto'
+            font: 'but_long'
         };
         this.parameters = {
             size: 0.25,
@@ -60,15 +60,16 @@ class ThreejsExample {
         };
 
         this.fontMap = {
-            optimer: null,
-            gentilis: null,
             helvetiker: null,
+            gentilis: null,
+            optimer: null,
             droid_sans: null,
             droid_serif: null,
-            roboto: null
+            roboto: null,
+            but_long: null
         };
         this.loadFont();
-        // this.loadTtf();
+        this.loadTtf();
         this.loadMultipleFonts();
 
         this.createOrbitControls();
@@ -113,12 +114,14 @@ class ThreejsExample {
         const fontLoader = new FontLoader();
         // const url = 'https://threejs.org/examples/fonts/optimer_regular.typeface.json';
         // const url = '../fonts/roboto/roboto_regular_all.typeface.json';
-        const url = '../fonts/roboto/roboto_regular_some.typeface.json';
+        // const url = '../fonts/roboto/roboto_regular_some.typeface.json';
+        const url = '../fonts/but_long/but_long_regular.typeface.json';
         const onLoaded = font => {
             // console.log(font);
             // console.log(font.data.glyphs);
             this.font = font;
-            this.fontMap.roboto = this.font;
+            // this.fontMap.roboto = this.font;
+            this.fontMap.but_long = this.font;
             this.createText();
         };
         const onProgress = xhr => {
@@ -138,9 +141,9 @@ class ThreejsExample {
     loadTtf() {
         const url = '../fonts/roboto/roboto-regular.ttf';
         const onLoaded = ttf => {
-            this.font = new Font(ttf);
+            // this.font = new Font(ttf);
             this.fontMap.roboto = this.font;
-            this.createText();
+            // this.createText();
         };
         const ttfLoader = new TTFLoader();
         ttfLoader.load(url, onLoaded);
@@ -192,7 +195,16 @@ class ThreejsExample {
         const gui = new GUI();
         gui.add(this.textMaterial, 'wireframe');
         gui.add(this.controls, 'text').onChange(reloadTextGeometry);
-        gui.add(this.controls, 'font', ['gentilis', 'helvetiker', 'optimer', 'droid_sans', 'droid_serif', 'roboto'])
+        const fonts = [
+            'gentilis',
+            'helvetiker',
+            'optimer',
+            'droid_sans',
+            'droid_serif',
+            'roboto',
+            'but_long'
+        ];
+        gui.add(this.controls, 'font', fonts)
             .onChange(fontName => {
                 this.font = this.fontMap[fontName];
                 this.scene.remove(this.textMesh);
