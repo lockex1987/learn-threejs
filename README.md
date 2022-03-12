@@ -2283,9 +2283,35 @@ Cạnh xiên là cạnh nằm giữa mặt phẳng 2D ban đầu và mặt phẳ
 
 Văn bản có thể dài ngắn khác nhau, có thể trên một hoặc nhiều dòng. Chúng ta có thể sử dụng phương thức `textGeometry.center()` để căn giữa văn bản về tọa độ (0, 0, 0).
 
+Tiếp theo, chúng ta sẽ tạo Material, Mesh và thêm đối tượng vào cảnh như bình thường:
+
+```javascript
+const textMaterial1 = new MeshStandardMaterial({
+    color: 0x156289,
+    emissive: 0x072534,
+    roughness: 0
+});
+const textMaterial2 = new MeshStandardMaterial({
+    color: 0xffc107,
+    emissive: 0x444444,
+    roughness: 0
+});
+const textMesh = new Mesh(textGeometry, textMaterial1);
+scene.add(textMesh);
+```
+
+Chúng ta có thể thiết lập một Material cho toàn bộ Mesh, hoặc thiết lập riêng cho mặt và cho cạnh như nhau:
+
+```javascript
+const textMesh = new Mesh(textGeometry, [
+    textMaterial1, // front
+    textMaterial2 // side
+]);
+```
+
 [Ví dụ 3D Text](https://static.lockex1987.com/learn-threejs/chapter-06/06-01-text.html)
 
-SCREENSHOT
+TODO: SCREENSHOT
 
 ### TTFLoader
 
@@ -2302,7 +2328,15 @@ const ttfLoader = new TTFLoader();
 ttfLoader.load(url, onLoaded);
 ```
 
-Ở đoạn code trên, chúng ta import class TTFLoader từ file ở thư mục `examples`, khởi tạo đối tượng TTFLoader, sau đó gọi phương thức `load()`. Khi load xong, chúng ta sẽ có đối tượng TTF mà chúng ta có thể chuyển về đối tượng Font bằng cách gọi `new Font(ttf)`. Sau đó, chúng ta có thể tạo TextGeometry, Mesh,... và xử lý tiếp.
+Ở đoạn code trên, chúng ta import class TTFLoader từ file ở thư mục `examples`, khởi tạo đối tượng TTFLoader, sau đó gọi phương thức `load()`. Khi load xong, chúng ta sẽ có đối tượng TTF mà chúng ta có thể chuyển về đối tượng Font bằng cách gọi `new Font(ttf)`. Sau đó, chúng ta có thể tạo TextGeometry, Material, Mesh,... và xử lý tiếp.
+
+### SVG
+
+?
+
+3D map, 3D logo.
+
+Control chỉ xoay theo trục y?
 
 ## Chương 7 - Texture
 

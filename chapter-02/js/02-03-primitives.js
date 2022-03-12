@@ -7,7 +7,8 @@ import { TextGeometry } from 'https://unpkg.com/three@0.137.5/examples/jsm/geome
 /**
  * Promisify font loading.
  */
-function loadFont(loader, url) {
+function loadFont(url) {
+    const loader = new FontLoader();
     return new Promise((resolve, reject) => {
         loader.load(url, resolve, undefined, reject);
     });
@@ -356,8 +357,7 @@ class ThreejsExample {
     }
 
     async addText() {
-        const loader = new FontLoader();
-        const font = await loadFont(loader, '../fonts/helvetiker/helvetiker_regular.typeface.json');
+        const font = await loadFont('../fonts/helvetiker/helvetiker_regular.typeface.json');
         const geometry = new TextGeometry('three.js', {
             font: font,
             size: 3.0,
