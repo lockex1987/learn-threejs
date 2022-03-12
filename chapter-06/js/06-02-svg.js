@@ -83,6 +83,7 @@ class ThreejsExample {
     createSvg1() {
         const svgString = document.querySelector('#batman-path').getAttribute('d');
         const geometry = this.createGeometryFromSvgString(svgString);
+        geometry.rotateX(Math.PI);
         this.createMesh(geometry);
     }
 
@@ -120,8 +121,7 @@ class ThreejsExample {
 
     createGeometryFromSvgObject(svg) {
         const arr = [];
-        const paths = svg.paths;
-        paths.forEach(path => {
+        svg.paths.forEach(path => {
             const shapes = SVGLoader.createShapes(path);
             shapes.forEach(shape => {
                 const options = {

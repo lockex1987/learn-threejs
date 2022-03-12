@@ -230,6 +230,7 @@ class ThreejsExample {
         gui.add(this.parameters, 'bevelSize', 0, 0.05).onChange(reloadTextGeometry);
         gui.add(this.parameters, 'bevelOffset', -0.02, 0.02).onChange(reloadTextGeometry);
         gui.add(this.parameters, 'bevelSegments', 1, 5, 1).onChange(reloadTextGeometry);
+        gui.close();
     }
 
     update(ms) {

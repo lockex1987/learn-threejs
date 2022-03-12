@@ -2111,9 +2111,9 @@ rectAreaLight.lookAt(0, 0, 0);
 | PointLight       | PointLightHelper                                 | Có                | Tỏa ra tất cả các hướng                                      |
 | RectAreaLight    | RectAreaLightHelper<br />(phải load từ examples) |                   | Dùng góc xoay                                                |
 
-## Chương 6 - 3D Text
+## Chương 6 - 3D Text và 3D SVG
 
-Trong các bài trước, chúng ta đã tìm hiểu cách tạo các đối tượng 3D có dạng hình khối. Vậy thế còn các đối tượng có dạng văn bản thì sao? Chúng ta không thể (hoặc rất khó) tạo từng ký tự văn bản bằng các hình khối cơ bản được. Với các đối tượng đó, Three.js sẽ xử lý từ dạng 2D với các API gần giống như SVG hoặc DOM canvas, sau đó cho nó NỔI LÊN (extrude) để chuyển thành dạng 3D. Chúng ta có thể áp dụng kỹ thuật này cho các dạng 2D như Typeface font, SVG, [Shape](https://threejs.org/docs/index.html?q=Shape#api/en/extras/core/Shape).
+Trong các bài trước, chúng ta đã tìm hiểu cách tạo các đối tượng 3D có dạng hình khối. Vậy thế còn các đối tượng có dạng văn bản thì sao? Chúng ta không thể (hoặc rất khó) tạo từng ký tự văn bản bằng các hình khối cơ bản được. Với các đối tượng đó, Three.js sẽ xử lý từ dạng 2D với các API gần giống như SVG hoặc DOM canvas, sau đó cho nó NỔI LÊN (extrude) để chuyển thành dạng 3D. Ví dụ, nếu chúng ta extrude một hình tròn, chúng ta sẽ được một hình trụ; nếu chúng ta extrude một mặt phẳng, chúng ta sẽ được một hình hộp. Chúng ta có thể áp dụng kỹ thuật này cho các dạng 2D như văn bản, SVG, hoặc [Shape](https://threejs.org/docs/index.html?q=Shape#api/en/extras/core/Shape) bất kỳ.
 
 ### Định dạng Typeface font
 
@@ -2311,7 +2311,7 @@ const textMesh = new Mesh(textGeometry, [
 
 [Ví dụ 3D Text](https://static.lockex1987.com/learn-threejs/chapter-06/06-01-text.html)
 
-TODO: SCREENSHOT
+![3D Text](screenshots/06-01-text.png)
 
 ### TTFLoader
 
@@ -2328,25 +2328,61 @@ const ttfLoader = new TTFLoader();
 ttfLoader.load(url, onLoaded);
 ```
 
-Ở đoạn code trên, chúng ta import class TTFLoader từ file ở thư mục `examples`, khởi tạo đối tượng TTFLoader, sau đó gọi phương thức `load()`. Khi load xong, chúng ta sẽ có đối tượng TTF mà chúng ta có thể chuyển về đối tượng Font bằng cách gọi `new Font(ttf)`. Sau đó, chúng ta có thể tạo TextGeometry, Material, Mesh,... và xử lý tiếp.
+Ở đoạn code trên, chúng ta import class TTFLoader từ file ở thư mục `examples`, khởi tạo đối tượng TTFLoader, sau đó gọi phương thức `load()`. Khi load xong, chúng ta sẽ có đối tượng TTF mà chúng ta có thể chuyển về đối tượng Font bằng cách gọi `new Font(ttf)`. Sau đó, chúng ta có thể tạo TextGeometry, Material, Mesh,... và xử lý tiếp như bình thường.
 
 ### SVG
+
+Chúng ta đã tìm hiểu việc xử lý văn bản bằng cách sử dụng TextGeometry. Class TextGeometry được extend từ class [ExtrudeGeometry](https://threejs.org/docs/index.html#api/en/geometries/ExtrudeGeometry). Đây là class chung để chúng ta tạo ra các đối tượng 3D từ các hình 2D. Chúng ta sẽ cùng sử dụng class này để tạo các đối tượng 3D từ các file ảnh định dạng SVG (logo Batman và bản đồ Việt Nam).
 
 ![Batman logo](images/batman_logo.svg)
 
 ![Vietnamese map](images/vietnamese_map.svg)
 
-?
+Mục đích của chúng ta sẽ là làm thế nào đó từ file SVG chuyển về một đối tượng Geometry. Ở một số hướng dẫn trên mạng có thể khuyên nên sử dụng thư viện [d3-threeD](https://github.com/asutherland/d3-threeD). Tuy nhiên, thư viện này đã từ lâu không được maintain. Chúng ta sẽ sử dụng class [SVGLoader](https://threejs.org/docs/index.html?q=SVG#examples/en/loaders/SVGLoader) được Three.js cung cấp luôn.
 
-3D map, 3D logo.
+Chúng ta import class, tạo đối tượng, load file SVG như sau:
 
-[SVGLoader](https://threejs.org/docs/index.html?q=SVG#examples/en/loaders/SVGLoader), [d3-threeD](https://github.com/asutherland/d3-threeD).
+```javascript
+import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
+
+const svgLoader = new SVGLoader();
+svgLoader.load(svgUrl, svg => {
+    // Làm gì đó với đối tượng svg này
+});
+```
+
+Chúng ta có thể duyệt qua các path của đối tượng svg thông qua thuộc tính `paths`. Từ mỗi path, chúng ta lại tạo ra một mảng các Shape bằng phương thức tĩnh `SVGLoader.createShapes()`. Từ mỗi Shape chúng ta sẽ tạo một ExtrudeGeometry. Cuối cùng, chúng ta kết hợp tất cả các ExtrudeGeometry vào làm một bằng hàm tiện ích `mergeBufferGeometries()` từ BufferGeometryUtils.
+
+```javascript
+import { mergeBufferGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+
+const arr = [];
+svg.paths.forEach(path => {
+    const shapes = SVGLoader.createShapes(path);
+    shapes.forEach(shape => {
+        const options = {
+            depth: 2,
+            bevelThickness: 2,
+            bevelSize: 0.5,
+            bevelSegments: 3,
+            bevelEnabled: true,
+            curveSegments: 12,
+            steps: 1
+        };
+        const piece = new ExtrudeGeometry(shape, options);
+        arr.push(piece);
+    });
+});
+const geometry = mergeBufferGeometries(arr, true);
+```
+
+Vậy là chúng ta đã có một đối tượng Geometry. Chúng ta có thể cần chỉnh lại kích thước (scale), góc quay cho phù hợp với cảnh. Chúng ta cũng sẽ gọi phương thức `geometry.center()` để căn giữa đối tượng.
 
 [Ví dụ 3D SVG](https://static.lockex1987.com/learn-threejs/chapter-06/06-02-svg.html)
 
-TODO: SCREENSHOT map
+![3D SVG logo](screenshots/06-02-svg-logo.png)
 
-TODO: SCREENSHOT logo
+![3D SVG map](screenshots/06-02-svg-map.png)
 
 ## Chương 7 - Texture
 
