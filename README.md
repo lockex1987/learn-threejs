@@ -2167,6 +2167,8 @@ Chúng ta chỉ cần truy cập trang web này, chọn file TTF của mình, nh
 
 ![Typeface convert online](images/typeface-convert-online.png)
 
+Bạn có thể download các file TTF ở [Google Fonts](https://fonts.google.com/).
+
 ### FontLoader
 
 Sau khi đã có file font rồi, chúng ta cần nạp nó vào ứng dụng. Chúng ta sẽ sử dụng class [FontLoader](https://threejs.org/docs/?q=Font#examples/en/loaders/FontLoader) để tải một file font ở định dạng Typeface.
@@ -2386,25 +2388,53 @@ Vậy là chúng ta đã có một đối tượng Geometry. Chúng ta có thể
 
 ## Chương 7 - Texture
 
-Từ canvas
-
-Globe trái đất hình cầu (và hình lập phương)
-
-[Ví dụ MeshBasicMaterial](http://localhost:8000/chapter-07/07-01-texture.html)
-
-[File:Texture mapping demonstration animation.gif - Wikipedia](https://en.m.wikipedia.org/wiki/File:Texture_mapping_demonstration_animation.gif)
-
-[Texture mapping - Wikipedia](https://en.m.wikipedia.org/wiki/Texture_mapping)
-
-[A Brief Introduction to Texture Mapping | Discover three.js](https://discoverthreejs.com/book/first-steps/textures-intro/)
-
-[Textures - three.js manual](https://threejs.org/manual/#en/textures)
-
 ### Texture đơn giản
 
-Thuộc tính map.
+Globe trái đất hình cầu (và hình lập phương).
 
-Mỗi map xứng đáng một chương riêng.
+Các đối tượng của chúng ta từ trước đến nay chỉ có một màu sắc. Tuy nhiên, trên thực tế các đối tượng ngoài thế giới thực còn có các hoa văn. Để làm được điều đó, chúng ta sẽ sử dụng một ảnh làm Texture, gán thuộc tính cho Material (vì Material quyết định vật sẽ trông như thế nào).
+
+Để mở đầu, chúng ta sẽ thiết lập một cảnh đơn giản bao gồm một hình cầu ở giữa. Chúng ta cũng thêm ánh sáng. Cảnh của chúng ta trông như sau:
+
+SCREENSHOT
+
+So sánh cảnh trên với một hình cầu trong thế giới thực: một quả bóng, hoặc một viên bi, hoặc quả địa cầu (từ bất kỳ vật liệu gì ngoại trừ từ nhựa phẳng), chúng ta sẽ thấy ngay rằng hình cầu của chúng ta không chân thực. Các đối tượng trong thế giới thật thường bị xước, bị vỡ, hoặc bị bẩn, và thay đổi từ điểm này đến điểm tiếp theo. Tuy nhiên, Material áp dụng cho hình cầu của chúng ta chỉ bao gồm một màu bao phủ toàn bộ bề mặt.
+
+Các đối tượng Material có nhiều thuộc tính ngoài thuộc tính color. Trong trường hợp đơn giản nhất, chúng ta sẽ lấy một ảnh và kéo nó bao phủ bề mặt của một đối tượng 3D. Chúng ta gọi các ảnh được sử dụng theo cách này là các Texture. Chúng ta có thể sử dụng Texture để thể hiện các thuộc tính như màu sắc, độ thô ráp, độ trong suốt. Thuộc tính map (color map).
+
+Chúng ta sử dụng một ảnh, load nó bằng [TextureLoader](https://threejs.org/docs/index.html?q=Texture#api/en/loaders/TextureLoader), kết quả trả về sẽ là một đối tượng [Texture](https://threejs.org/docs/index.html?q=Texture#api/en/textures/Texture). Bạn có thể sử dụng các định dạng ảnh thông dụng như PNG, JPG, GIF, BMP.
+
+```javascript
+const textureLoader = new TextureLoader();
+const texture = textureLoader.load('đường dẫn ảnh');
+const material = new MeshBasicMaterial({
+    map: texture
+});
+```
+
+Ở đoạn code trên, chúng ta sử dụng luôn đối tượng texture ngay sau khi gọi phương thức load. Tuy nhiên, ảnh có thể không được tải về luôn. Chúng ta có thể chờ cho ảnh tải về xong bằng cách gọi theo kiểu callback:
+
+```javascript
+const textureLoader = new TextureLoader();
+textureLoader.load(
+    'đường dẫn ảnh',
+    
+    // onLoad callback
+    texture => {
+        const material = new MeshBasicMaterial({
+            map: texture
+        });
+    }
+);
+```
+
+Áp dụng cho ví dụ của chúng ta sẽ cho ra kết quả:
+
+SCREENSHOT
+
+Ngoài thuộc tính map, chúng ta còn có nhiều cái khác như bumpMap, aoMap,... Mỗi thuộc tính xứng đáng một chương riêng.
+
+### alphaMap
 
 Thuộc tính alphaMap. Màu trắng là nhìn thấy. Màu đen là không.
 
@@ -2456,55 +2486,57 @@ Convert HDRI sang cube map online
 
 Shininess, bump, reflection.
 
+
+
 ### Tải một Texture và áp dụng nó cho một Mesh
 
 Kích thước ảnh là mũ 2 (256x256, 512x512, 1024x1024).
 
-[Example           10.01 - Basic Textures](learn three.js/src/chapter-10/01-basic-texture.html)
+[Example 10.01 - Basic Textures](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/01-basic-texture.html)
 
-[Example           10.02 - Basic Textures DDS](learn three.js/src/chapter-10/02-basic-texture-dds.html)
+[Example 10.02 - Basic Textures DDS](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/02-basic-texture-dds.html)
 
-[Example           10.03 - Basic Textures PVR](learn three.js/src/chapter-10/03-basic-texture-pvr.html)
+[Example 10.03 - Basic Textures PVR](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/03-basic-texture-pvr.html)
 
-[Example           10.04 - Basic Textures TGA](learn three.js/src/chapter-10/04-basic-texture-tga.html)
+[Example 10.04 - Basic Textures TGA](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/04-basic-texture-tga.html)
 
-[Example           10.05 - KTX Textures](learn three.js/src/chapter-10/05-basic-texture-ktx.html)
+[Example 10.05 - KTX Textures](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/05-basic-texture-ktx.html)
 
-[Example           10.06 - EXR Textures](learn three.js/src/chapter-10/06-basic-texture-exr.html)
+[Example 10.06 - EXR Textures](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/06-basic-texture-exr.html)
 
-[Example           10.07 - HDR/RGBE Textures](learn three.js/src/chapter-10/07-basic-texture-rgbe.html)
+[Example 10.07 - HDR/RGBE Textures](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/07-basic-texture-rgbe.html)
 
 ### Sử dụng một bump map để tạo vân
 
-[Example           10.08 - Bump map](learn three.js/src/chapter-10/08-bump-map.html)
+[Example 10.08 - Bump map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/08-bump-map.html)
 
 ### Đạt tới chi tiết hơn với normal map
 
-[Example           10.09 - Normal map](learn three.js/src/chapter-10/09-normal-map.html)
+[Example 10.09 - Normal map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/09-normal-map.html)
 
 ### Sử dụng displacement map để chỉnh vị trí của các đỉnh
 
-[Example           10.10 - Displacement map](learn three.js/src/chapter-10/10-displacement-map.html)
+[Example 10.10 - Displacement map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/10-displacement-map.html)
 
 ### Thêm bóng subtle với ambient occlusion map
 
-[Example           10.11 - Ambient occlusion map](learn three.js/src/chapter-10/11-ao-map.html)
+[Example 10.11 - Ambient occlusion map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/11-ao-map.html)
 
 ### Tạo bóng giả sử dụng light map
 
-[Example           10.12 - Light map](learn three.js/src/chapter-10/12-light-map.html)
+[Example 10.12 - Light map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/12-light-map.html)
 
 ### Kim loại và thô ráp
 
-[Example           10.13 - Metalness and Roughness](learn three.js/src/chapter-10/13-metal-roughness-map.html)
+[Example 10.13 - Metalness and Roughness](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/13-metal-roughness-map.html)
 
 ### Alpha map
 
-[Example           10.14 - Alpha map](learn three.js/src/chapter-10/14-alpha-map.html)
+[Example 10.14 - Alpha map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/14-alpha-map.html)
 
 ### Emissive map
 
-[Example           10.15 - Emissive](learn three.js/src/chapter-10/15-emissive-map.html)
+[Example 10.15 - Emissive](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/15-emissive-map.html)
 
 ### Specular map
 
@@ -2512,35 +2544,37 @@ THREE.MeshPhongMaterial cho shiny, THREE.MeshLambertMaterial cho không        s
 
 Sử dụng specular map để chỉ định phần bóng, phần không bóng. Như trong        trường hợp quả địa cầu, đại dương bóng hơn đất liền.
 
-[Example           10.16 - Specular](learn three.js/src/chapter-10/16-specular-map.html)
+[Example 10.16 - Specular](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/16-specular-map.html)
 
 ### Tạo phản xạ giả sử dụng environment map
 
-[Example           10.17 - Envmap static](learn three.js/src/chapter-10/17-env-map-static.html)
+[Example 10.17 - Envmap static](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/17-env-map-static.html)
 
-[Example           10.18 - Envmap dynamic](learn three.js/src/chapter-10/18-env-map-dynamic.html)
+[Example 10.18 - Envmap dynamic](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/18-env-map-dynamic.html)
 
 ### Điều chỉnh UV map
 
-[Example           10.19 - UV Mapping](learn three.js/src/chapter-10/19-uv-mapping.html)
+[Example 10.19 - UV Mapping](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/19-uv-mapping.html)
 
-[Example           10.20 - UV Mapping Manual](learn three.js/src/chapter-10/20-uv-mapping-manual.html)
+[Example 10.20 - UV Mapping Manual](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/20-uv-mapping-manual.html)
 
 ### Lặp wrap
 
-[Example           10.21 - Repeat wrapping](learn three.js/src/chapter-10/21-repeat-wrapping.html)
+[Example 10.21 - Repeat wrapping](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/21-repeat-wrapping.html)
 
 ### Render một canvas va sử dụng nó như Texture
 
-[Example           10.22 - Canvas Texture](learn three.js/src/chapter-10/22-canvas-texture.html)
+Từ canvas
 
-[Example           10.23 - Bump map from Canvas](learn three.js/src/chapter-10/23-canvas-texture-bump.html)
+[Example 10.22 - Canvas Texture](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/22-canvas-texture.html)
+
+[Example 10.23 - Bump map from Canvas](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/23-canvas-texture-bump.html)
 
 ### Sử dụng output từ một video làm Texture
 
-[Example           10.24 - Video texture](learn three.js/src/chapter-10/24-video-texture.html)
+[Example 10.24 - Video texture](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/24-video-texture.html)
 
-[three.js           webgl - materials - video (test.html)](learn three.js/src/chapter-10/test.html)
+[three.js  webgl - materials - video (test.html)](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/test.html)
 
 ## Chương 8 - Load model
 
@@ -2617,13 +2651,13 @@ x
 
 [Bruno Simon - The ultimate Three.js course Updated           11-2021 - Google Drive](https://drive.google.com/drive/folders/1Ck6XrcZvIbnBcdvpHrpHvouwLSXopm3-)
 
-[Three.js           Tutorials](https://sbcode.net/threejs/)
+[Sbcode Three.js tutorials](https://sbcode.net/threejs/)
 
 [Three.js           Tutorial Crash Course - 2021 - YouTube](https://www.youtube.com/watch?v=YK1Sw_hnm58)
 
 [Three.js Tutorial for Beginners - YouTube](https://www.youtube.com/playlist?list=PLbu98QxRH81KkLTN00OXhD8Y-pRVgTCnM)
 
-[Three.js Tutorial Series - YouTube](https://www.youtube.com/playlist?list=PLRtjMdoYXLf6mvjCmrltvsD0j12ZQDMfE)
+
 
 [Explore 3D Models - Sketchfab](https://sketchfab.com/3d-models?features=downloadable&sort_by=-likeCount&cursor=cD0yMTE4)
 
@@ -2670,6 +2704,8 @@ x
 [Free Laravel Tips and Tricks eBook](https://devdojo.com/bobbyiliev/free-laravel-tips-and-tricks-ebook#chapters)
 
 ## Shader
+
+## Background, skybox, cubemap
 
 ## Globe Map
 
@@ -2918,7 +2954,7 @@ Phần trăm tải
 
 ### Thiết lập Three.js cho post-processing
 
-[Example 11.01 - Basic Effect Composer](learn three.js/src/chapter-11/01-basic-effect-composer.html)
+[Example 11.01 - Basic Effect Composer](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-11/01-basic-effect-composer.html)
 
 Tạo THREE.EffectComposer
 
@@ -2930,7 +2966,7 @@ Cập nhật vòng lặp render
 
 #### Post-processing pass đơn giản
 
-[Example           11.02 - Simple Pass Effects - 1](learn three.js/src/chapter-11/02-simple-pass-1.html)
+[Example           11.02 - Simple Pass Effects - 1](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-11/02-simple-pass-1.html)
 
 Film, Bloom, DotScreen.
 
@@ -2944,31 +2980,31 @@ Hiển thị đầu ra của nhiều renderer trên cùng màn hình
 
 Thêm pass đơn giản
 
-[Example           11.03 - Simple Pass Effects - 2](learn three.js/src/chapter-11/03-simple-pass-2.html)
+[Example           11.03 - Simple Pass Effects - 2](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-11/03-simple-pass-2.html)
 
 Outline, Glitch, Unreal, Halftone.
 
 ### Luồng EffectComposer nâng cao sử dụng mark
 
-[Example 11.04 - Post processing masks](learn three.js/src/chapter-11/04-post-processing-masks.html)
+[Example 11.04 - Post processing masks](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-11/04-post-processing-masks.html)
 
 ### Pass Bokeh nâng cao
 
-[Example           11.05 - Bokeh](learn three.js/src/chapter-11/05-bokeh.html)
+[Example           11.05 - Bokeh](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-11/05-bokeh.html)
 
 ### Pass ambient occlusion nâng cao
 
-[Example           11.06 - Ambient Occlusion](learn three.js/src/chapter-11/06-ambient-occlusion.html)
+[Example           11.06 - Ambient Occlusion](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-11/06-ambient-occlusion.html)
 
 ### Sử dụng THREE.ShaderPass cho các hiệu ứng điều chỉnh
 
-[Example           11.07 - Shader pass simple](learn three.js/src/chapter-11/07-shader-pass-simple.html)
+[Example           11.07 - Shader pass simple](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-11/07-shader-pass-simple.html)
 
 Shader đơn giản
 
 ### Shader blur
 
-[Example           11.08 - Blur passes](learn three.js/src/chapter-11/08-shader-pass-blur.html)
+[Example           11.08 - Blur passes](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-11/08-shader-pass-blur.html)
 
 ### Tạo post-processing shader điều chỉnh
 
@@ -2976,43 +3012,43 @@ Shader đơn giản
 
 Tạo một bit shader điều chỉnh
 
-[Example           11.09 - Basic Effect Composer](learn three.js/src/chapter-11/09-shader-pass-custom.html)
+[Example           11.09 - Basic Effect Composer](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-11/09-shader-pass-custom.html)
 
 ### Thừa một số file ví dụ (không chạy được)
 
-[Example 11.03 - Post processing masks](learn three.js/src/chapter-11/103-post-processing-masks.html)
+[Example 11.03 - Post processing masks](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-11/103-post-processing-masks.html)
 
-[Example           11.04 - Shader Pass simple](learn three.js/src/chapter-11/104-shaderpass-simple.html)
+[Example           11.04 - Shader Pass simple](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-11/104-shaderpass-simple.html)
 
-[Example           11.04 - Shader Pass simple blur](learn three.js/src/chapter-11/105-shaderpass-blur.html)
+[Example           11.04 - Shader Pass simple blur](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-11/105-shaderpass-blur.html)
 
-[Example 11.06 - Advanced](learn three.js/src/chapter-11/106-shaderpass-advanced.html)
+[Example 11.06 - Advanced](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-11/106-shaderpass-advanced.html)
 
-[Example           11.07 - custom shaderpass](learn three.js/src/chapter-11/107-shaderpass-custom.html)
+[Example           11.07 - custom shaderpass](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-11/107-shaderpass-custom.html)
 
 ## Thêm vật lý và âm thanh
 
 Tạo một Three.js Scene cơ bản với vật lý
 
-[Example           12.01 - Dominos](learn three.js/src/chapter-12/01-dominos.html)
+[Example           12.01 - Dominos](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-12/01-dominos.html)
 
 Các thuộc tính Physi.js material
 
-[Example           12.02 - Material](learn three.js/src/chapter-12/02-material.html)
+[Example           12.02 - Material](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-12/02-material.html)
 
 Các hình Physi.js hỗ trợ
 
-[Example           12.03 - Shapes](learn three.js/src/chapter-12/03-shapes.html)
+[Example           12.03 - Shapes](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-12/03-shapes.html)
 
 Sử dụng ràng buộc giới hạn chuyển động của các đối tượng
 
-[Example           12.04 - Point Constraint](learn three.js/src/chapter-12/04-point-constraint.html)
+[Example           12.04 - Point Constraint](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-12/04-point-constraint.html)
 
-[Example           12.05 - Sliders and hinges](learn three.js/src/chapter-12/05-sliders-hinges.html)
+[Example           12.05 - Sliders and hinges](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-12/05-sliders-hinges.html)
 
-[Example           12.06 - DOF Constraint](learn three.js/src/chapter-12/06-dof-constraint.html)
+[Example           12.06 - DOF Constraint](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-12/06-dof-constraint.html)
 
 Thêm âm thanh
 
-[Example           12.07 - Audio](learn three.js/src/chapter-12/07-audio.html)
+[Example           12.07 - Audio](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-12/07-audio.html)
 

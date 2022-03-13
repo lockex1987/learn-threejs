@@ -89,7 +89,7 @@ class ThreejsExample {
 
     createSvg2() {
         // const svgUrl = '../images/batman_logo.svg';
-        const svgUrl = '../images/vietnamese_map.svg';
+        const svgUrl = '../images/vietnamese_map.svg'; // TODO: Mỗi tỉnh một màu
         const svgLoader = new SVGLoader();
         svgLoader.load(svgUrl, svg => {
             const geometry = this.createGeometryFromSvgObject(svg);
