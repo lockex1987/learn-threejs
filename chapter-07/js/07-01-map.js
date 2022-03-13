@@ -16,6 +16,7 @@ class ThreejsExample extends BaseExample {
         this.controls = {
             type: 'map'
         };
+        this.createLights();
         this.createMesh();
         this.createControlsGui();
         requestAnimationFrame(this.render.bind(this));
@@ -23,13 +24,21 @@ class ThreejsExample extends BaseExample {
 
     createMesh() {
         const textureLoader = new TextureLoader();
-        const texture = textureLoader.load('../textures/ground/grasslight-big.jpg');
+        const colorTexture = textureLoader.load('../textures/blocks/blocks-color.jpg');
+        const bumpTexture = textureLoader.load('../textures/blocks/blocks-bump.jpg');
+        const normalTexture = textureLoader.load('../textures/blocks/blocks-normal.jpg');
+        const roughnessTexture = textureLoader.load('../textures/blocks/blocks-roughness.jpg');
 
-        const geometry = new SphereGeometry(0.2);
+        const geometry = new SphereGeometry(0.4);
         // const geometry = new SphereGeometry( 15, 32, 16 );
-        const material = new MeshBasicMaterial({
-            color: 0xffff00,
-            map: texture
+        const material = new MeshStandardMaterial({
+            // color: 0x156289,
+            // emissive: 0x072534,
+            // roughness: 0
+            map: colorTexture,
+            // bumpMap: bumpTexture
+            normalMap: normalTexture,
+            roughnessMap: roughnessTexture
         });
         this.mesh = new Mesh(geometry, material);
         this.scene.add(this.mesh);

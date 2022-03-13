@@ -16,7 +16,6 @@ class BaseExample {
         this.createScene();
         this.createCamera(canvas);
         this.createRenderer(canvas);
-        this.createLights();
         this.createOrbitControls();
         this.handleResize();
     }
