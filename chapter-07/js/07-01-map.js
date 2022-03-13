@@ -28,6 +28,7 @@ class ThreejsExample extends BaseExample {
         const bumpTexture = textureLoader.load('../textures/blocks/blocks-bump.jpg');
         const normalTexture = textureLoader.load('../textures/blocks/blocks-normal.jpg');
         const roughnessTexture = textureLoader.load('../textures/blocks/blocks-roughness.jpg');
+        const displacementTexture = textureLoader.load('../textures/blocks/blocks-displacement.png');
 
         const geometry = new SphereGeometry(0.4);
         // const geometry = new SphereGeometry( 15, 32, 16 );
@@ -38,7 +39,8 @@ class ThreejsExample extends BaseExample {
             map: colorTexture,
             // bumpMap: bumpTexture
             normalMap: normalTexture,
-            roughnessMap: roughnessTexture
+            roughnessMap: roughnessTexture,
+            // displacementMap: displacementTexture
         });
         this.mesh = new Mesh(geometry, material);
         this.scene.add(this.mesh);

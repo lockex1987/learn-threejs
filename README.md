@@ -2576,6 +2576,16 @@ Từ canvas
 
 [three.js  webgl - materials - video (test.html)](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/test.html)
 
+
+
+Các texture thường được tạo từ các file ảnh. Tuy nhiên, bạn hãy đừng coi nó là các file ảnh để chúng ta nhìn bình thường, mà hãy coi nó là cấu trúc dữ liệu phục vụ mục đích nào đó. Mỗi điểm của ảnh sẽ quyết định giá trị của một điểm tương ứng trên đối tượng (thông qua UV mapping). Với `map` sẽ là màu sắc của điểm, với `bumpMap` sẽ là độ cao của điểm, với `roughnessMap` sẽ là độ thô ráp của điểm đó. Áp dụng cho từng điểm, thay cho toàn bộ đối tượng, điểm nào cũng giống điểm nào.
+
+Albedo là color.
+
+
+
+
+
 ## Chương 8 - Load model
 
 [Model Loader](http://localhost:8000/chapter-08/08-01-model-loader.html)
