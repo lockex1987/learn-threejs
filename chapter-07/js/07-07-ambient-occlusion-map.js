@@ -19,9 +19,14 @@ class ThreejsExample extends BaseExample {
     createMesh() {
         const textureLoader = new TextureLoader();
         const colorTexture = textureLoader.load('../textures/blocks/blocks_color.jpg');
-        const geometry = new SphereGeometry(0.4);
+        const normalTexture = textureLoader.load('../textures/blocks/blocks_normal.jpg');
+        const ambientOcclusionTexture = textureLoader.load('../textures/blocks/blocks_ambient_occlusion.jpg');
+
+        const geometry = new SphereGeometry(0.4, 80, 80);
         const material = new MeshStandardMaterial({
             map: colorTexture,
+            normalMap: normalTexture,
+            aoMap: ambientOcclusionTexture, // khó phân biệt sự khác nhau
             roughness: 0.07
         });
         const mesh = new Mesh(geometry, material);

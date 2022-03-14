@@ -16,7 +16,7 @@ function init() {
     const scene = new THREE.Scene();
 
     // create the ground plane
-    const textureGrass = new THREE.TextureLoader().load('../textures/ground/grasslight-big.jpg');
+    const textureGrass = new THREE.TextureLoader().load('../textures/ground/grasslight_big.jpg');
     textureGrass.wrapS = THREE.RepeatWrapping;
     textureGrass.wrapT = THREE.RepeatWrapping;
     textureGrass.repeat.set(10, 10);

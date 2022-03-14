@@ -19,9 +19,11 @@ class ThreejsExample extends BaseExample {
     createMesh() {
         const textureLoader = new TextureLoader();
         const colorTexture = textureLoader.load('../textures/blocks/blocks_color.jpg');
+        const normalTexture = textureLoader.load('../textures/blocks/blocks_normal.jpg');
         const geometry = new SphereGeometry(0.4);
         const material = new MeshStandardMaterial({
             map: colorTexture,
+            normalMap: normalTexture,
             roughness: 0.07
         });
         const mesh = new Mesh(geometry, material);

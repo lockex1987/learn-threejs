@@ -18,10 +18,14 @@ class ThreejsExample extends BaseExample {
 
     createMesh() {
         const textureLoader = new TextureLoader();
-        const colorTexture = textureLoader.load('../textures/blocks/blocks_color.jpg');
-        const geometry = new SphereGeometry(0.4);
+        const colorTexture = textureLoader.load('../textures/sands/sands_color.jpg');
+        const displacementTexture = textureLoader.load('../textures/sands/sands_displacement.png');
+
+        const geometry = new SphereGeometry(0.4, 180, 180); // phải tăng số polygon nên không bị xấu ở 2 cực
         const material = new MeshStandardMaterial({
             map: colorTexture,
+            displacementMap: displacementTexture,
+            displacementScale: 0.1,
             roughness: 0.07
         });
         const mesh = new Mesh(geometry, material);

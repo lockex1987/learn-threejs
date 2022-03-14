@@ -19,10 +19,15 @@ class ThreejsExample extends BaseExample {
     createMesh() {
         const textureLoader = new TextureLoader();
         const colorTexture = textureLoader.load('../textures/blocks/blocks_color.jpg');
-        const geometry = new SphereGeometry(0.4);
+        const normalTexture = textureLoader.load('../textures/blocks/blocks_normal.jpg');
+        const roughnessTexture = textureLoader.load('../textures/blocks/blocks_roughness.jpg');
+
+        const geometry = new SphereGeometry(0.4, 180, 180);
         const material = new MeshStandardMaterial({
             map: colorTexture,
-            roughness: 0.07
+            normalMap: normalTexture,
+            roughnessMap: roughnessTexture,
+            roughness: 0.07 // giá trị này sẽ được nhân vào với từng điểm ở map
         });
         const mesh = new Mesh(geometry, material);
         this.scene.add(mesh);

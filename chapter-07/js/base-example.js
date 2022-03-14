@@ -3,9 +3,11 @@ import {
     PerspectiveCamera,
     WebGLRenderer,
     Color,
-    HemisphereLight,
+    AmbientLight,
     PointLight,
-    DirectionalLight
+    SphereGeometry,
+    MeshStandardMaterial,
+    Mesh
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
 import { OrbitControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/OrbitControls.js';
@@ -41,16 +43,28 @@ class BaseExample {
     }
 
     createLights() {
-        const hemisphereLight = new HemisphereLight(0xffffff, 0xaaaaaa, 0.5);
-        this.scene.add(hemisphereLight);
+        const ambientLight = new AmbientLight(0xFFFFFF, 0.3);
+        this.scene.add(ambientLight);
 
-        const directionalLight = new DirectionalLight(0xeeeeee, 0.5);
-        directionalLight.position.set(0, 2, 5);
-        this.scene.add(directionalLight);
+        const sphereLightGeometry = new SphereGeometry(0.005);
+        const sphereLightMaterial = new MeshStandardMaterial({
+            color: 0xff0000,
+            emissive: 0xff0000
+        });
+        const sphereLightMesh = new Mesh(sphereLightGeometry, sphereLightMaterial);
+        this.scene.add(sphereLightMesh);
 
-        const pointLight = new PointLight(0xffffff, 0.5);
-        pointLight.position.set(0, 0.05, 2);
-        this.scene.add(pointLight);
+        this.pointLight = new PointLight(0xffffff, 0.5);
+        this.pointLight.position.set(0, 0.05, 0.6);
+        this.pointLight.tick = ms => {
+            const angle = (ms / 1000) * Math.PI * 0.2;
+            const radius = 0.6;
+            this.pointLight.position.x = Math.sin(angle) * radius;
+            this.pointLight.position.z = Math.cos(angle) * radius;
+
+            sphereLightMesh.position.copy(this.pointLight.position);
+        };
+        this.scene.add(this.pointLight);
     }
 
     createOrbitControls() {
@@ -58,7 +72,14 @@ class BaseExample {
         this.orbitControls.enableDamping = true;
     }
 
-    render() {
+    update(ms) {
+        if (this.pointLight) {
+            this.pointLight.tick(ms);
+        }
+    }
+
+    render(ms) {
+        this.update(ms);
         this.orbitControls.update();
         this.renderer.render(this.scene, this.camera);
         requestAnimationFrame(this.render.bind(this));
@@ -77,6 +98,17 @@ class BaseExample {
         this.camera.aspect = aspect;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(canvas.clientWidth * pixelRatio, canvas.clientHeight * pixelRatio, false);
+    }
+
+    getObjectsKeys(obj) {
+        return Object.keys(obj);
+    }
+
+    updateTexture(material, materialKey, textures) {
+        return key => {
+            material[materialKey] = textures[key];
+            material.needsUpdate = true;
+        };
     }
 }
 

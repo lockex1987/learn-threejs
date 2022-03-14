@@ -19,10 +19,14 @@ class ThreejsExample extends BaseExample {
     createMesh() {
         const textureLoader = new TextureLoader();
         const colorTexture = textureLoader.load('../textures/blocks/blocks_color.jpg');
+        const bumpTexture = textureLoader.load('../textures/blocks/blocks_bump.jpg');
         const geometry = new SphereGeometry(0.4);
+        // const geometry = new SphereGeometry(0.4, 180, 180);
         const material = new MeshStandardMaterial({
             map: colorTexture,
-            roughness: 0.07
+            bumpMap: bumpTexture,
+            // bumpScale: 1,
+            // roughness: 0.07
         });
         const mesh = new Mesh(geometry, material);
         this.scene.add(mesh);

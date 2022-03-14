@@ -2124,7 +2124,7 @@ Typeface font là một đối tượng JSON trong đó có thuộc tính `glyph
 Three.js cung cấp sẵn một số file font mẫu ở thư mục `examples/fonts` như gentilis, helvetiker, optimer, droid sans, droid serif,...:
 
 ```
-examples/
+examples
 └── fonts
     ├── droid
     │   ├── droid_sans_bold.typeface.json
@@ -2386,9 +2386,38 @@ Vậy là chúng ta đã có một đối tượng Geometry. Chúng ta có thể
 
 ![3D SVG map](screenshots/06-02-svg-map.png)
 
-## Chương 7 - Texture
+## Chương 7 - Texture map
 
-### Texture đơn giản
+Texture map là một phương pháp để định nghĩa thông tin chi tiết của bề mặt như màu sắc, sự gồ ghề,...
+
+Ngoài thuộc tính `map`, chúng ta còn có nhiều cái khác như:
+
+- `bumpMap`
+- `normalMap`
+- `displacementMap`
+- `alphaMap`
+- `emissiveMap`
+- `specularMap`
+- `envMap`
+- `roughnessMap`
+- `metalnessMap`
+- `aoMap`
+- `lightMap`
+- ...
+
+Mỗi thuộc tính xứng đáng một chương riêng.
+
+### UV map
+
+UV mapping mà tiến trình chiếu một ảnh 2D lên bề mặt 3D. UV không phải là từ viết tắt. Hai chữ cái U và V biểu thị hai trục của ảnh 2D; X, Y, Z đã được sử dụng để biểu thị các trục của bề mặt 3D.
+
+UV mapping sẽ chỉ định từng điểm trên ảnh 2D ứng với điểm tương ứng trên bề mặt 3D.
+
+(u, v) ⟶ (x, y, z)
+
+![UV mapping](images/uv_mapping.svg)
+
+### Color map (albedo map, diffuse map)
 
 Globe trái đất hình cầu (và hình lập phương).
 
@@ -2402,7 +2431,7 @@ So sánh cảnh trên với một hình cầu trong thế giới thực: một q
 
 Các đối tượng Material có nhiều thuộc tính ngoài thuộc tính color. Trong trường hợp đơn giản nhất, chúng ta sẽ lấy một ảnh và kéo nó bao phủ bề mặt của một đối tượng 3D. Chúng ta gọi các ảnh được sử dụng theo cách này là các Texture. Chúng ta có thể sử dụng Texture để thể hiện các thuộc tính như màu sắc, độ thô ráp, độ trong suốt. Thuộc tính map (color map).
 
-Chúng ta sử dụng một ảnh, load nó bằng [TextureLoader](https://threejs.org/docs/index.html?q=Texture#api/en/loaders/TextureLoader), kết quả trả về sẽ là một đối tượng [Texture](https://threejs.org/docs/index.html?q=Texture#api/en/textures/Texture). Bạn có thể sử dụng các định dạng ảnh thông dụng như PNG, JPG, GIF, BMP.
+Chúng ta sử dụng một ảnh, load nó bằng [TextureLoader](https://threejs.org/docs/index.html?q=Texture#api/en/loaders/TextureLoader), kết quả trả về sẽ là một đối tượng [Texture](https://threejs.org/docs/index.html?q=Texture#api/en/textures/Texture). Bạn có thể sử dụng các định dạng ảnh thông dụng như PNG, JPG, GIF, BMP. Kích thước ảnh là mũ 2 (256x256, 512x512, 1024x1024).
 
 ```javascript
 const textureLoader = new TextureLoader();
@@ -2432,66 +2461,6 @@ textureLoader.load(
 
 SCREENSHOT
 
-Ngoài thuộc tính map, chúng ta còn có nhiều cái khác như bumpMap, aoMap,... Mỗi thuộc tính xứng đáng một chương riêng.
-
-### alphaMap
-
-Thuộc tính alphaMap. Màu trắng là nhìn thấy. Màu đen là không.
-
-### MeshMatcapMaterial
-
-Sử dụng Texture với các màu sắc và shading đã tính toán trước.
-
-Trông không đơn sắc mà không cần ánh sáng. MatCap (Material Capture) shader sử dụng một ảnh của một hình cầu như là một view-space environment map. Ảnh chứa các màu sắc và shading đã tạo sẵn, tính toán trước.
-
-Để ở Texture, hay một ví dụ Texture cơ bản ở đây luôn?
-
-Thuộc tính là `matcap`.
-
-[https://github.com/nidorx/matcaps](https://github.com/nidorx/matcaps)
-
-MeshToonMaterial
-
-gradientMap
-
-MeshStandardMaterial
-
-aoMap
-
-displacementMap
-
-metalnessMap
-
-roughnessMap
-
-normalMap
-
-alphaMap (cần thiết lập transparent bằng true)
-
-enviromentMap
-
-CubeTextureLoader load 6 ảnh
-
-[Poly Haven](https://polyhaven.com/)
-
-CC0 (số không) License
-
-Convert HDRI sang cube map online
-
-[HDRI to CubeMap](https://matheowis.github.io/HDRI-to-CubeMap/)
-
-
-
-
-
-Shininess, bump, reflection.
-
-
-
-### Tải một Texture và áp dụng nó cho một Mesh
-
-Kích thước ảnh là mũ 2 (256x256, 512x512, 1024x1024).
-
 [Example 10.01 - Basic Textures](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/01-basic-texture.html)
 
 [Example 10.02 - Basic Textures DDS](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/02-basic-texture-dds.html)
@@ -2506,33 +2475,61 @@ Kích thước ảnh là mũ 2 (256x256, 512x512, 1024x1024).
 
 [Example 10.07 - HDR/RGBE Textures](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/07-basic-texture-rgbe.html)
 
-### Sử dụng một bump map để tạo vân
+### Bump map
+
+Sử dụng một bump map để tạo vân
 
 [Example 10.08 - Bump map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/08-bump-map.html)
 
-### Đạt tới chi tiết hơn với normal map
+Bump map được sử dụng để mô phỏng sự gồ ghề, lồi lõm của một bề mặt. Bump map sử dụng các độ cao khác nhau. Bump map thường được lưu ở một ảnh đen trắng, màu đen là điểm có độ cao nhỏ nhất, màu trắng là điểm có độ cao lớn nhất. Height map cũng được gọi là bump map, trừ khi được nói rõ.
+
+![Bump map](images/bump_map.png)
+
+Ở hình trên, chúng ta có một hình cầu ở bên trái, một bump map ở giữa, và kết quả khi áp dụng bump map ở bên phải. Bump map thay đổi cách bề mặt phản ứng lại ánh sáng mà không thay đổi kích thước hay hình dạng của bề mặt.
+
+Để tạo sự gồ ghề, ngoài bump map, bạn có thể dùng normal map hoặc displacement map. Tuy nhiên, bạn nên chỉ dùng một cái thôi.
+
+Thuộc tính Three.js là `bumpMap`.
+
+
+
+### Normal map
+
+Đạt tới chi tiết hơn với normal map
 
 [Example 10.09 - Normal map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/09-normal-map.html)
 
-### Sử dụng displacement map để chỉnh vị trí của các đỉnh
+Normal map là biến thể của bump map. Normal map sử dụng vector pháp tuyến ở từng điểm, các thông số màu RGB tương ứng với các tọa độ XYZ. Bump map chỉ sử dụng một thông số (chiều cao), còn normal map sử dụng ba thông số nên sẽ chính xác hơn.
+
+
+
+Thuộc tính normalMap.
+
+
+
+### Displacement map
+
+Sử dụng displacement map để chỉnh vị trí của các đỉnh
 
 [Example 10.10 - Displacement map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/10-displacement-map.html)
 
-### Thêm bóng subtle với ambient occlusion map
+Dispacement map khác với bump map ở chỗ ở bump map, hình dạng (Geometry) của đối tượng không bị chỉnh sửa còn ở displacement map, hình dạng bị chỉnh sửa như nó bị thay thế. Do đó displacement map cũng tốn hiệu năng hơn.
 
-[Example 10.11 - Ambient occlusion map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/11-ao-map.html)
+![Displacement map vs bump map](images/displacement_map_vs_bump_map.png)
 
-### Tạo bóng giả sử dụng light map
+Ở hình trên, hình cầu bên trái sử dụng bump map còn hình cầu bên phải sử dụng displacement map.
 
-[Example 10.12 - Light map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/12-light-map.html)
 
-### Kim loại và thô ráp
-
-[Example 10.13 - Metalness and Roughness](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/13-metal-roughness-map.html)
 
 ### Alpha map
 
+Thuộc tính `alphaMap`. Màu trắng là nhìn thấy. Màu đen là không.
+
+alphaMap (cần thiết lập transparent bằng true)
+
 [Example 10.14 - Alpha map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/14-alpha-map.html)
+
+
 
 ### Emissive map
 
@@ -2540,51 +2537,131 @@ Kích thước ảnh là mũ 2 (256x256, 512x512, 1024x1024).
 
 ### Specular map
 
+Specular map cho phép mức độ phản chiếu (mức độ tạo specular highlight) khác nhau ở các vị trí trên bề mặt.
+
 THREE.MeshPhongMaterial cho shiny, THREE.MeshLambertMaterial cho không        shiny.
 
 Sử dụng specular map để chỉ định phần bóng, phần không bóng. Như trong        trường hợp quả địa cầu, đại dương bóng hơn đất liền.
 
 [Example 10.16 - Specular](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/16-specular-map.html)
 
-### Tạo phản xạ giả sử dụng environment map
+
+
+### Enviroment map (reflection map)
+
+Tách chương riêng? Roughness và Metalness cần thì mới nhìn rõ được.
 
 [Example 10.17 - Envmap static](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/17-env-map-static.html)
 
 [Example 10.18 - Envmap dynamic](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/18-env-map-dynamic.html)
 
-### Điều chỉnh UV map
+Environment map là kỹ thuật ánh sáng dựa vào ảnh hiệu quả để mô phỏng sự phản chiếu bề mặt bằng các texture đã tính toán trước. Texture lưu ảnh của không gian xung quanh đối tượng.
 
-[Example 10.19 - UV Mapping](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/19-uv-mapping.html)
+Có nhiều cách để lưu môi trường xung quanh:
 
-[Example 10.20 - UV Mapping Manual](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/20-uv-mapping-manual.html)
+sphere map: 1 ảnh (paranoid?)
 
-### Lặp wrap
+cube map: 6 ảnh tương ứng với 6 mặt (skybox)
 
-[Example 10.21 - Repeat wrapping](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/21-repeat-wrapping.html)
+![Cube map](images/cube_map.png)
 
-### Render một canvas va sử dụng nó như Texture
+CubeTextureLoader load 6 ảnh
 
-Từ canvas
-
-[Example 10.22 - Canvas Texture](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/22-canvas-texture.html)
-
-[Example 10.23 - Bump map from Canvas](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/23-canvas-texture-bump.html)
-
-### Sử dụng output từ một video làm Texture
-
-[Example 10.24 - Video texture](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/24-video-texture.html)
-
-[three.js  webgl - materials - video (test.html)](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/test.html)
+[Backgrounds and Skyboxes - three.js manual](https://threejs.org/manual/#en/backgrounds)
 
 
+
+
+
+
+
+[Poly Haven](https://polyhaven.com/)
+
+CC0 (số không) License
+
+HDRI (High Dynamic Range Imaging)
+
+Background, skybox, cubemap
+
+Convert HDRI sang cube map online
+
+[HDRI to CubeMap](https://matheowis.github.io/HDRI-to-CubeMap/)
+
+
+
+### Roughness map
+
+Kim loại và thô ráp
+
+[Example 10.13 - Metalness and Roughness](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/13-metal-roughness-map.html)
+
+
+
+### Metalness map
+
+
+
+### Ambient occlusion map
+
+Thêm bóng subtle với ambient occlusion map
+
+[Example 10.11 - Ambient occlusion map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/11-ao-map.html)
+
+Ambient occlusion là kỹ thuật để tính toán cách mỗi điểm tiếp xúc với ambient light.
+
+Thuộc tính `aoMap`.
+
+### Light map
+
+Tạo bóng giả sử dụng light map
+
+[Example 10.12 - Light map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/12-light-map.html)
+
+Light map tính toán sẵn độ sáng của các bề mặt. Lightmap có thể sử dụng để tạo hiệu ứng bóng.
+
+![Light map](images/light_map.png)
+
+
+
+
+
+
+
+
+
+### Matcap
+
+Chỉ áp dụng với [MeshMatcapMaterial](https://threejs.org/docs/index.html?q=MeshMatcap#api/en/materials/MeshMatcapMaterial).
+
+Sử dụng Texture với các màu sắc và shading đã tính toán trước. Không cần Light. Cho các đối tượng như sứ.
+
+Trông không đơn sắc mà không cần ánh sáng. MatCap (Material Capture) shader sử dụng một ảnh của một hình cầu như là một view-space environment map. Ảnh chứa các màu sắc và shading đã tạo sẵn, tính toán trước.
+
+Để ở Texture, hay một ví dụ Texture cơ bản ở đây luôn?
+
+Thuộc tính là `matcap`.
+
+[https://github.com/nidorx/matcaps](https://github.com/nidorx/matcaps)
+
+
+
+Ví dụ
+
+
+
+### Gradient map
+
+Chỉ áp dụng với MeshToonMaterial.
+
+Ví dụ
+
+
+
+### Kết luận
 
 Các texture thường được tạo từ các file ảnh. Tuy nhiên, bạn hãy đừng coi nó là các file ảnh để chúng ta nhìn bình thường, mà hãy coi nó là cấu trúc dữ liệu phục vụ mục đích nào đó. Mỗi điểm của ảnh sẽ quyết định giá trị của một điểm tương ứng trên đối tượng (thông qua UV mapping). Với `map` sẽ là màu sắc của điểm, với `bumpMap` sẽ là độ cao của điểm, với `roughnessMap` sẽ là độ thô ráp của điểm đó. Áp dụng cho từng điểm, thay cho toàn bộ đối tượng, điểm nào cũng giống điểm nào.
 
-Albedo là color.
-
-
-
-
+Về code, cách làm của các Texture map đều giống nhau. Đó là tạo đối tượng TextureLoader, gọi phương thức load() để trả về đối tượng Texture, rồi gán cho một thuộc tính của Material. Quan trọng là có ảnh texture đúng, đẹp.
 
 ## Chương 8 - Load model
 
@@ -2631,7 +2708,7 @@ Animation.
 
 Điều chỉnh lại model cho về đúng chính giữa.
 
-
+Bruno Simons: 23 imported models
 
 \- - - Hết tập 1: Cơ bản - - -
 
@@ -2714,8 +2791,6 @@ x
 [Free Laravel Tips and Tricks eBook](https://devdojo.com/bobbyiliev/free-laravel-tips-and-tricks-ebook#chapters)
 
 ## Shader
-
-## Background, skybox, cubemap
 
 ## Globe Map
 
@@ -2938,7 +3013,7 @@ Phần trăm tải
 
 
 
-[Backgrounds and Skyboxes - three.js manual](https://threejs.org/manual/#en/backgrounds)
+
 
 [Example 02.05 - Custom geometry](https://static.lockex1987.com/learn-threejs/old/02-05-custom-geometry.html)
 
