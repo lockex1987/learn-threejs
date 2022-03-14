@@ -2388,26 +2388,24 @@ Vậy là chúng ta đã có một đối tượng Geometry. Chúng ta có thể
 
 ## Chương 7 - Texture map
 
+### Giới thiệu
+
 Texture map là một phương pháp để định nghĩa thông tin chi tiết của bề mặt như màu sắc, sự gồ ghề,...
 
-Ngoài thuộc tính `map`, chúng ta còn có nhiều cái khác như:
+Trong bài này, chúng ta sẽ tìm hiểu các chủ đề sau:
 
-- `bumpMap`
-- `normalMap`
-- `displacementMap`
-- `alphaMap`
-- `emissiveMap`
-- `specularMap`
-- `envMap`
-- `roughnessMap`
-- `metalnessMap`
-- `aoMap`
-- `lightMap`
-- ...
+- Tiến trình UV mapping
+- Tải một Texture và áp dụng màu sắc của nó với một Material (color map)
+- Sử dụng bump map, normal map, displacement map để mô phỏng sự gồ ghề của bề mặt
+- Sử dụng alpha map để tạo sự trong suốt một phần (không phải toàn bộ) của đối tượng
+- Sử dụng emissive map để mô phỏng hiệu ứng glow
+- Sử dụng environment map để tạo sự phản chiếu xung quanh trên bề mặt đối tượng
+- Sử dụng specular map, roughness map, metalness map để thiết lập các phần sáng bóng
+- Sử dụng ambient occlusion map, light map để tạo bóng
+- Tìm hiểu matcap của MeshMatcapMaterial
+- Tìm hiểu gradient map của MeshToonMaterial
 
-Mỗi thuộc tính xứng đáng một chương riêng.
-
-### UV map
+### UV mapping
 
 UV mapping mà tiến trình chiếu một ảnh 2D lên bề mặt 3D. UV không phải là từ viết tắt. Hai chữ cái U và V biểu thị hai trục của ảnh 2D; X, Y, Z đã được sử dụng để biểu thị các trục của bề mặt 3D.
 
@@ -2417,9 +2415,9 @@ UV mapping sẽ chỉ định từng điểm trên ảnh 2D ứng với điểm 
 
 ![UV mapping](images/uv_mapping.svg)
 
-### Color map (albedo map, diffuse map)
+### Color map
 
-Globe trái đất hình cầu (và hình lập phương).
+Color map còn gọi là albedo map hoặc diffuse map.
 
 Các đối tượng của chúng ta từ trước đến nay chỉ có một màu sắc. Tuy nhiên, trên thực tế các đối tượng ngoài thế giới thực còn có các hoa văn. Để làm được điều đó, chúng ta sẽ sử dụng một ảnh làm Texture, gán thuộc tính cho Material (vì Material quyết định vật sẽ trông như thế nào).
 
@@ -2535,19 +2533,11 @@ alphaMap (cần thiết lập transparent bằng true)
 
 [Example 10.15 - Emissive](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/15-emissive-map.html)
 
-### Specular map
-
-Specular map cho phép mức độ phản chiếu (mức độ tạo specular highlight) khác nhau ở các vị trí trên bề mặt.
-
-THREE.MeshPhongMaterial cho shiny, THREE.MeshLambertMaterial cho không        shiny.
-
-Sử dụng specular map để chỉ định phần bóng, phần không bóng. Như trong        trường hợp quả địa cầu, đại dương bóng hơn đất liền.
-
-[Example 10.16 - Specular](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/16-specular-map.html)
 
 
+### Enviroment map
 
-### Enviroment map (reflection map)
+(reflection map)
 
 Tách chương riêng? Roughness và Metalness cần thì mới nhìn rõ được.
 
@@ -2589,6 +2579,18 @@ Convert HDRI sang cube map online
 
 
 
+### Specular map
+
+Specular map cho phép mức độ phản chiếu (mức độ tạo specular highlight) khác nhau ở các vị trí trên bề mặt.
+
+THREE.MeshPhongMaterial cho shiny, THREE.MeshLambertMaterial cho không        shiny.
+
+Sử dụng specular map để chỉ định phần bóng, phần không bóng. Như trong        trường hợp quả địa cầu, đại dương bóng hơn đất liền.
+
+[Example 10.16 - Specular](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/16-specular-map.html)
+
+
+
 ### Roughness map
 
 Kim loại và thô ráp
@@ -2599,7 +2601,7 @@ Kim loại và thô ráp
 
 ### Metalness map
 
-
+Ví dụ
 
 ### Ambient occlusion map
 
@@ -2620,10 +2622,6 @@ Tạo bóng giả sử dụng light map
 Light map tính toán sẵn độ sáng của các bề mặt. Lightmap có thể sử dụng để tạo hiệu ứng bóng.
 
 ![Light map](images/light_map.png)
-
-
-
-
 
 
 
