@@ -2402,7 +2402,8 @@ Trong bài này, chúng ta sẽ tìm hiểu các chủ đề sau:
 - Tải một Texture và áp dụng màu sắc của nó với một Material (color map)
 - Sử dụng bump map, normal map, displacement map để mô phỏng sự gồ ghề của bề mặt
 - Sử dụng alpha map để tạo sự trong suốt một phần (không phải toàn bộ) của đối tượng
-- Sử dụng emissive map để mô phỏng hiệu ứng glow
+- Sử dụng emissive map để mô phỏng hiệu ứng phát sáng
+- Thiết lập background cho cảnh
 - Sử dụng environment map để tạo sự phản chiếu xung quanh trên bề mặt đối tượng
 - Sử dụng specular map, roughness map, metalness map để thiết lập các phần sáng bóng
 - Sử dụng ambient occlusion map, light map để tạo bóng
@@ -2567,6 +2568,150 @@ Kết quả như sau:
 
 SCREENSHOT
 
+### Thiết lập background
+
+Trước khi tìm hiểu tiếp về các loại texture mapping, chúng ta hãy cùng tìm hiểu về cách thiết lập background trong Three.js. Chúng ta sẽ sử dụng background trong các ví dụ sau này.
+
+Trong các ví dụ trước, chúng ta thiết lập background của cảnh là một màu gì đó bằng cách:
+
+```javascript
+scene.background = new Color(0xFFFFFF);
+```
+
+Hoặc:
+
+```javascript
+renderer.setClearColor(new Color(0xFFFFFF));
+```
+
+#### Thiết lập background bằng CSS
+
+Chúng ta có thể thêm một background tĩnh đơn giản bằng CSS. Chúng ta cần thiết lập thuộc tính `background` cho đối tượng canvas là một ảnh:
+
+```css
+canvas {
+    background: url(../images/ha_noi.jpg) no-repeat center center;
+    background-size: cover;
+}
+```
+
+Chúng ta không được thiết lập `backgound` cho Scene hay `setClearColor()` cho Renderer nữa. Chúng ta cũng cần thiết lập Renderer có sử dụng `alpha` để những chỗ mà chúng ta không vẽ gì vào cảnh sẽ là trong suốt. Chúng ta cần thiết lập ở ngay lúc khởi tạo, không sửa được sau này.
+
+```javascript
+const renderer = new WebGLRenderer({
+    canvas,
+    alpha: true
+});
+```
+
+Vậy là chúng ta đã có một background bằng ảnh.
+
+Ví dụ 07.07 - Background CSS
+
+SCS
+
+#### Thiết lập background của Scene
+
+Nếu chúng ta muốn background cũng có thể bị ảnh hưởng bởi các hiệu ứng post-processing, chúng ta cần vẽ background bằng Three.js. Để làm được điều này, chúng ta đơn giản chỉ cần tải một Texture và gán nó cho `background` của Scene.
+
+```javascript
+const textureLoader = new TextureLoader();
+const backgroundTexture = textureLoader.load('../images/ha_noi.jpg');
+scene.background = backgroundTexture;
+```
+
+Ví dụ 07.08 - Background Scene
+
+Kết quả không khác gì so với thiết lập bằng CSS lắm. Tuy nhiên, nếu bây giờ chúng ta sử dụng một hiệu ứng post-processing nào đó thì background cũng bị ảnh hưởng luôn.
+
+#### Skybox với hình lập phương đơn giản
+
+Background tĩnh không phải cái mà chúng ta thường muốn trong một cảnh 3D. Thay vào đó, chúng ta thường muốn cái gì đó kiểu như *skybox*, một khối hộp với bầu trời được vẽ trong đó. Chúng ta để Camera ở trong khối hộp và trông có vẻ có một bầu trời ở backgound.
+
+Cách thông dụng nhất để thực thi một skybox đó là tạo một hình lập phương, thiết lập Texture cho nó, và vẽ nó từ bên trong. Ở mỗi cạnh của hình lập phương chúng ta để một Texture. Đánh dấu thuộc tính `side` là BackSide để vẽ bên trong chứ không phải bên ngoài hình lập phương.
+
+```javascript
+const textureLoader = new TextureLoader();
+
+const orders = [
+    'pos-x',
+    'neg-x',
+    'pos-y',
+    'neg-y',
+    'pos-z',
+    'neg-z'
+];
+
+const materials = orders.map(fileName => new MeshStandardMaterial({
+    map: textureLoader.load('../textures/cube/ho_chi_minh_city/' + fileName + '.jpg'),
+    side: BackSide
+}));
+
+const geometry = new BoxGeometry(5, 5, 5);
+const mesh = new Mesh(geometry, materials);
+scene.add(mesh);
+```
+
+Chúng ta sẽ sử dụng 6 ảnh tương ứng với 6 mặt (trên, dưới, trái, phải, trước, sau):
+
+IMAGES
+
+Ví dụ 07.09 - Skybox simple cube
+
+SCS
+
+Với cách này, chúng ta có thể zoom ra ngoài hình lập phương. Ngoài ra, chỗ tiếp nối giữa các cạnh của hình lập phương sẽ là một đường thẳng mà chúng ta có thể phát hiện bằng mắt dễ dàng nên không chân thực lắm.
+
+#### Skybox với CubeTextureLoader
+
+Giải pháp khác để tạo skybox là sử dụng một Cubemap. Một Cubemap là một dạng Texture đặc biệt mà có 6 mặt, tương ứng các mặt của hình lập phương. Chúng ta cũng sử dụng 6 ảnh ở ví dụ trước và tải chúng bằng CubeTextureLoader, sau đó gán cho `background` của Scene.
+
+```javascript
+const orders = [
+    'pos-x',
+    'neg-x',
+    'pos-y',
+    'neg-y',
+    'pos-z',
+    'neg-z'
+];
+
+const images = orders.map(fileName => {
+    return '../textures/cube/ho_chi_minh_city/' + fileName + '.jpg';
+});
+
+const cubeTextureLoader = new CubeTextureLoader();
+const cubemap = cubeTextureLoader.load(images);
+this.scene.background = cubemap;
+```
+
+Ví dụ 07.10 - Skybox Cubemap
+
+SCS
+
+#### Skybox với ảnh panorama
+
+Cách cuối cùng để tạo skybox mà chúng ta sẽ tìm hiểu là sử dụng một Equirectangular map. Đây chính là cách giống như phép chiếu từ bản đồ dạng phẳng lên quả địa cầu. Chúng ta sẽ sử dụng một ảnh panorama 360 độ, ví dụ ảnh sau:
+
+![Ninh Bình panorama](images/ninh_binh_panorama.jpg)
+
+Đầu tiên, chúng ta sẽ load ảnh như một Texture, sau đó, ở hàm callback (chúng ta chờ ảnh load xong), chúng ta tạo một đối tượng WebGLCubeRenderTarget và gọi phương thức `fromEquirectangularTexture()` để sinh ra một Cubemap từ Texture đó. Chúng ta truyền kích thước cubemap khi khởi tạo WebGLCubeRenderTarget, có thể truyền giá trị bằng chiều cao của ảnh.
+
+```javascript
+const textureLoader = new TextureLoader();
+const url = '../images/ninh_binh_panorama.jpg';
+const onLoaded = texture => {
+    const rt = new WebGLCubeRenderTarget(texture.image.height);
+    rt.fromEquirectangularTexture(this.renderer, texture);
+    this.scene.background = rt.texture;
+};
+textureLoader.load(url, onLoaded);
+```
+
+Ví dụ 07.11 - Skybox Panorama
+
+SCS
+
 ### Enviroment map
 
 (reflection map)
@@ -2589,7 +2734,7 @@ cube map: 6 ảnh tương ứng với 6 mặt (skybox)
 
 CubeTextureLoader load 6 ảnh
 
-[Backgrounds and Skyboxes - three.js manual](https://threejs.org/manual/#en/backgrounds)
+
 
 
 

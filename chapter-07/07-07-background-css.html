@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ví dụ 07.07 - Background CSS</title>
+    <link rel="icon" href="../images/logo.svg" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <style>
+        canvas {
+            background: url(../images/ha_noi.jpg) no-repeat center center;
+            background-size: cover;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="webglOutput"></canvas>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.137.5/build/three.module.js"
+            }
+        }
+    </script>
+
+    <script type="module" src="js/07-07-background-css.js"></script>
+</body>
+</html>
