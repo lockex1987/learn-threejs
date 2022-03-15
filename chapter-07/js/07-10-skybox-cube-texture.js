@@ -1,6 +1,5 @@
 import {
     SphereGeometry,
-    BoxGeometry,
     MeshStandardMaterial,
     Mesh,
     CubeTextureLoader
@@ -56,8 +55,8 @@ class ThreejsExample extends BaseExample {
         });
 
         const cubeTextureLoader = new CubeTextureLoader();
-        const cubemap = cubeTextureLoader.load(images);
-        this.scene.background = cubemap;
+        const cubeTexture = cubeTextureLoader.load(images);
+        this.scene.background = cubeTexture;
     }
 }
 

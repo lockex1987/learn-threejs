@@ -2404,8 +2404,8 @@ Trong bài này, chúng ta sẽ tìm hiểu các chủ đề sau:
 - Sử dụng alpha map để tạo sự trong suốt một phần (không phải toàn bộ) của đối tượng
 - Sử dụng emissive map để mô phỏng hiệu ứng phát sáng
 - Thiết lập background cho cảnh
+- Sử dụng roughness map, metalness map, specular map để thiết lập các phần sáng bóng
 - Sử dụng environment map để tạo sự phản chiếu xung quanh trên bề mặt đối tượng
-- Sử dụng specular map, roughness map, metalness map để thiết lập các phần sáng bóng
 - Sử dụng ambient occlusion map, light map để tạo bóng
 - Tìm hiểu matcap của MeshMatcapMaterial
 - Tìm hiểu gradient map của MeshToonMaterial
@@ -2454,7 +2454,7 @@ Luồng code của chúng ta với các loại map khác như bump map, normal m
 
 Bạn có thể sử dụng các định dạng ảnh thông dụng như PNG, JPG, GIF, BMP. Để cho kết quả tốt nhất, kích thước ảnh nên là số mũ của 2 (ví dụ 256x256, 512x512, 1024x1024). Nếu kích thước của ảnh không phải số mũ của 2, Three.js sẽ scale ảnh về giá trị số mũ của 2 gần nhất.
 
-Giả sử chúng ta sử dụng ảnh sau:
+Giả sử chúng ta sử dụng Texure sau:
 
 ![Block color](textures/blocks/blocks_color.jpg)
 
@@ -2476,7 +2476,7 @@ Bump map được sử dụng để mô phỏng sự gồ ghề, lồi lõm củ
 
 Thuộc tính của Material để gán Texture là `bumpMap`. Ngoài ra, chúng ta cũng có thuộc tính `bumpScale` để chỉ định tỷ lệ độ cao là lớn hay nhỏ.
 
-Chúng ta sẽ sử dụng ảnh sau với bump map:
+Chúng ta sẽ sử dụng Texure sau với bump map:
 
 ![Block bump](textures/blocks/blocks_bump.jpg)
 
@@ -2496,7 +2496,7 @@ Vấn đề với normal map là ảnh của nó không dễ để tạo. Bạn 
 
 Với normal map hoặc bump map, chúng ta không thay đổi hình dạng của đối tượng; tất cả các đỉnh vẫn ở nguyên vị trí. Các map này chỉ sử dụng ánh sáng để tạo độ sâu và độ chi tiết giả.
 
-Chúng ta sẽ sử dụng ảnh sau với normal map:
+Chúng ta sẽ sử dụng Texure sau với normal map:
 
 ![Block normal](textures/blocks/blocks_normal.jpg)
 
@@ -2516,7 +2516,7 @@ Dispacement map khác với bump map (và normal map) ở chỗ ở bump map, h�
 
 Thuộc tính của Material để gán Texture là `displacementMap`. Ngoài ra, chúng ta cũng có thuộc tính `displacementScale` là tỷ lệ thay thế. Chú ý, sử dụng displacement map chỉ có kết quả tốt khi đối tượng của chúng ta chứa nhiều đỉnh. 
 
-Chúng ta sẽ sử dụng các ảnh sau với color map và displacement map:
+Chúng ta sẽ sử dụng các Texure sau với color map và displacement map:
 
 ![Sands color](textures/sands/sands_color.jpg)
 
@@ -2534,7 +2534,7 @@ Alpha map là cách chúng ta điều chỉnh độ trong suốt của bề mặ
 
 Thuộc tính của Material để gán Texture là `alphaMap`. Ngoài ra, chúng ta phải thiết lập thuộc tính `transparent` bằng `true`. Chúng ta cũng thiết lập thuộc tính `side` là `DoubleSide` để có thể nhìn được mặt trong của hình.
 
-Chúng ta sẽ sử dụng ảnh sau với alpha map:
+Chúng ta sẽ sử dụng Texure sau với alpha map:
 
 ![Partial transparency](textures/partial-transparency.png)
 
@@ -2558,7 +2558,7 @@ Emissive map là một Texture mà có thể được sử dụng để làm cá
 
 Thuộc tính của Material để gán Texture là `emissiveMap`. Đồng thời, chúng ta cũng phải thiết lập thuộc tính `emissive` là màu gì đó khác màu đen để nó kết hợp với emissive map. Hai giá trị màu này sẽ được nhân với nhau để ra kết quả hiển thị cuối cùng.
 
-Chúng ta sẽ sử dụng ảnh sau với emissive map:
+Chúng ta sẽ sử dụng Texure sau với emissive map:
 
 ![Lava emissive](textures/lava/lava_emissive.png)
 
@@ -2652,7 +2652,13 @@ const mesh = new Mesh(geometry, materials);
 scene.add(mesh);
 ```
 
-Chúng ta sẽ sử dụng 6 ảnh tương ứng với 6 mặt (trên, dưới, trái, phải, trước, sau):
+Chú ý chúng ta cần liệt kê đúng thứ tự các ảnh (trên - posy, dưới - negy, phải - posx, trái - negx, trước - posz, sau - negz):
+
+
+
+![Cube map](images/cube_map.png)
+
+Chúng ta sẽ sử dụng 6 ảnh tương ứng với 6 mặt:
 
 IMAGES
 
@@ -2664,16 +2670,16 @@ Với cách này, chúng ta có thể zoom ra ngoài hình lập phương. Ngoà
 
 #### Skybox với CubeTextureLoader
 
-Giải pháp khác để tạo skybox là sử dụng một Cubemap. Một Cubemap là một dạng Texture đặc biệt mà có 6 mặt, tương ứng các mặt của hình lập phương. Chúng ta cũng sử dụng 6 ảnh ở ví dụ trước và tải chúng bằng CubeTextureLoader, sau đó gán cho `background` của Scene.
+Giải pháp khác để tạo skybox là sử dụng một [CubeTexture](https://threejs.org/docs/index.html?q=Cube#api/en/textures/CubeTexture). Một CubeTexture là một dạng Texture đặc biệt mà có 6 mặt, tương ứng các mặt của hình lập phương. Chúng ta cũng sử dụng 6 ảnh ở ví dụ trước và tải chúng bằng [CubeTextureLoader](https://threejs.org/docs/index.html?q=Cube#api/en/loaders/CubeTextureLoader), sau đó gán cho `background` của Scene.
 
 ```javascript
 const orders = [
-    'pos-x',
-    'neg-x',
-    'pos-y',
-    'neg-y',
-    'pos-z',
-    'neg-z'
+    'pos-x', // right - phải
+    'neg-x', // left - trái
+    'pos-y', // top - trên
+    'neg-y', // bottom - dưới
+    'pos-z', // front - trước
+    'neg-z' // back - sau
 ];
 
 const images = orders.map(fileName => {
@@ -2681,13 +2687,15 @@ const images = orders.map(fileName => {
 });
 
 const cubeTextureLoader = new CubeTextureLoader();
-const cubemap = cubeTextureLoader.load(images);
-this.scene.background = cubemap;
+const cubeMap = cubeTextureLoader.load(images);
+this.scene.background = cubeMap;
 ```
 
-Ví dụ 07.10 - Skybox Cubemap
+Ví dụ 07.10 - Skybox CubeTexture
 
 SCS
+
+Three.js sẽ nối các ảnh với nhau một cách liền mạch.
 
 #### Skybox với ảnh panorama
 
@@ -2695,7 +2703,7 @@ Cách cuối cùng để tạo skybox mà chúng ta sẽ tìm hiểu là sử d�
 
 ![Ninh Bình panorama](images/ninh_binh_panorama.jpg)
 
-Đầu tiên, chúng ta sẽ load ảnh như một Texture, sau đó, ở hàm callback (chúng ta chờ ảnh load xong), chúng ta tạo một đối tượng WebGLCubeRenderTarget và gọi phương thức `fromEquirectangularTexture()` để sinh ra một Cubemap từ Texture đó. Chúng ta truyền kích thước cubemap khi khởi tạo WebGLCubeRenderTarget, có thể truyền giá trị bằng chiều cao của ảnh.
+Đầu tiên, chúng ta sẽ load ảnh như một Texture, sau đó, ở hàm callback (chúng ta chờ ảnh load xong), chúng ta tạo một đối tượng WebGLCubeRenderTarget và gọi phương thức `fromEquirectangularTexture()` để sinh ra một CubeTexture từ Texture đó. Chúng ta truyền kích thước cubemap khi khởi tạo WebGLCubeRenderTarget, có thể truyền giá trị bằng chiều cao của ảnh.
 
 ```javascript
 const textureLoader = new TextureLoader();
@@ -2714,53 +2722,77 @@ SCS
 
 ### Enviroment map
 
-(reflection map)
+Việc tính toán sự phản chiếu môi trường xung quanh rất tốn CPU, và thường yêu cầu cách tiếp cận ray tracer. Nếu chúng ta muốn có phản chiếu môi trường ở Three.js, chúng ta vẫn có thể làm được, bằng cách giả nó. Chúng ta sẽ tạo một Texture của môi trường.
 
-Tách chương riêng? Roughness và Metalness cần thì mới nhìn rõ được.
+Environment map là kỹ thuật ánh sáng dựa vào ảnh hiệu quả để mô phỏng sự phản chiếu bề mặt bằng các Texture đã tính toán trước. Texture lưu ảnh của không gian xung quanh đối tượng. Enviroment map cũng còn được gọi là reflection map.
+
+Chúng ta thực hiện các bước sau:
+
+- Chúng ta cũng khởi tạo một CubeTexture như khi tạo skybox
+- Thiết lập skybox (môi trường xung quanh)
+- Áp dụng cùng CubeTexture kia một lần nữa cho đối tượng của chúng ta (thuộc tính `envMap` của Material)
+
+Bên cạnh sự phản chiếu (reflection), Three.js cũng cho phép sử dụng một CubeTexture cho sự khúc xạ (refraction). Sự phản chiếu như chúng ta nhìn vào gương, còn sự khúc xạ như chúng ta nhìn vào kích (nhìn xuyên qua). Để có hiệu ứng này, chúng ta chỉ cần thiết lập `cubeMap.mapping` là CubeReflectionMapping (mặc định) hoặc CubeRefrationMapping.
+
+
 
 [Example 10.17 - Envmap static](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/17-env-map-static.html)
 
+SCS
+
+Ở ví dụ trên, chúng ta sử dụng một environment map tĩnh cho các đối tượng. Nói cách khác, chúng ta chỉ có thể thấy phản chiếu của môi trường mà không thấy các đối tượng khác. Để có thể nhìn được, chúng ta cần sử dụng thêm một Camera là CubeCamera.
+
+```javascript
+const cubeCamera =
+```
+
+Chúng ta sẽ sử dụng CubeCamera này để chụp lại cảnh với tất cả các đối tượng và sử dụng nó cho CubeTexture. Hai tham số đầu tiên là các khoảng cách near và far. Tham số cuối cùng là kích thước của Texture mà được tạo. Giá trị càng cao thì sự phản chiếu càng chi tiết. Chúng ta cần chắc chắn vị trí của CubeCamera này bằng vị trí của đối tượng.
+
+Để áp dụng những cái CubeCamera nhìn thấy cho đối tượng, chúng ta làm như sau:
+
+```javascript
+cubeMaterial.envMap = cubeCamera.renderTarget
+```
+
+Trong vòng lặp animation, chúng ta xử lý như sau:
+
+```javascript
+cube.visible = false;
+cubeCamera.updateCubeMap(renderer, scene);
+cube.visible = true;
+```
+
+Đầu tiên, chúng ta ẩn đối tượng cube đi, vì chúng ta chỉ muốn nhìn sự phản chiếu của đối tượng sphere lên trên đối tượng cube. Tiếp theo, chúng ta render cảnh với cubeCamera bằng phương thức `updateCubeMap()`. Sau đó, chúng ta hiện lại đối tượng cube và render cảnh như bình thường.
+
 [Example 10.18 - Envmap dynamic](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/18-env-map-dynamic.html)
 
-Environment map là kỹ thuật ánh sáng dựa vào ảnh hiệu quả để mô phỏng sự phản chiếu bề mặt bằng các texture đã tính toán trước. Texture lưu ảnh của không gian xung quanh đối tượng.
-
-Có nhiều cách để lưu môi trường xung quanh:
-
-sphere map: 1 ảnh (paranoid?)
-
-cube map: 6 ảnh tương ứng với 6 mặt (skybox)
-
-![Cube map](images/cube_map.png)
-
-CubeTextureLoader load 6 ảnh
 
 
-
-
-
-
-
-
-
-[Poly Haven](https://polyhaven.com/)
-
-CC0 (số không) License
-
-HDRI (High Dynamic Range Imaging)
-
-Background, skybox, cubemap
-
-Convert HDRI sang cube map online
-
-[HDRI to CubeMap](https://matheowis.github.io/HDRI-to-CubeMap/)
-
-
-
-Chúng ta sẽ sử dụng ảnh sau với normal map:
+Chúng ta sẽ sử dụng Texure sau với normal map:
 
 IMG
 
 Kết quả như sau:
+
+Ví dụ
+
+SCREENSHOT
+
+### Roughness map và metalness map
+
+Bằng các thuộc tính `roughness` hoặc `metalness` của MeshStandardMaterial, chúng ta có thể thiết lập độ sáng bóng, giống kim loại, cũng như độ thô ráp, để làm cho đối tượng trông giống bằng gỗ hay bằng nhựa. Ngoài hai thuộc tính trên, chúng ta có thể sử dụng Texture. Giả sử chúng ta có một đối tượng thô ráp nhưng lại muốn một phần nào đó của đối tượng đó sáng bóng, hoặc phần nào đó trông sước hoặc thô ráp hơn, chúng ta có thể thiết lập thuộc tính `roughnessMap` và `metalnessMap`. Khi bạn sử dụng các map đó, giá trị của Texture ở phần chỉ định sẽ được nhân với giá trị của `roughness` hoặc `metalness`, quyết định pixel chỉ định được vẽ như thế nào.
+
+Chúng ta cũng sử dụng environment map để hiển thị phản chiếu của môi trường xung quanh trên đối tượng. Một đối tượng với metalness cao sẽ phản chiếu nhiều hơn. Một đối tượng với roughness cao sẽ khuếch tán sự phản chiếu nhiều hơn.
+
+Chúng ta sẽ sử dụng Texture sau với cả roughness map và metalness map:
+
+IMG
+
+Kết quả như sau:
+
+[Example 10.13 - Metalness and Roughness](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/13-metal-roughness-map.html)
+
+SCREENSHOT
 
 Ví dụ
 
@@ -2768,57 +2800,23 @@ SCREENSHOT
 
 ### Specular map
 
-Specular map cho phép mức độ phản chiếu (mức độ tạo specular highlight) khác nhau ở các vị trí trên bề mặt.
+Specular map cho phép mức độ phản chiếu (mức độ tạo specular highlight) khác nhau ở các vị trí trên bề mặt. Với specular map, chúng ta có thể định nghĩa phần nào của đối tượng sẽ sáng bóng, phần nào của đối tượng sẽ thô ráp (tương tự như `roughnessMap` và `metalnessMap` mà chúng ta vừa tìm hiểu). Thuộc tính của Material để gán Texture là `specularMap`.
 
-THREE.MeshPhongMaterial cho shiny, THREE.MeshLambertMaterial cho không        shiny.
+Chúng ta sẽ vẽ một quả địa cầu và sử dụng specular map để làm các phần là đại dương sẽ sáng bóng hơn các phần là đất liền.
 
-Sử dụng specular map để chỉ định phần bóng, phần không bóng. Như trong        trường hợp quả địa cầu, đại dương bóng hơn đất liền.
+Chúng ta sẽ sử dụng Texure sau với specular map:
+
+IMG
+
+Các vị trí màu đen nghĩa là độ sáng bóng bằng 0, và màu trắng nghĩa là độ sáng bóng 100%.
+
+Kết quả như sau:
 
 [Example 10.16 - Specular](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/16-specular-map.html)
 
-
-
-Chúng ta sẽ sử dụng ảnh sau với normal map:
-
-IMG
-
-Kết quả như sau:
-
-Ví dụ
-
 SCREENSHOT
 
-### Roughness map
 
-Kim loại và thô ráp
-
-[Example 10.13 - Metalness and Roughness](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/13-metal-roughness-map.html)
-
-
-
-Chúng ta sẽ sử dụng ảnh sau với normal map:
-
-IMG
-
-Kết quả như sau:
-
-Ví dụ
-
-SCREENSHOT
-
-### Metalness map
-
-Ví dụ
-
-Chúng ta sẽ sử dụng ảnh sau với normal map:
-
-IMG
-
-Kết quả như sau:
-
-Ví dụ
-
-SCREENSHOT
 
 ### Ambient occlusion map
 
@@ -2830,7 +2828,7 @@ Ambient occlusion là kỹ thuật để tính toán cách mỗi điểm tiếp 
 
 Thuộc tính `aoMap`.
 
-Chúng ta sẽ sử dụng ảnh sau với normal map:
+Chúng ta sẽ sử dụng Texure sau với normal map:
 
 IMG
 
@@ -2852,7 +2850,7 @@ Light map tính toán sẵn độ sáng của các bề mặt. Lightmap có th�
 
 
 
-Chúng ta sẽ sử dụng ảnh sau với normal map:
+Chúng ta sẽ sử dụng Texure sau với normal map:
 
 IMG
 
@@ -2880,7 +2878,7 @@ Thuộc tính là `matcap`.
 
 Ví dụ
 
-Chúng ta sẽ sử dụng ảnh sau với normal map:
+Chúng ta sẽ sử dụng Texure sau với normal map:
 
 IMG
 
@@ -2896,7 +2894,7 @@ Chỉ áp dụng với MeshToonMaterial.
 
 Ví dụ
 
-Chúng ta sẽ sử dụng ảnh sau với normal map:
+Chúng ta sẽ sử dụng Texure sau với normal map:
 
 IMG
 
