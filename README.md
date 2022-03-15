@@ -2947,7 +2947,7 @@ glTF files come in standard and binary form. These have different extensions:
 - Standard .glt files are uncompressed and may come with an extra .bin data file.
 - Binary .glb files include all data in one single file.
 
-Định dạng OBJ cũng rất phổ biến.
+Định dạng OBJ, BLEND cũng rất phổ biến.
 
 Animation.
 
