@@ -1,6 +1,8 @@
 import {
     SphereGeometry,
     MeshStandardMaterial,
+    DoubleSide,
+    RepeatWrapping,
     Mesh,
     TextureLoader
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
@@ -12,7 +14,7 @@ import BaseExample from './base-example.js';
 class ThreejsExample extends BaseExample {
     constructor(canvas) {
         super(canvas);
-        this.createLights();
+        this.createLights(false);
         this.loadTexture();
         this.createMesh();
         requestAnimationFrame(this.render.bind(this));
@@ -21,17 +23,19 @@ class ThreejsExample extends BaseExample {
 
     loadTexture() {
         const textureLoader = new TextureLoader();
-        const colorTexture = textureLoader.load('../textures/blocks/blocks_color.jpg');
-        const bumpTexture = textureLoader.load('../textures/blocks/blocks_bump.jpg');
-        this.bumpMaps = {
+        const alphaTexture = textureLoader.load('../textures/partial-transparency.png');
+        alphaTexture.wrapS = RepeatWrapping;
+        alphaTexture.wrapT = RepeatWrapping;
+        alphaTexture.repeat.set(8, 8);
+        this.alphaMaps = {
             none: null,
-            blocks: bumpTexture
+            partial: alphaTexture
         };
         this.material = new MeshStandardMaterial({
-            map: colorTexture,
-            bumpMap: bumpTexture,
-            // bumpScale: 1,
-            roughness: 0.07
+            alphaMap: alphaTexture,
+            roughness: 0.07,
+            transparent: true,
+            side: DoubleSide
         });
     }
 
@@ -42,14 +46,13 @@ class ThreejsExample extends BaseExample {
     }
 
     createControlsGui() {
-        const bumpMapKeys = this.getObjectsKeys(this.bumpMaps);
+        const alphaMapKeys = this.getObjectsKeys(this.alphaMaps);
         const gui = new GUI();
         const controls = {
-            bumpMap: bumpMapKeys[1]
+            alphaMap: alphaMapKeys[1]
         };
-        gui.add(controls, 'bumpMap', bumpMapKeys)
-            .onChange(this.updateTexture(this.material, 'bumpMap', this.bumpMaps));
-        gui.add(this.material, 'bumpScale', -3, 3);
+        gui.add(controls, 'alphaMap', alphaMapKeys)
+            .onChange(this.updateTexture(this.material, 'alphaMap', this.alphaMaps));
     }
 }
 

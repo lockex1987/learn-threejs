@@ -2,7 +2,9 @@ import {
     SphereGeometry,
     MeshStandardMaterial,
     Mesh,
-    TextureLoader
+    TextureLoader,
+    Color,
+    Vector2
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
 import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.16/+esm';
@@ -13,6 +15,12 @@ class ThreejsExample extends BaseExample {
     constructor(canvas) {
         super(canvas);
         this.createLights();
+
+        // Giảm độ sáng
+        this.scene.background = new Color(0x444444);
+        // this.pointLight.intensity = 0.4;
+        this.scene.remove(this.ambientLight);
+
         this.loadTexture();
         this.createMesh();
         requestAnimationFrame(this.render.bind(this));
@@ -21,17 +29,18 @@ class ThreejsExample extends BaseExample {
 
     loadTexture() {
         const textureLoader = new TextureLoader();
-        const colorTexture = textureLoader.load('../textures/blocks/blocks_color.jpg');
-        const bumpTexture = textureLoader.load('../textures/blocks/blocks_bump.jpg');
-        this.bumpMaps = {
+        const emissiveTexture = textureLoader.load('../textures/lava/lava_emissive.png');
+        this.emissiveMaps = {
             none: null,
-            blocks: bumpTexture
+            lava: emissiveTexture
         };
         this.material = new MeshStandardMaterial({
-            map: colorTexture,
-            bumpMap: bumpTexture,
-            // bumpScale: 1,
-            roughness: 0.07
+            emissiveMap: emissiveTexture,
+            emissive: 0xFFFFFF,
+            roughness: 0.07,
+            normalMap: textureLoader.load('../textures/lava/lava_normal.png'),
+            normalScale: new Vector2(4, 4)
+            // metalnessMap: textureLoader.load('../textures/lava/lava_metalness.png')
         });
     }
 
@@ -42,14 +51,13 @@ class ThreejsExample extends BaseExample {
     }
 
     createControlsGui() {
-        const bumpMapKeys = this.getObjectsKeys(this.bumpMaps);
+        const emissiveMapKeys = this.getObjectsKeys(this.emissiveMaps);
         const gui = new GUI();
         const controls = {
-            bumpMap: bumpMapKeys[1]
+            emissiveMap: emissiveMapKeys[1]
         };
-        gui.add(controls, 'bumpMap', bumpMapKeys)
-            .onChange(this.updateTexture(this.material, 'bumpMap', this.bumpMaps));
-        gui.add(this.material, 'bumpScale', -3, 3);
+        gui.add(controls, 'emissiveMap', emissiveMapKeys)
+            .onChange(this.updateTexture(this.material, 'emissiveMap', this.emissiveMaps));
     }
 }
 

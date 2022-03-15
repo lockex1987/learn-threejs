@@ -12,7 +12,7 @@ import BaseExample from './base-example.js';
 class ThreejsExample extends BaseExample {
     constructor(canvas) {
         super(canvas);
-        this.createLights();
+        this.createLights(false);
         this.loadTexture();
         this.createMesh();
         requestAnimationFrame(this.render.bind(this));
@@ -22,15 +22,12 @@ class ThreejsExample extends BaseExample {
     loadTexture() {
         const textureLoader = new TextureLoader();
         const colorTexture = textureLoader.load('../textures/blocks/blocks_color.jpg');
-        const bumpTexture = textureLoader.load('../textures/blocks/blocks_bump.jpg');
-        this.bumpMaps = {
+        this.colorMaps = {
             none: null,
-            blocks: bumpTexture
+            blocks: colorTexture
         };
         this.material = new MeshStandardMaterial({
             map: colorTexture,
-            bumpMap: bumpTexture,
-            // bumpScale: 1,
             roughness: 0.07
         });
     }
@@ -42,14 +39,13 @@ class ThreejsExample extends BaseExample {
     }
 
     createControlsGui() {
-        const bumpMapKeys = this.getObjectsKeys(this.bumpMaps);
+        const colorMapKeys = this.getObjectsKeys(this.colorMaps);
         const gui = new GUI();
         const controls = {
-            bumpMap: bumpMapKeys[1]
+            map: colorMapKeys[1]
         };
-        gui.add(controls, 'bumpMap', bumpMapKeys)
-            .onChange(this.updateTexture(this.material, 'bumpMap', this.bumpMaps));
-        gui.add(this.material, 'bumpScale', -3, 3);
+        gui.add(controls, 'map', colorMapKeys)
+            .onChange(this.updateTexture(this.material, 'map', this.colorMaps));
     }
 }
 

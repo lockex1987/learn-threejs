@@ -24,7 +24,7 @@ class ThreejsExample extends BaseExample {
 
         this.createMesh();
         requestAnimationFrame(this.render.bind(this));
-        this.createControlsGuil();
+        this.createControlsGui();
     }
 
     createMesh() {
@@ -33,7 +33,7 @@ class ThreejsExample extends BaseExample {
         this.scene.add(mesh);
     }
 
-    createControlsGuil() {
+    createControlsGui() {
         const matcapKeys = this.getObjectsKeys(this.matcaps);
         const gui = new GUI();
         const data = {

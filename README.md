@@ -2386,11 +2386,15 @@ Vậy là chúng ta đã có một đối tượng Geometry. Chúng ta có thể
 
 ![3D SVG map](screenshots/06-02-svg-map.png)
 
-## Chương 7 - Texture map
+## Chương 7 - Texture mapping
 
 ### Giới thiệu
 
-Texture map là một phương pháp để định nghĩa thông tin chi tiết của bề mặt như màu sắc, sự gồ ghề,...
+Texture mapping là phương pháp để mô tả thông tin chi tiết của một bề mặt như màu sắc, sự gồ ghề, sự trong suốt, sự sáng bóng, sự phản chiếu,... Texture mapping sử dụng một ảnh để lưu trữ các thông tin ở dạng một mảng hai chiều, sau đó ánh xạ lên bề mặt của đối tượng, thông qua tiến trình gọi là UV mapping.
+
+UV mapping mà tiến trình chiếu một ảnh 2D lên bề mặt 3D. UV không phải là từ viết tắt. Hai chữ cái U và V biểu thị hai trục của ảnh 2D. Các chữ cái X, Y, Z đã được sử dụng để biểu thị các trục của bề mặt 3D. UV mapping sẽ chỉ định từng điểm trên ảnh 2D ứng với điểm tương ứng trên bề mặt 3D, (u, v) ⟶ (x, y, z).
+
+![UV mapping](images/uv_mapping.svg)
 
 Trong bài này, chúng ta sẽ tìm hiểu các chủ đề sau:
 
@@ -2405,41 +2409,31 @@ Trong bài này, chúng ta sẽ tìm hiểu các chủ đề sau:
 - Tìm hiểu matcap của MeshMatcapMaterial
 - Tìm hiểu gradient map của MeshToonMaterial
 
-### UV mapping
-
-UV mapping mà tiến trình chiếu một ảnh 2D lên bề mặt 3D. UV không phải là từ viết tắt. Hai chữ cái U và V biểu thị hai trục của ảnh 2D; X, Y, Z đã được sử dụng để biểu thị các trục của bề mặt 3D.
-
-UV mapping sẽ chỉ định từng điểm trên ảnh 2D ứng với điểm tương ứng trên bề mặt 3D.
-
-(u, v) ⟶ (x, y, z)
-
-![UV mapping](images/uv_mapping.svg)
-
 ### Color map
 
-Color map còn gọi là albedo map hoặc diffuse map.
+Chúng ta hãy bắt đầu với ví dụ cơ bản nhất đó là định nghĩa màu sắc của đối tượng từ Texture thông qua color map. Color map còn được gọi là albedo map hoặc diffuse map.
 
-Các đối tượng của chúng ta từ trước đến nay chỉ có một màu sắc. Tuy nhiên, trên thực tế các đối tượng ngoài thế giới thực còn có các hoa văn. Để làm được điều đó, chúng ta sẽ sử dụng một ảnh làm Texture, gán thuộc tính cho Material (vì Material quyết định vật sẽ trông như thế nào).
+Các đối tượng của chúng ta từ trước đến nay chỉ có một màu sắc. Tất cả các điểm trên đối tượng đều có màu đó. Tuy nhiên, trên thực tế các đối tượng thường có màu sắc khác nhau ở vị trí khác nhau, có các hoa văn phức tạp. Để làm được điều đó, chúng ta sẽ sử dụng một ảnh làm Texture, gán thuộc tính cho Material (vì Material quyết định vật sẽ trông như thế nào).
 
 Để mở đầu, chúng ta sẽ thiết lập một cảnh đơn giản bao gồm một hình cầu ở giữa. Chúng ta cũng thêm ánh sáng. Cảnh của chúng ta trông như sau:
 
 SCREENSHOT
 
-So sánh cảnh trên với một hình cầu trong thế giới thực: một quả bóng, hoặc một viên bi, hoặc quả địa cầu (từ bất kỳ vật liệu gì ngoại trừ từ nhựa phẳng), chúng ta sẽ thấy ngay rằng hình cầu của chúng ta không chân thực. Các đối tượng trong thế giới thật thường bị xước, bị vỡ, hoặc bị bẩn, và thay đổi từ điểm này đến điểm tiếp theo. Tuy nhiên, Material áp dụng cho hình cầu của chúng ta chỉ bao gồm một màu bao phủ toàn bộ bề mặt.
+Chúng ta hãy so sánh cảnh trên với một hình cầu trong thế giới thực như một quả bóng, hoặc một viên bi, hoặc quả địa cầu (từ bất kỳ vật liệu gì ngoại trừ từ nhựa phẳng), chúng ta sẽ thấy ngay rằng hình cầu của chúng ta không chân thực. Các đối tượng trong thế giới thật thường bị xước, bị vỡ, hoặc bị bẩn, và thay đổi từ điểm này đến điểm tiếp theo. Tuy nhiên, Material áp dụng cho hình cầu của chúng ta chỉ bao gồm một màu bao phủ toàn bộ bề mặt.
 
-Các đối tượng Material có nhiều thuộc tính ngoài thuộc tính color. Trong trường hợp đơn giản nhất, chúng ta sẽ lấy một ảnh và kéo nó bao phủ bề mặt của một đối tượng 3D. Chúng ta gọi các ảnh được sử dụng theo cách này là các Texture. Chúng ta có thể sử dụng Texture để thể hiện các thuộc tính như màu sắc, độ thô ráp, độ trong suốt. Thuộc tính map (color map).
+Các đối tượng Material có nhiều thuộc tính ngoài thuộc tính color. Trong trường hợp đơn giản nhất, chúng ta sẽ lấy một ảnh và kéo nó bao phủ bề mặt của một đối tượng 3D. Màu sắc của đối tượng sẽ giống màu của ảnh. Chúng ta gọi các ảnh được sử dụng theo cách này là các Texture. Chúng ta có thể sử dụng Texture để thể hiện các thuộc tính như màu sắc, sự gồ ghề, sự trong suốt,...
 
-Chúng ta sử dụng một ảnh, load nó bằng [TextureLoader](https://threejs.org/docs/index.html?q=Texture#api/en/loaders/TextureLoader), kết quả trả về sẽ là một đối tượng [Texture](https://threejs.org/docs/index.html?q=Texture#api/en/textures/Texture). Bạn có thể sử dụng các định dạng ảnh thông dụng như PNG, JPG, GIF, BMP. Kích thước ảnh là mũ 2 (256x256, 512x512, 1024x1024).
+Về cách lập trình trong Three.js, chúng ta sử dụng một ảnh, load nó bằng [TextureLoader](https://threejs.org/docs/index.html?q=Texture#api/en/loaders/TextureLoader), kết quả trả về sẽ là một đối tượng [Texture](https://threejs.org/docs/index.html?q=Texture#api/en/textures/Texture). Sau đó chúng ta gán đối tượng Texture này làm một thuộc tính của Material. Thuộc tính của Material để định nghĩa màu sắc với Texture là `map` (không phải `colorMap`, có lẽ do đây là trường hợp hay sử dụng nhất).
 
 ```javascript
 const textureLoader = new TextureLoader();
 const texture = textureLoader.load('đường dẫn ảnh');
-const material = new MeshBasicMaterial({
+const material = new MeshStandardMaterial({
     map: texture
 });
 ```
 
-Ở đoạn code trên, chúng ta sử dụng luôn đối tượng texture ngay sau khi gọi phương thức load. Tuy nhiên, ảnh có thể không được tải về luôn. Chúng ta có thể chờ cho ảnh tải về xong bằng cách gọi theo kiểu callback:
+Ở đoạn code trên, chúng ta sử dụng luôn đối tượng Texture ngay sau khi gọi phương thức `load()`. Tuy nhiên, ảnh có thể không được tải về luôn mà có độ trễ, có thể là vài trăm milli giây hoặc hơn nếu ảnh có dung lượng lớn. Chúng ta có thể nhìn thấy đối tượng mà chưa được áp dụng Texture trong một khoảng thời gian ngắn. Nếu muốn, chúng ta có thể chờ cho ảnh tải về xong bằng cách gọi theo kiểu callback như sau:
 
 ```javascript
 const textureLoader = new TextureLoader();
@@ -2448,36 +2442,28 @@ textureLoader.load(
     
     // onLoad callback
     texture => {
-        const material = new MeshBasicMaterial({
+        const material = new MeshStandardMaterial({
             map: texture
         });
     }
 );
 ```
 
+Luồng code của chúng ta với các loại map khác như bump map, normal map, displacement map,... cũng giống như trên. Chúng ta chỉ thay tên của thuộc tính Material tương ứng, thay vì `map` sẽ là `bumpMap`, `normalMap`, `displacementMap`,...
+
+Bạn có thể sử dụng các định dạng ảnh thông dụng như PNG, JPG, GIF, BMP. Để cho kết quả tốt nhất, kích thước ảnh nên là số mũ của 2 (ví dụ 256x256, 512x512, 1024x1024). Nếu kích thước của ảnh không phải số mũ của 2, Three.js sẽ scale ảnh về giá trị số mũ của 2 gần nhất.
+
+Giả sử chúng ta sử dụng ảnh sau:
+
+![Block color](textures/blocks/blocks_color.jpg)
+
 Áp dụng cho ví dụ của chúng ta sẽ cho ra kết quả:
+
+Ví dụ 07.01 Color map
 
 SCREENSHOT
 
-[Example 10.01 - Basic Textures](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/01-basic-texture.html)
-
-[Example 10.02 - Basic Textures DDS](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/02-basic-texture-dds.html)
-
-[Example 10.03 - Basic Textures PVR](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/03-basic-texture-pvr.html)
-
-[Example 10.04 - Basic Textures TGA](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/04-basic-texture-tga.html)
-
-[Example 10.05 - KTX Textures](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/05-basic-texture-ktx.html)
-
-[Example 10.06 - EXR Textures](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/06-basic-texture-exr.html)
-
-[Example 10.07 - HDR/RGBE Textures](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/07-basic-texture-rgbe.html)
-
 ### Bump map
-
-Sử dụng một bump map để tạo vân
-
-[Example 10.08 - Bump map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/08-bump-map.html)
 
 Bump map được sử dụng để mô phỏng sự gồ ghề, lồi lõm của một bề mặt. Bump map sử dụng các độ cao khác nhau. Bump map thường được lưu ở một ảnh đen trắng, màu đen là điểm có độ cao nhỏ nhất, màu trắng là điểm có độ cao lớn nhất. Height map cũng được gọi là bump map, trừ khi được nói rõ.
 
@@ -2487,53 +2473,99 @@ Bump map được sử dụng để mô phỏng sự gồ ghề, lồi lõm củ
 
 Để tạo sự gồ ghề, ngoài bump map, bạn có thể dùng normal map hoặc displacement map. Tuy nhiên, bạn nên chỉ dùng một cái thôi.
 
-Thuộc tính Three.js là `bumpMap`.
+Thuộc tính của Material để gán Texture là `bumpMap`. Ngoài ra, chúng ta cũng có thuộc tính `bumpScale` để chỉ định tỷ lệ độ cao là lớn hay nhỏ.
 
+Chúng ta sẽ sử dụng ảnh sau với bump map:
 
+![Block bump](textures/blocks/blocks_bump.jpg)
+
+Kết quả như sau:
+
+[Example 10.08 - Bump map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/08-bump-map.html)
+
+SCREENSHOT
 
 ### Normal map
 
-Đạt tới chi tiết hơn với normal map
+Normal map là biến thể của bump map. Normal map sử dụng vector pháp tuyến ở từng điểm, các thông số màu RGB tương ứng với các tọa độ XYZ. Bump map chỉ sử dụng một thông số (chiều cao), còn normal map sử dụng ba thông số nên sẽ chính xác hơn.
+
+Thuộc tính của Material để gán Texture là `normalMap`. Ngoài ra, chúng ta cũng có thuộc tính `normalScale` mà chúng ta có thể thiết lập tỷ lệ theo trục X và Y, ví dụ `material.normalScale.set(1, 1)`. Cách tiếp cận tốt nhất là để hai tỷ lệ theo trục X và Y này bằng nhau.
+
+Vấn đề với normal map là ảnh của nó không dễ để tạo. Bạn cần các công cụ chuyên dụng như Blender hoặc Photoshop.
+
+Với normal map hoặc bump map, chúng ta không thay đổi hình dạng của đối tượng; tất cả các đỉnh vẫn ở nguyên vị trí. Các map này chỉ sử dụng ánh sáng để tạo độ sâu và độ chi tiết giả.
+
+Chúng ta sẽ sử dụng ảnh sau với normal map:
+
+![Block normal](textures/blocks/blocks_normal.jpg)
+
+Kết quả như sau:
 
 [Example 10.09 - Normal map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/09-normal-map.html)
 
-Normal map là biến thể của bump map. Normal map sử dụng vector pháp tuyến ở từng điểm, các thông số màu RGB tương ứng với các tọa độ XYZ. Bump map chỉ sử dụng một thông số (chiều cao), còn normal map sử dụng ba thông số nên sẽ chính xác hơn.
-
-
-
-Thuộc tính normalMap.
-
-
+SCREENSHOT
 
 ### Displacement map
 
-Sử dụng displacement map để chỉnh vị trí của các đỉnh
-
-[Example 10.10 - Displacement map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/10-displacement-map.html)
-
-Dispacement map khác với bump map ở chỗ ở bump map, hình dạng (Geometry) của đối tượng không bị chỉnh sửa còn ở displacement map, hình dạng bị chỉnh sửa như nó bị thay thế. Do đó displacement map cũng tốn hiệu năng hơn.
+Dispacement map khác với bump map (và normal map) ở chỗ ở bump map, hình dạng (Geometry) của đối tượng không bị chỉnh sửa còn ở displacement map, hình dạng bị chỉnh sửa như nó bị thay thế. Do đó displacement map cũng tốn hiệu năng hơn.
 
 ![Displacement map vs bump map](images/displacement_map_vs_bump_map.png)
 
-Ở hình trên, hình cầu bên trái sử dụng bump map còn hình cầu bên phải sử dụng displacement map.
+Ở hình trên, hình cầu bên trái sử dụng bump map còn hình cầu bên phải sử dụng displacement map. Chúng ta có thể nhìn vào đối tượng hoặc bóng của nó để thấy hình dạng của hình cầu bên trái không thay đổi còn hình dạng của quả cầu bên phải thực sự thay đổi.
 
+Thuộc tính của Material để gán Texture là `displacementMap`. Ngoài ra, chúng ta cũng có thuộc tính `displacementScale` là tỷ lệ thay thế. Chú ý, sử dụng displacement map chỉ có kết quả tốt khi đối tượng của chúng ta chứa nhiều đỉnh. 
 
+Chúng ta sẽ sử dụng các ảnh sau với color map và displacement map:
+
+![Sands color](textures/sands/sands_color.jpg)
+
+![Sands displacement](textures/sands/sands_displacement.png)
+
+Kết quả như sau:
+
+[Example 10.10 - Displacement map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/10-displacement-map.html)
+
+SCREENSHOT
 
 ### Alpha map
 
-Thuộc tính `alphaMap`. Màu trắng là nhìn thấy. Màu đen là không.
+Alpha map là cách chúng ta điều chỉnh độ trong suốt của bề mặt. Nếu giá trị của map là màu đen, phần đó của đối tượng sẽ trong suốt hoàn toàn, và nếu giá trị là màu trắng, phần đó sẽ đục hoàn toàn.
 
-alphaMap (cần thiết lập transparent bằng true)
+Thuộc tính của Material để gán Texture là `alphaMap`. Ngoài ra, chúng ta phải thiết lập thuộc tính `transparent` bằng `true`. Chúng ta cũng thiết lập thuộc tính `side` là `DoubleSide` để có thể nhìn được mặt trong của hình.
+
+Chúng ta sẽ sử dụng ảnh sau với alpha map:
+
+![Partial transparency](textures/partial-transparency.png)
+
+Để chỉnh lại kích thước của Texture nhỏ hơn khi bao phủ bề mặt, chúng ta có thể làm như sau:
+
+```javascript
+alphaTexture.wrapS = RepeatWrapping;
+alphaTexture.wrapT = RepeatWrapping;
+alphaTexture.repeat.set(8, 8);
+```
+
+Kết quả như sau:
 
 [Example 10.14 - Alpha map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/14-alpha-map.html)
 
-
+SCREENSHOT
 
 ### Emissive map
 
+Emissive map là một Texture mà có thể được sử dụng để làm các phần nào đó của đối tượng phát sáng, tương tự như cách thuộc tính `emissive` làm với toàn bộ đối tượng.
+
+Thuộc tính của Material để gán Texture là `emissiveMap`. Đồng thời, chúng ta cũng phải thiết lập thuộc tính `emissive` là màu gì đó khác màu đen để nó kết hợp với emissive map. Hai giá trị màu này sẽ được nhân với nhau để ra kết quả hiển thị cuối cùng.
+
+Chúng ta sẽ sử dụng ảnh sau với emissive map:
+
+![Lava emissive](textures/lava/lava_emissive.png)
+
+Kết quả như sau:
+
 [Example 10.15 - Emissive](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/15-emissive-map.html)
 
-
+SCREENSHOT
 
 ### Enviroment map
 
@@ -2579,6 +2611,16 @@ Convert HDRI sang cube map online
 
 
 
+Chúng ta sẽ sử dụng ảnh sau với normal map:
+
+IMG
+
+Kết quả như sau:
+
+Ví dụ
+
+SCREENSHOT
+
 ### Specular map
 
 Specular map cho phép mức độ phản chiếu (mức độ tạo specular highlight) khác nhau ở các vị trí trên bề mặt.
@@ -2591,6 +2633,16 @@ Sử dụng specular map để chỉ định phần bóng, phần không bóng. 
 
 
 
+Chúng ta sẽ sử dụng ảnh sau với normal map:
+
+IMG
+
+Kết quả như sau:
+
+Ví dụ
+
+SCREENSHOT
+
 ### Roughness map
 
 Kim loại và thô ráp
@@ -2599,9 +2651,29 @@ Kim loại và thô ráp
 
 
 
+Chúng ta sẽ sử dụng ảnh sau với normal map:
+
+IMG
+
+Kết quả như sau:
+
+Ví dụ
+
+SCREENSHOT
+
 ### Metalness map
 
 Ví dụ
+
+Chúng ta sẽ sử dụng ảnh sau với normal map:
+
+IMG
+
+Kết quả như sau:
+
+Ví dụ
+
+SCREENSHOT
 
 ### Ambient occlusion map
 
@@ -2612,6 +2684,16 @@ Thêm bóng subtle với ambient occlusion map
 Ambient occlusion là kỹ thuật để tính toán cách mỗi điểm tiếp xúc với ambient light.
 
 Thuộc tính `aoMap`.
+
+Chúng ta sẽ sử dụng ảnh sau với normal map:
+
+IMG
+
+Kết quả như sau:
+
+Ví dụ
+
+SCREENSHOT
 
 ### Light map
 
@@ -2625,7 +2707,15 @@ Light map tính toán sẵn độ sáng của các bề mặt. Lightmap có th�
 
 
 
+Chúng ta sẽ sử dụng ảnh sau với normal map:
 
+IMG
+
+Kết quả như sau:
+
+Ví dụ
+
+SCREENSHOT
 
 ### Matcap
 
@@ -2645,7 +2735,15 @@ Thuộc tính là `matcap`.
 
 Ví dụ
 
+Chúng ta sẽ sử dụng ảnh sau với normal map:
 
+IMG
+
+Kết quả như sau:
+
+Ví dụ
+
+SCREENSHOT
 
 ### Gradient map
 
@@ -2653,7 +2751,15 @@ Chỉ áp dụng với MeshToonMaterial.
 
 Ví dụ
 
+Chúng ta sẽ sử dụng ảnh sau với normal map:
 
+IMG
+
+Kết quả như sau:
+
+Ví dụ
+
+SCREENSHOT
 
 ### Kết luận
 

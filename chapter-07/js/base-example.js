@@ -42,27 +42,31 @@ class BaseExample {
         this.renderer.setSize(canvas.clientWidth * pixelRatio, canvas.clientHeight * pixelRatio, false);
     }
 
-    createLights() {
-        const ambientLight = new AmbientLight(0xFFFFFF, 0.3);
-        this.scene.add(ambientLight);
+    createLights(movePointLight = true) {
+        this.ambientLight = new AmbientLight(0xFFFFFF, 0.3);
+        this.scene.add(this.ambientLight);
 
-        const sphereLightGeometry = new SphereGeometry(0.005);
-        const sphereLightMaterial = new MeshStandardMaterial({
-            color: 0xff0000,
-            emissive: 0xff0000
-        });
-        const sphereLightMesh = new Mesh(sphereLightGeometry, sphereLightMaterial);
-        this.scene.add(sphereLightMesh);
+        let sphereLightMesh;
+        if (movePointLight) {
+            const sphereLightGeometry = new SphereGeometry(0.005);
+            const sphereLightMaterial = new MeshStandardMaterial({
+                color: 0xff0000,
+                emissive: 0xff0000
+            });
+            sphereLightMesh = new Mesh(sphereLightGeometry, sphereLightMaterial);
+            this.scene.add(sphereLightMesh);
+        }
 
         this.pointLight = new PointLight(0xffffff, 0.5);
         this.pointLight.position.set(0, 0.05, 0.6);
         this.pointLight.tick = ms => {
-            const angle = (ms / 1000) * Math.PI * 0.2;
-            const radius = 0.6;
-            this.pointLight.position.x = Math.sin(angle) * radius;
-            this.pointLight.position.z = Math.cos(angle) * radius;
-
-            sphereLightMesh.position.copy(this.pointLight.position);
+            if (movePointLight) {
+                const angle = (ms / 1000) * Math.PI * 0.2;
+                const radius = 0.6;
+                this.pointLight.position.x = Math.sin(angle) * radius;
+                this.pointLight.position.z = Math.cos(angle) * radius;
+                sphereLightMesh.position.copy(this.pointLight.position);
+            }
         };
         this.scene.add(this.pointLight);
     }

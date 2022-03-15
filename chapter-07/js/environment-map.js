@@ -1,6 +1,5 @@
 import {
     BoxGeometry,
-    SphereGeometry,
     MeshStandardMaterial,
     Mesh,
     TextureLoader,
@@ -18,6 +17,20 @@ class ThreejsExample extends BaseExample {
         super(canvas);
         this.createLights();
 
+        this.loadTexture();
+
+        this.material = new MeshStandardMaterial({
+            // map: this.colorMaps.bricks,
+            envMap: this.envMaps.reflection,
+            roughness: 0
+        });
+
+        this.createMesh();
+        requestAnimationFrame(this.render.bind(this));
+        this.createControlsGui();
+    }
+
+    loadTexture() {
         const textureLoader = new TextureLoader();
         const cubeTextureLoader = new CubeTextureLoader();
 
@@ -74,16 +87,6 @@ class ThreejsExample extends BaseExample {
                 fibers: fibers
             };
         })();
-
-        this.material = new MeshStandardMaterial({
-            // map: this.colorMaps.bricks,
-            envMap: this.envMaps.reflection,
-            roughness: 0
-        });
-
-        this.createMesh();
-        requestAnimationFrame(this.render.bind(this));
-        this.createControlsGuil();
     }
 
     createMesh() {
@@ -92,7 +95,7 @@ class ThreejsExample extends BaseExample {
         this.scene.add(mesh);
     }
 
-    createControlsGuil() {
+    createControlsGui() {
         const envMapKeys = this.getObjectsKeys(this.envMaps);
         const colorMapKeys = this.getObjectsKeys(this.colorMaps);
         const roughnessMapKeys = this.getObjectsKeys(this.roughnessMaps);
