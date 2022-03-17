@@ -53,7 +53,8 @@ class ThreejsExample extends BaseExample {
         this.scene.background = this.cubeTexture;
 
         // MeshStandardMaterial không chạy được, do xung đột với metalness?
-        this.material = new MeshStandardMaterial({
+        // Phải dùng MeshPhongMaterial
+        this.material = new MeshPhongMaterial({
             color: 0xFFFFFF,
             roughness: 0,
             metalness: 1,

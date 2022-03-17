@@ -2723,6 +2723,8 @@ SCS
 
 ### Enviroment map
 
+#### Static
+
 Việc tính toán sự phản chiếu môi trường xung quanh rất tốn CPU, và thường yêu cầu cách tiếp cận ray tracer. Nếu chúng ta muốn có phản chiếu môi trường ở Three.js, chúng ta vẫn có thể làm được, bằng cách giả nó. Chúng ta sẽ tạo một Texture của môi trường.
 
 Environment map là kỹ thuật ánh sáng dựa vào ảnh hiệu quả để mô phỏng sự phản chiếu bề mặt bằng các Texture đã tính toán trước. Texture lưu ảnh của không gian xung quanh đối tượng. Enviroment map cũng còn được gọi là reflection map.
@@ -2735,47 +2737,51 @@ Chúng ta thực hiện các bước sau:
 
 Bên cạnh sự phản chiếu (reflection), Three.js cũng cho phép sử dụng một CubeTexture cho sự khúc xạ (refraction). Sự phản chiếu như chúng ta nhìn vào gương, còn sự khúc xạ như chúng ta nhìn vào kích (nhìn xuyên qua). Để có hiệu ứng này, chúng ta chỉ cần thiết lập `cubeMap.mapping` là CubeReflectionMapping (mặc định) hoặc CubeRefrationMapping.
 
+Chú ý: Để có hiệu ứng khúc xạ, chúng ta phải sử dụng MeshPhongMaterial. MeshStandardMaterial không hỗ trợ.
 
-
-[Example 10.17 - Envmap static](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/17-env-map-static.html)
+[Ví dụ 07.12 - Environment map static](https://static.lockex1987.com/learn-threejs/chapter-07/07-12-environment-map-static.html)
 
 SCS
 
-Ở ví dụ trên, chúng ta sử dụng một environment map tĩnh cho các đối tượng. Nói cách khác, chúng ta chỉ có thể thấy phản chiếu của môi trường mà không thấy các đối tượng khác. Để có thể nhìn được, chúng ta cần sử dụng thêm một Camera là CubeCamera.
+#### Dynamic
+
+Ở ví dụ trên, chúng ta sử dụng một environment map tĩnh cho các đối tượng. Nói cách khác, chúng ta chỉ có thể thấy phản chiếu của môi trường mà không thấy các đối tượng khác. Để có thể nhìn được, chúng ta cần sử dụng thêm một Camera là [CubeCamera](https://threejs.org/docs/index.html?q=cube#api/en/cameras/CubeCamera).
 
 ```javascript
-const cubeCamera =
+const cubeRenderTarget = new WebGLCubeRenderTarget(
+    128,
+    {
+        generateMipmaps: true,
+        minFilter: LinearMipmapLinearFilter
+    }
+);
+const cubeCamera = new CubeCamera(0.1, 100, cubeRenderTarget);
 ```
 
-Chúng ta sẽ sử dụng CubeCamera này để chụp lại cảnh với tất cả các đối tượng và sử dụng nó cho CubeTexture. Hai tham số đầu tiên là các khoảng cách near và far. Tham số cuối cùng là kích thước của Texture mà được tạo. Giá trị càng cao thì sự phản chiếu càng chi tiết. Chúng ta cần chắc chắn vị trí của CubeCamera này bằng vị trí của đối tượng.
+Chúng ta sẽ sử dụng CubeCamera này để chụp lại cảnh với tất cả các đối tượng và sử dụng nó cho CubeTexture. Hai tham số đầu tiên là các khoảng cách near và far của Camera. Chúng ta cần chắc chắn vị trí của CubeCamera này bằng vị trí của đối tượng.
+
+```javascript
+cubeMesh.add(cubeCamera);
+cubeCamera.position.copy(cubeMesh.position);
+```
 
 Để áp dụng những cái CubeCamera nhìn thấy cho đối tượng, chúng ta làm như sau:
 
 ```javascript
-cubeMaterial.envMap = cubeCamera.renderTarget
+cubeMaterial.envMap = cubeCamera.texture;
 ```
 
 Trong vòng lặp animation, chúng ta xử lý như sau:
 
 ```javascript
-cube.visible = false;
-cubeCamera.updateCubeMap(renderer, scene);
-cube.visible = true;
+cubeMesh.visible = false;
+cubeCamera.updatep(renderer, scene);
+cubeMesh.visible = true;
 ```
 
-Đầu tiên, chúng ta ẩn đối tượng cube đi, vì chúng ta chỉ muốn nhìn sự phản chiếu của đối tượng sphere lên trên đối tượng cube. Tiếp theo, chúng ta render cảnh với cubeCamera bằng phương thức `updateCubeMap()`. Sau đó, chúng ta hiện lại đối tượng cube và render cảnh như bình thường.
+Đầu tiên, chúng ta ẩn đối tượng cubeMesh đi, vì chúng ta chỉ muốn nhìn sự phản chiếu của đối tượng sphereMesh lên trên đối tượng cubeMesh. Tiếp theo, chúng ta render cảnh với cubeCamera bằng phương thức `update()`. Sau đó, chúng ta hiện lại đối tượng cubeMesh và render cảnh như bình thường.
 
-[Example 10.18 - Envmap dynamic](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/18-env-map-dynamic.html)
-
-
-
-Chúng ta sẽ sử dụng Texure sau với normal map:
-
-IMG
-
-Kết quả như sau:
-
-Ví dụ
+[Ví dụ 07.13 - Environment map dynamic](https://static.lockex1987.com/learn-threejs/chapter-07/07-13-environment-map-dynamic.html)
 
 SCREENSHOT
 

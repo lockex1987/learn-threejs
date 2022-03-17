@@ -83,8 +83,8 @@ class BaseExample {
     }
 
     render(ms) {
-        this.update(ms);
         this.orbitControls.update();
+        this.update(ms);
         this.renderer.render(this.scene, this.camera);
         requestAnimationFrame(this.render.bind(this));
     }
