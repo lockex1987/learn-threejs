@@ -2408,8 +2408,8 @@ Trong bài này, chúng ta sẽ tìm hiểu các chủ đề sau:
 - Sử dụng environment map để tạo sự phản chiếu xung quanh trên bề mặt đối tượng
 - Sử dụng roughness map, metalness map, specular map để thiết lập các phần sáng bóng
 - Sử dụng ambient occlusion map, light map để tạo bóng
-- Tìm hiểu matcap của MeshMatcapMaterial
 - Tìm hiểu gradient map của MeshToonMaterial
+- Tìm hiểu matcap của MeshMatcapMaterial
 
 ### Color map
 
@@ -2863,6 +2863,22 @@ Ví dụ
 
 SCREENSHOT
 
+### Gradient map
+
+Chỉ áp dụng với MeshToonMaterial.
+
+Ví dụ
+
+Chúng ta sẽ sử dụng Texure sau với normal map:
+
+IMG
+
+Kết quả như sau:
+
+Ví dụ
+
+SCREENSHOT
+
 ### Matcap
 
 Chỉ áp dụng với [MeshMatcapMaterial](https://threejs.org/docs/index.html?q=MeshMatcap#api/en/materials/MeshMatcapMaterial).
@@ -2878,22 +2894,6 @@ Thuộc tính là `matcap`.
 [https://github.com/nidorx/matcaps](https://github.com/nidorx/matcaps)
 
 
-
-Ví dụ
-
-Chúng ta sẽ sử dụng Texure sau với normal map:
-
-IMG
-
-Kết quả như sau:
-
-Ví dụ
-
-SCREENSHOT
-
-### Gradient map
-
-Chỉ áp dụng với MeshToonMaterial.
 
 Ví dụ
 
