@@ -3,7 +3,9 @@ import {
     MeshStandardMaterial,
     Mesh,
     TextureLoader,
-    WebGLCubeRenderTarget
+    WebGLCubeRenderTarget,
+    EquirectangularReflectionMapping,
+    sRGBEncoding
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
 import BaseExample from './base-example.js';
@@ -33,9 +35,13 @@ class ThreejsExample extends BaseExample {
         const textureLoader = new TextureLoader();
         const url = '../images/ninh_binh_panorama.jpg';
         const onLoaded = texture => {
+            texture.mapping = EquirectangularReflectionMapping;
+            texture.encoding = sRGBEncoding;
+            this.scene.background = texture;
+
             const rt = new WebGLCubeRenderTarget(texture.image.height);
             rt.fromEquirectangularTexture(this.renderer, texture);
-            this.scene.background = rt.texture;
+            // this.scene.background = rt.texture;
         };
         textureLoader.load(url, onLoaded);
     }

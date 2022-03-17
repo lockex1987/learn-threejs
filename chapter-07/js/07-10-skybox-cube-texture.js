@@ -55,7 +55,7 @@ class ThreejsExample extends BaseExample {
         });
 
         const cubeTextureLoader = new CubeTextureLoader();
-        const cubeTexture = cubeTextureLoader.load(images);
+        const cubeTexture = cubeTextureLoader.load(images); // .setPath('')
         this.scene.background = cubeTexture;
     }
 }
