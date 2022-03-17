@@ -2235,6 +2235,8 @@ function loadFontAsync(url) {
 }
 ```
 
+Bạn cũng có thể sử dụng phương thức `loadAsync()` luôn, không cần viết lại :). Đây là phương thức của base class [Loader](https://threejs.org/docs/index.html?#api/en/loaders/Loader).
+
 ### TextGeometry
 
 Để tạo một đối tượng văn bản mà có thể thêm vào cảnh 3D, chúng ta cũng vẫn cần tạo một Mesh. Mesh sẽ được tạo từ Material và Geometry. Chúng ta có thể sử dụng bất cứ Material nào như MeshBasicMaterial, MeshStandardMaterial,... Với Geometry là đối tượng văn bản, chúng ta cần sử dụng [TextTGeometry](https://threejs.org/docs/?q=TextGeometry#examples/en/geometries/TextGeometry).
@@ -2398,14 +2400,13 @@ UV mapping mà tiến trình chiếu một ảnh 2D lên bề mặt 3D. UV khôn
 
 Trong bài này, chúng ta sẽ tìm hiểu các chủ đề sau:
 
-- Tiến trình UV mapping
 - Tải một Texture và áp dụng màu sắc của nó với một Material (color map)
 - Sử dụng bump map, normal map, displacement map để mô phỏng sự gồ ghề của bề mặt
 - Sử dụng alpha map để tạo sự trong suốt một phần (không phải toàn bộ) của đối tượng
 - Sử dụng emissive map để mô phỏng hiệu ứng phát sáng
 - Thiết lập background cho cảnh
-- Sử dụng roughness map, metalness map, specular map để thiết lập các phần sáng bóng
 - Sử dụng environment map để tạo sự phản chiếu xung quanh trên bề mặt đối tượng
+- Sử dụng roughness map, metalness map, specular map để thiết lập các phần sáng bóng
 - Sử dụng ambient occlusion map, light map để tạo bóng
 - Tìm hiểu matcap của MeshMatcapMaterial
 - Tìm hiểu gradient map của MeshToonMaterial
@@ -2840,7 +2841,7 @@ SCREENSHOT
 
 ### Light map
 
-Tạo bóng giả sử dụng light map
+Tạo bóng giả sử dụng light map. Light map còn được gọi là shadow map.
 
 [Example 10.12 - Light map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/12-light-map.html)
 

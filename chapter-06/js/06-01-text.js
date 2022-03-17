@@ -19,6 +19,7 @@ import { TextGeometry } from 'https://unpkg.com/three@0.137.5/examples/jsm/geome
 
 /**
  * Promisify font loading.
+ * Dùng luôn phương thức loadAsync của Loader.
  */
 function loadFontAsync(fontName, fontWeight) {
     const url = 'https://threejs.org/examples/fonts/' + fontName + '_' + fontWeight + '.typeface.json';
@@ -135,7 +136,9 @@ class ThreejsExample {
         this.fontMap.helvetiker = await loadFontAsync('helvetiker', 'bold');
         this.fontMap.optimer = await loadFontAsync('optimer', 'bold');
         this.fontMap.droid_sans = await loadFontAsync('droid/droid_sans', 'bold');
-        this.fontMap.droid_serif = await loadFontAsync('droid/droid_serif', 'bold');
+
+        const fontLoader = new FontLoader();
+        this.fontMap.droid_serif = await fontLoader.loadAsync('https://threejs.org/examples/fonts/' + 'droid/droid_serif' + '_' + 'bold' + '.typeface.json');
     }
 
     loadTtf() {

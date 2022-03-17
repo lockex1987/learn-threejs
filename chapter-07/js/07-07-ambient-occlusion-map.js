@@ -24,9 +24,12 @@ class ThreejsExample extends BaseExample {
         const ambientOcclusionTexture = textureLoader.load('../textures/blocks/blocks_ambient_occlusion.jpg');
 
         const geometry = new SphereGeometry(0.4);
+        geometry.attributes.uv2 = geometry.attributes.uv; // phải thêm cái này
+
         const material = new MeshStandardMaterial({
             map: colorTexture,
-            aoMap: ambientOcclusionTexture // khó phân biệt sự khác nhau
+            aoMap: ambientOcclusionTexture, // khó phân biệt sự khác nhau
+            aoMapIntensity: 2
         });
         const mesh = new Mesh(geometry, material);
         this.scene.add(mesh);
