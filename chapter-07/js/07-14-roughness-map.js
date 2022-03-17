@@ -40,10 +40,9 @@ class ThreejsExample extends BaseExample {
 
         this.material = new MeshStandardMaterial({
             color: 0xFFFFFF,
-            roughness: 1,
-            // roughness: 0.07, // giá trị này sẽ được nhân vào với từng điểm ở map
-            metalness: 1,
+            roughness: 1, // giá trị này sẽ được nhân vào với từng điểm ở map
             roughnessMap: roughnessTexture,
+            metalness: 1,
             envMap: this.cubeTexture
         });
     }

@@ -2793,37 +2793,33 @@ Chúng ta cũng sử dụng environment map để hiển thị phản chiếu c�
 
 Chúng ta sẽ sử dụng Texture sau với cả roughness map và metalness map:
 
-IMG
+![Roughness and metalness map](textures/roughness_map.jpg)
 
 Kết quả như sau:
 
-[Example 10.13 - Metalness and Roughness](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/13-metal-roughness-map.html)
+[Ví dụ 07.14 - Roughness map](https://static.lockex1987.com/learn-threejs/chapter-07/07-14-roughness-map.html)
 
 SCREENSHOT
 
-Ví dụ
+[Ví dụ 07.15 - Metalness map](https://static.lockex1987.com/learn-threejs/chapter-07/07-15-metalness-map.html)
 
 SCREENSHOT
 
 ### Specular map
 
-Specular map cho phép mức độ phản chiếu (mức độ tạo specular highlight) khác nhau ở các vị trí trên bề mặt. Với specular map, chúng ta có thể định nghĩa phần nào của đối tượng sẽ sáng bóng, phần nào của đối tượng sẽ thô ráp (tương tự như `roughnessMap` và `metalnessMap` mà chúng ta vừa tìm hiểu). Thuộc tính của Material để gán Texture là `specularMap`.
+Specular map cho phép mức độ phản chiếu (mức độ tạo specular highlight) khác nhau ở các vị trí trên bề mặt. Với specular map, chúng ta có thể định nghĩa phần nào của đối tượng sẽ sáng bóng, phần nào của đối tượng sẽ thô ráp (tương tự như `roughnessMap` và `metalnessMap` mà chúng ta vừa tìm hiểu). Thuộc tính của Material để gán Texture là `specularMap`. Chúng ta phải sử dụng với MeshPhongMaterial, vì MeshStandardMaterial không có thuộc tính này.
 
-Chúng ta sẽ vẽ một quả địa cầu và sử dụng specular map để làm các phần là đại dương sẽ sáng bóng hơn các phần là đất liền.
+Chúng ta sẽ vẽ một quả địa cầu và sử dụng specular map để làm các phần là đại dương sẽ sáng bóng hơn các phần là đất liền. Chúng ta sẽ sử dụng Texure sau với specular map:
 
-Chúng ta sẽ sử dụng Texure sau với specular map:
-
-IMG
+![Earth specular](textures/earth/earth_specular.png)
 
 Các vị trí màu đen nghĩa là độ sáng bóng bằng 0, và màu trắng nghĩa là độ sáng bóng 100%.
 
 Kết quả như sau:
 
-[Example 10.16 - Specular](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/16-specular-map.html)
+[Ví dụ 07.16 - Specular map](https://static.lockex1987.com/learn-threejs/chapter-07/07-16-specular-map.html)
 
 SCREENSHOT
-
-
 
 ### Ambient occlusion map
 
@@ -2913,7 +2909,7 @@ SCREENSHOT
 
 ### Kết luận
 
-Các texture thường được tạo từ các file ảnh. Tuy nhiên, bạn hãy đừng coi nó là các file ảnh để chúng ta nhìn bình thường, mà hãy coi nó là cấu trúc dữ liệu phục vụ mục đích nào đó. Mỗi điểm của ảnh sẽ quyết định giá trị của một điểm tương ứng trên đối tượng (thông qua UV mapping). Với `map` sẽ là màu sắc của điểm, với `bumpMap` sẽ là độ cao của điểm, với `roughnessMap` sẽ là độ thô ráp của điểm đó. Áp dụng cho từng điểm, thay cho toàn bộ đối tượng, điểm nào cũng giống điểm nào.
+Các texture thường được tạo từ các file ảnh. Tuy nhiên, bạn hãy đừng coi nó là các file ảnh để chúng ta nhìn bình thường, mà hãy coi nó là cấu trúc dữ liệu phục vụ mục đích nào đó. Mỗi điểm của ảnh sẽ quyết định giá trị của một điểm tương ứng trên đối tượng (thông qua UV mapping). Với `map` sẽ là màu sắc của điểm, với `bumpMap` sẽ là độ cao của điểm, với `roughnessMap` sẽ là độ thô ráp của điểm đó,... Áp dụng cho từng điểm, thay cho toàn bộ đối tượng, điểm nào cũng giống điểm nào.
 
 Về code, cách làm của các Texture map đều giống nhau. Đó là tạo đối tượng TextureLoader, gọi phương thức load() để trả về đối tượng Texture, rồi gán cho một thuộc tính của Material. Quan trọng là có ảnh texture đúng, đẹp.
 
