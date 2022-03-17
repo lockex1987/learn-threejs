@@ -33,7 +33,7 @@ class ThreejsExample extends BaseExample {
 
     createSkybox() {
         const textureLoader = new TextureLoader();
-        const url = '../images/ninh_binh_panorama.jpg';
+        const url = '../images/tears_of_steel_bridge_2k.jpg';
         const onLoaded = texture => {
             texture.mapping = EquirectangularReflectionMapping;
             texture.encoding = sRGBEncoding;

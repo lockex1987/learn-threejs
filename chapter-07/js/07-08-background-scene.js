@@ -13,7 +13,7 @@ class ThreejsExample extends BaseExample {
         super(canvas);
 
         const textureLoader = new TextureLoader();
-        const backgroundTexture = textureLoader.load('../images/ha_noi.jpg');
+        const backgroundTexture = textureLoader.load('../images/daikanyama.jpg');
         this.scene.background = backgroundTexture;
 
         this.createLights(false);

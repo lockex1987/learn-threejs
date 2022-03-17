@@ -37,21 +37,8 @@ class ThreejsExample extends BaseExample {
             'pos-z',
             'neg-z'
         ];
-
-        /*
-        const orders = [
-            'px',
-            'nx',
-            'py',
-            'ny',
-            'pz',
-            'nz'
-        ];
-        */
-
         const images = orders.map(fileName => {
-            return '../textures/cube/ho_chi_minh_city/' + fileName + '.jpg';
-            // return '../textures/cube/swedish_royal_castle/' + fileName + '.jpg'
+            return '../textures/cube/computer_history_museum/' + fileName + '.jpg';
         });
 
         const cubeTextureLoader = new CubeTextureLoader();

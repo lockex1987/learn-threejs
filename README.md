@@ -2591,7 +2591,7 @@ Chúng ta có thể thêm một background tĩnh đơn giản bằng CSS. Chúng
 
 ```css
 canvas {
-    background: url(../images/ha_noi.jpg) no-repeat center center;
+    background: url(../images/daikanyama.jpg) no-repeat center center;
     background-size: cover;
 }
 ```
@@ -2617,7 +2617,7 @@ Nếu chúng ta muốn background cũng có thể bị ảnh hưởng bởi các
 
 ```javascript
 const textureLoader = new TextureLoader();
-const backgroundTexture = textureLoader.load('../images/ha_noi.jpg');
+const backgroundTexture = textureLoader.load('../images/daikanyama.jpg');
 scene.background = backgroundTexture;
 ```
 
@@ -2644,7 +2644,7 @@ const orders = [
 ];
 
 const materials = orders.map(fileName => new MeshStandardMaterial({
-    map: textureLoader.load('../textures/cube/ho_chi_minh_city/' + fileName + '.jpg'),
+    map: textureLoader.load('../textures/cube/computer_history_museum/' + fileName + '.jpg'),
     side: BackSide
 }));
 
@@ -2684,7 +2684,7 @@ const orders = [
 ];
 
 const images = orders.map(fileName => {
-    return '../textures/cube/ho_chi_minh_city/' + fileName + '.jpg';
+    return '../textures/cube/computer_history_museum/' + fileName + '.jpg';
 });
 
 const cubeTextureLoader = new CubeTextureLoader();
@@ -2702,13 +2702,13 @@ Three.js sẽ nối các ảnh với nhau một cách liền mạch.
 
 Cách cuối cùng để tạo skybox mà chúng ta sẽ tìm hiểu là sử dụng một Equirectangular map. Đây chính là cách giống như phép chiếu từ bản đồ dạng phẳng lên quả địa cầu. Chúng ta sẽ sử dụng một ảnh panorama 360 độ, ví dụ ảnh sau:
 
-![Ninh Bình panorama](images/ninh_binh_panorama.jpg)
+![Ninh Bình panorama](images/tears_of_steel_bridge_2k.jpg)
 
 Đầu tiên, chúng ta sẽ load ảnh như một Texture, sau đó, ở hàm callback (chúng ta chờ ảnh load xong), chúng ta tạo một đối tượng WebGLCubeRenderTarget và gọi phương thức `fromEquirectangularTexture()` để sinh ra một CubeTexture từ Texture đó. Chúng ta truyền kích thước cubemap khi khởi tạo WebGLCubeRenderTarget, có thể truyền giá trị bằng chiều cao của ảnh.
 
 ```javascript
 const textureLoader = new TextureLoader();
-const url = '../images/ninh_binh_panorama.jpg';
+const url = '../images/tears_of_steel_bridge_2k.jpg';
 const onLoaded = texture => {
     const rt = new WebGLCubeRenderTarget(texture.image.height);
     rt.fromEquirectangularTexture(this.renderer, texture);

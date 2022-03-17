@@ -41,20 +41,8 @@ class ThreejsExample extends BaseExample {
             'pos-z',
             'neg-z'
         ];
-
-        /*
-        const orders = [
-            'px',
-            'nx',
-            'py',
-            'ny',
-            'pz',
-            'nz'
-        ];
-        */
         const materials = orders.map(fileName => new MeshStandardMaterial({
-            map: textureLoader.load('../textures/cube/ho_chi_minh_city/' + fileName + '.jpg'),
-            // map: textureLoader.load('../textures/cube/swedish_royal_castle/' + fileName + '.jpg'),
+            map: textureLoader.load('../textures/cube/computer_history_museum/' + fileName + '.jpg'),
             side: BackSide
         }));
         const geometry = new BoxGeometry(5, 5, 5);
