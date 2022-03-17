@@ -2823,43 +2823,45 @@ SCREENSHOT
 
 ### Ambient occlusion map
 
-Thêm bóng subtle với ambient occlusion map
+Tạo bóng bằng cách mô phỏng các tia sáng từ các nguồn sáng đến các đối tượng là một tiến trình tính toán tốn nhiều hiệu năng mà phải lặp đi lặp lại trong vòng lặp animation. Nếu các nguồn sáng hoặc các đối tượng của bạn di chuyển thì việc tính toán này là cần thiết. Tuy nhiên, nếu nguồn sáng và các đối tượng là tĩnh, sẽ tốt hơn rất nhiều nếu chúng ta tính toán việc tạo bóng một lần và tái sử dụng nó. Để làm được điều này, Three.js cung cấp hai map khác nhau: ambient occlusion map và light map.
 
-[Example 10.11 - Ambient occlusion map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/11-ao-map.html)
+Ambient occlusion là một kỹ thuật để quyết định một phần của đối tượng sẽ lộ ra dưới Ambient Light bao nhiêu.
 
-Ambient occlusion là kỹ thuật để tính toán cách mỗi điểm tiếp xúc với ambient light.
+Thuộc tính của Material để gán Texture là `aoMap`. Ngoài ra, chúng ta cũng có thuộc tính `aoMapIntensity` để thiết lập mức độ áp dụng ambient occlusion map.
 
-Thuộc tính `aoMap`.
+Chú ý, để ambient occlusion (và light) map hoạt động, chúng ta phải chỉnh đối tượng Geometry như sau:
 
-Chúng ta sẽ sử dụng Texure sau với normal map:
+```javascript
+geometry.attributes.uv2 = geometry.attributes.uv;
+```
 
-IMG
+Chúng ta sẽ sử dụng Texure sau với ambient occlusion map:
+
+![Blocks ambient occlusion](textures/blocks/blocks_ambient_occlusion.jpg)
 
 Kết quả như sau:
 
-Ví dụ
+[Ví dụ 07.17 - Ambient occlusion map](https://static.lockex1987.com/learn-threejs/chapter-07/07-17-ambient-occlusion-map.html)
 
 SCREENSHOT
 
+Với ambient occlusion map, dù chỉ sử dụng Ambient Light nhưng đối tượng của chúng ta vẫn có bóng, tạo cảm giác về độ sâu 3D.
+
 ### Light map
 
-Tạo bóng giả sử dụng light map. Light map còn được gọi là shadow map.
-
-[Example 10.12 - Light map](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-10/12-light-map.html)
-
-Light map tính toán sẵn độ sáng của các bề mặt. Lightmap có thể sử dụng để tạo hiệu ứng bóng.
+Để tạo bóng giả, chúng ta cũng có thể sử dụng light map. Light map còn được gọi là shadow map. Thường thì ambient occlusion gán cho đối tượng, còn light map gán cho nền.
 
 ![Light map](images/light_map.png)
 
+Thuộc tính của Material để gán Texture là `lightMap`.
 
+Chúng ta sẽ sử dụng Texure sau với light map:
 
-Chúng ta sẽ sử dụng Texure sau với normal map:
-
-IMG
+![Light map](textures/light_map.png)
 
 Kết quả như sau:
 
-Ví dụ
+[Ví dụ 07.18 - Light map](https://static.lockex1987.com/learn-threejs/chapter-07/07-18-light-map.html)
 
 SCREENSHOT
 

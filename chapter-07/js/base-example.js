@@ -29,7 +29,7 @@ class BaseExample {
 
     createCamera(canvas) {
         const aspect = canvas.clientWidth / canvas.clientHeight;
-        this.camera = new PerspectiveCamera(45, aspect, 0.1, 25);
+        this.camera = new PerspectiveCamera(45, aspect, 0.1, 150);
         this.camera.position.z = 2;
     }
 
