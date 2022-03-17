@@ -23,7 +23,7 @@ class ThreejsExample extends BaseExample {
 
     loadTexture() {
         const textureLoader = new TextureLoader();
-        const alphaTexture = textureLoader.load('../textures/partial-transparency.png');
+        const alphaTexture = textureLoader.load('../textures/alpha_map.png');
         alphaTexture.wrapS = RepeatWrapping;
         alphaTexture.wrapT = RepeatWrapping;
         alphaTexture.repeat.set(8, 8);

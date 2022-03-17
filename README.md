@@ -2537,7 +2537,7 @@ Thuộc tính của Material để gán Texture là `alphaMap`. Ngoài ra, chún
 
 Chúng ta sẽ sử dụng Texure sau với alpha map:
 
-![Partial transparency](textures/partial-transparency.png)
+![Partial transparency](textures/alpha_map.png)
 
 Để chỉnh lại kích thước của Texture nhỏ hơn khi bao phủ bề mặt, chúng ta có thể làm như sau:
 
