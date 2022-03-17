@@ -12,19 +12,24 @@ import BaseExample from './base-example.js';
 class ThreejsExample extends BaseExample {
     constructor(canvas) {
         super(canvas);
+        this.loadTexture();
+        this.createMesh();
+        requestAnimationFrame(this.render.bind(this));
+        this.createControlsGui();
+    }
 
+    loadTexture() {
         const textureLoader = new TextureLoader();
         this.matcaps = {
             none: null,
             porcelainWhite: textureLoader.load('../textures/matcaps/porcelain_white.jpg')
         };
+        for (let i = 1; i <= 8; i++) {
+            this.matcaps[i] = textureLoader.load('../textures/matcaps/' + i + '.png');
+        }
         this.material = new MeshMatcapMaterial({
             matcap: this.matcaps.porcelainWhite
         });
-
-        this.createMesh();
-        requestAnimationFrame(this.render.bind(this));
-        this.createControlsGui();
     }
 
     createMesh() {
@@ -37,7 +42,7 @@ class ThreejsExample extends BaseExample {
         const matcapKeys = this.getObjectsKeys(this.matcaps);
         const gui = new GUI();
         const data = {
-            matcap: matcapKeys[1]
+            matcap: 'porcelainWhite'
         };
         gui.add(data, 'matcap', matcapKeys)
             .onChange(this.updateTexture(this.material, 'matcap', this.matcaps));

@@ -2409,7 +2409,7 @@ Trong bài này, chúng ta sẽ tìm hiểu các chủ đề sau:
 - Sử dụng roughness map, metalness map, specular map để thiết lập các phần sáng bóng
 - Sử dụng ambient occlusion map, light map để tạo bóng
 - Tìm hiểu gradient map của MeshToonMaterial
-- Tìm hiểu matcap của MeshMatcapMaterial
+- Tìm hiểu Matcap của MeshMatcapMaterial
 
 ### Color map
 
@@ -2867,53 +2867,39 @@ SCREENSHOT
 
 ### Gradient map
 
-Chỉ áp dụng với MeshToonMaterial.
+Ở chương về Material trong Three.js, chúng ta đã tìm hiểu về [MeshToonMaterial](https://threejs.org/docs/index.html?q=MeshToon#api/en/materials/MeshToonMaterial). MeshToonMaterial mặc định sử dụng hai tông màu: một cho từ 0% đến 70%, một cho từ 70% đến 100%. Để thay đổi các tông màu này, chúng ta có thể sử dụng gradient map. Thuộc tính là `gradientMap`, và chỉ áp dụng với MeshToonMaterial.
 
-Ví dụ
-
-Chúng ta sẽ sử dụng Texure sau với normal map:
-
-IMG
+Chúng ta có thể sử dụng các Texture có kích thước 3x1 hoặc 5x1, mỗi pixel có một màu khác nhau sau với gradient map để tạo ba hoặc năm tông màu khác nhau thay vì chỉ hai:
 
 Kết quả như sau:
 
-Ví dụ
+[Ví dụ 07.19 - Gradient map](https://static.lockex1987.com/learn-threejs/chapter-07/07-19-gradient-map.html)
 
 SCREENSHOT
 
 ### Matcap
 
-Chỉ áp dụng với [MeshMatcapMaterial](https://threejs.org/docs/index.html?q=MeshMatcap#api/en/materials/MeshMatcapMaterial).
+[MeshMatcapMaterial](https://threejs.org/docs/index.html?q=MeshMatcap#api/en/materials/MeshMatcapMaterial) được định nghĩa bằng một Matcap (Material Capture, hoặc Lit Sphere) Texture, nghĩa là Texture mà đã encode sẵn màu sắc và shading. MeshMatcapMaterial không phản ứng lại với ánh sáng do file ảnh Matcap đã encode sẵn ánh sáng được tính toán trước (baked lighting). Chúng ta không cần thêm các nguồn sáng vào cảnh khi sử dụng MeshMatcapMaterial, tuy nhiên đối tượng không bị trông đơn sắc mà khá là chân thật, ví dụ như các đối tượng làm từ chất liệu sứ.
 
-Sử dụng Texture với các màu sắc và shading đã tính toán trước. Không cần Light. Cho các đối tượng như sứ.
+Chúng ta chỉ cần load một Texture và gán cho thuộc tính là `matcap` của MeshMatcapMaterial.
 
-Trông không đơn sắc mà không cần ánh sáng. MatCap (Material Capture) shader sử dụng một ảnh của một hình cầu như là một view-space environment map. Ảnh chứa các màu sắc và shading đã tạo sẵn, tính toán trước.
-
-Để ở Texture, hay một ví dụ Texture cơ bản ở đây luôn?
-
-Thuộc tính là `matcap`.
+Chúng ta có thể lấy các Matcap Texture ở địa chỉ sau:
 
 [https://github.com/nidorx/matcaps](https://github.com/nidorx/matcaps)
 
+Một Matcap Texture có dạng hình tròn kiểu như sau:
 
+![Matcap](textures/matcaps/porcelain_white.jpg)
 
-Ví dụ
-
-Chúng ta sẽ sử dụng Texure sau với normal map:
-
-IMG
-
-Kết quả như sau:
-
-Ví dụ
+[Ví dụ 07.20 - Matcap](https://static.lockex1987.com/learn-threejs/chapter-07/07-20-matcap.html)
 
 SCREENSHOT
 
 ### Kết luận
 
-Các texture thường được tạo từ các file ảnh. Tuy nhiên, bạn hãy đừng coi nó là các file ảnh để chúng ta nhìn bình thường, mà hãy coi nó là cấu trúc dữ liệu phục vụ mục đích nào đó. Mỗi điểm của ảnh sẽ quyết định giá trị của một điểm tương ứng trên đối tượng (thông qua UV mapping). Với `map` sẽ là màu sắc của điểm, với `bumpMap` sẽ là độ cao của điểm, với `roughnessMap` sẽ là độ thô ráp của điểm đó,... Áp dụng cho từng điểm, thay cho toàn bộ đối tượng, điểm nào cũng giống điểm nào.
+Các Texture thường được tạo từ các file ảnh. Tuy nhiên, bạn hãy đừng coi nó là các file ảnh để chúng ta nhìn bình thường, mà hãy coi nó là cấu trúc dữ liệu phục vụ mục đích nào đó. Mỗi điểm của ảnh sẽ quyết định giá trị của một điểm tương ứng trên đối tượng (thông qua UV mapping). Với `map` sẽ là màu sắc của điểm, với `bumpMap` sẽ là độ cao của điểm, với `roughnessMap` sẽ là độ thô ráp của điểm đó,... Các giá trị sẽ được áp dụng cho từng điểm, thay cho toàn bộ đối tượng.
 
-Về code, cách làm của các Texture map đều giống nhau. Đó là tạo đối tượng TextureLoader, gọi phương thức load() để trả về đối tượng Texture, rồi gán cho một thuộc tính của Material. Quan trọng là có ảnh texture đúng, đẹp.
+Về code, cách làm của các Texture mapping đều giống nhau. Đó là tạo đối tượng TextureLoader, gọi phương thức `load()` để trả về đối tượng Texture, rồi gán cho một thuộc tính của Material. Quan trọng chúng ta phải có các Texture đúng, đẹp.
 
 ## Chương 8 - Load model
 

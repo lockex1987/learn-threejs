@@ -16,21 +16,19 @@ class ThreejsExample extends BaseExample {
         this.createLights();
 
         const textureLoader = new TextureLoader();
-        this.gradientMaps = (() => {
-            const threeTone = textureLoader.load('../textures/gradients/tone_three.jpg');
-            threeTone.minFilter = NearestFilter;
-            threeTone.magFilter = NearestFilter;
+        const threeTone = textureLoader.load('../textures/gradients/tone_three.jpg');
+        threeTone.minFilter = NearestFilter;
+        threeTone.magFilter = NearestFilter;
 
-            const fiveTone = textureLoader.load('../textures/gradients/tone_five.jpg');
-            fiveTone.minFilter = NearestFilter;
-            fiveTone.magFilter = NearestFilter;
+        const fiveTone = textureLoader.load('../textures/gradients/tone_five.jpg');
+        fiveTone.minFilter = NearestFilter;
+        fiveTone.magFilter = NearestFilter;
 
-            return {
-                none: null,
-                threeTone: threeTone,
-                fiveTone: fiveTone
-            };
-        })();
+        this.gradientMaps = {
+            none: null,
+            threeTone: threeTone,
+            fiveTone: fiveTone
+        };
         this.material = new MeshToonMaterial({
             color: 0x049ef4,
             gradientMap: this.gradientMaps.threeTone
