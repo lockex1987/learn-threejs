@@ -3,11 +3,12 @@ import {
     SphereGeometry,
     MeshStandardMaterial,
     Mesh,
-    Object3D,
     CubeTextureLoader,
     WebGLCubeRenderTarget,
     LinearMipmapLinearFilter,
-    CubeCamera
+    CubeCamera,
+    sRGBEncoding,
+    RGBFormat
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
 import BaseExample from './base-example.js';
@@ -54,10 +55,12 @@ class ThreejsExample extends BaseExample {
             128,
             {
                 generateMipmaps: true,
-                minFilter: LinearMipmapLinearFilter
+                minFilter: LinearMipmapLinearFilter,
+                // encoding: sRGBEncoding,
+                // format: RGBFormat
             }
         );
-        this.cubeCamera = new CubeCamera(0.1, 100, cubeRenderTarget);
+        this.cubeCamera = new CubeCamera(0.1, 1000, cubeRenderTarget);
         // this.scene.add(this.cubeCamera);
 
         const cubeMaterial = new MeshStandardMaterial({
@@ -75,10 +78,6 @@ class ThreejsExample extends BaseExample {
 
         this.cubeCamera.position.copy(this.cubeMesh.position);
         // this.cubeCamera.position.x = -2; // TODO: đang bị to quá
-
-        // const pivot = new Object3D();
-        // pivot.add(this.cubeMesh);
-        // this.scene.add(pivot);
     }
 
     /**

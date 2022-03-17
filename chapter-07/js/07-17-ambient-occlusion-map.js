@@ -31,7 +31,7 @@ class ThreejsExample extends BaseExample {
         this.material = new MeshStandardMaterial({
             map: colorTexture,
             aoMap: ambientOcclusionTexture, // khó phân biệt sự khác nhau
-            aoMapIntensity: 2
+            aoMapIntensity: 0.5
         });
         const mesh = new Mesh(geometry, this.material);
         this.scene.add(mesh);

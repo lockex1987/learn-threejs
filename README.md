@@ -2901,6 +2901,14 @@ Các Texture thường được tạo từ các file ảnh. Tuy nhiên, bạn h�
 
 Về code, cách làm của các Texture mapping đều giống nhau. Đó là tạo đối tượng TextureLoader, gọi phương thức `load()` để trả về đối tượng Texture, rồi gán cho một thuộc tính của Material. Quan trọng chúng ta phải có các Texture đúng, đẹp.
 
+Bạn có thể tải Texture từ các trang web sau:
+
+- [Poly Haven](https://polyhaven.com) (free, không cần đăng ký)
+- [Free PBR Materials](https://freepbr.com)
+- [AmbientCG](https://ambientcg.com/)
+- [3D TEXTURES](https://3dtextures.me/)
+- [Poliigon](https://www.poliigon.com/)
+
 ## Chương 8 - Load model
 
 [Model Loader](http://localhost:8000/chapter-08/08-01-model-loader.html)
