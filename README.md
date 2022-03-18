@@ -2911,52 +2911,99 @@ Bạn có thể tải Texture từ các trang web sau:
 
 ## Chương 8 - Load model
 
-[Model Loader](http://localhost:8000/chapter-08/08-01-model-loader.html)
+Để tạo ra các mô hình 3D phức tạp, sẽ rất khó nếu chúng ta làm việc đó thủ công bằng cách kết hợp các Geometry cơ bản mà Three.js cung cấp. Thay vào đó, chúng ta nên tạo các mô hình này bằng các phần mềm chuyên dụng như Blender, Maya,... Sau đó, chúng ta sẽ load mô hình (model) vào trong cảnh của chúng ta rồi hiển thị.
 
-[Example 09.14 - gltf loader](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-09/14-animation-from-gltf.html)
+### Các định dạng file và các Loader
+
+Có rất nhiều các định dạng file để lưu thông tin 3D model. Tuy nhiên, trong những năm gần đây, một định dạng file nổi lên như là chuẩn đó là glTF (GL Transmission Format). Định dạng này có ưu điểm là nó được thiết kế tối ưu để hiển thị chứ không phải để chỉnh sửa, dung lượng nhẹ, tải nhanh, có đầy đủ các tính năng như Material, Animation. Ngoài ra, một số các định dạng khác cũng phổ biến như OBJ, BLEND, FBX,...
+
+Định dạng glTF lại có thể ở hai dạng:
+
+- Dạng file JSON chuẩn `.gltf` không nén và có thể đi kèm thêm với các file .bin
+- Dạng file binary `.glb` chứa tất cả dữ liệu trong chỉ một file
+
+
+
+Tùy các định dạng file model, chúng ta sẽ có các Loader tương ứng. Ví dụ với định dạng glTF, OBJ sẽ có GLTFLoader, OBJLoader. Chúng ta sử dụng các Loader này tương tự cách chúng ta sử dụng các Loader khác đã tìm hiểu ở các bài trước như FontLoader, TTFLoader, SVGLoader, TextureLoader,...
+
+### Load model tĩnh
+
+Đầu tiên, chúng ta cần một model mẫu. Có rất nhiều các model miễn phí mà bạn có thể sử dụng trên Internet như:
+
+[glTF-Sample-Models/2.0 at master · KhronosGroup/glTF-Sample-Models](https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0)
+
+[Sketchfab](https://sketchfab.com/search?type=models)
+
+[Mixamo](https://www.mixamo.com/#/)
+
+[Clara.io](https://clara.io/library)
 
 [3D Models for Free - Free3D.com](https://free3d.com/)
 
-[Isometric Room - Buy Royalty Free 3D model by AVR Creative (@avrcreative) [703adb8]](https://sketchfab.com/3d-models/isometric-room-703adb8138314218a64142dd73d3c06f)
+[Poly Pizza: Free 3D models for everyone](https://poly.pizza/)
 
-[Explore 3D Models - Sketchfab](https://sketchfab.com/search?q=vietnam&type=models)
+Chúng ta nên sử dụng các model dạng low poly để có thể hiển thị nhẹ nhàng trên cả các thiết bị yếu.
 
-[Ho Chi Minh, Vietnam - 3D city model - 3D model by 3D City Models (@3d-city-models) [6ac6c82]](https://sketchfab.com/3d-models/ho-chi-minh-vietnam-3d-city-model-6ac6c821374b4113a3c2fd105be4abb8)
+Chúng ta sẽ sử dụng model con chim hồng hạc flamingo từ trang chủ của Three.js. Model này cũng có Animation để có thể sử dụng ở phần tiếp theo.
 
-[Loading 3D models – three.js docs](https://threejs.org/docs/#manual/en/introduction/Loading-3D-models)
+[https://threejs.org/examples/models/gltf/Flamingo.glb](https://threejs.org/examples/models/gltf/Flamingo.glb)
 
-[Load 3D Models in glTF Format | Discover three.js](https://discoverthreejs.com/book/first-steps/load-models/)
+Đầu tiên, chúng ta cũng tạo một cảnh 3D đơn giản với Scene, Camera, Renderer, AmbientLight, PointLight, OrbitControls. Chúng ta cũng tạo một vòng lặp Animation đơn giản.
 
-[Three.js .glTF 3D Model Display](https://codepen.io/siouxcitizen/pen/QroPwJ)
+Tiếp theo, chúng ta import class GLTFLoader từ file trong thư mục `examples`,  khởi tạo một đối tượng Loader, sau đó gọi phương thức `loadAsync()`. Kết quả trả về sẽ là một đối tượng `gltf`. Bây giờ chúng ta hãy thử in đối tượng này ra thôi xem nó bao gồm những gì. Sau đó, chúng ta bắt đầu vòng lặp Animation.
 
-[Add 3D Model to WebSite in 5 Minutes - Three.js Tutorial - Red Stapler](https://redstapler.co/add-3d-model-to-website-threejs/)
+```javascript
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-[glTF Viewer](https://gltf-viewer.donmccurdy.com/)
+class ThreejsExample {
+    async loadModel() {
+        const url = 'https://threejs.org/examples/models/gltf/Flamingo.glb';
+        const gltfLoader = new GLTFLoader();
+        const gltf = await gltfLoader.loadAsync(url);
+        console.log(gltf);
+        requestAnimationFrame(this.render.bind(this));
+    }
+}
+```
 
-[GLTF Model Loader - Three.js Tutorials](https://sbcode.net/threejs/loaders-gltf/)
+Kết quả in ra của đối tượng `gltf` ở Console có dạng như sau:
 
-[Car Physics - Three.js Tutorials](https://sbcode.net/threejs/physics-car/)
+animations
 
-Data loader: binary, image, JSON, scene
+scene
 
-Định dạng glTF (GL Transmission Format), có đuôi là glb hoặc gltf.
+Để lấy ra chỉ model chim hồng hạc thôi, chúng ta có thể lấy như sau:
 
-glTF files come in standard and binary form. These have different extensions:
+```javascript
+const mesh = gltf.scene;
+// const mesh = gltf.scene.children[0];
+```
 
-- Standard .glt files are uncompressed and may come with an extra .bin data file.
-- Binary .glb files include all data in one single file.
+Tùy model cụ thể, chúng ta có thể lấy bằng `gltf.scene` hoặc `gltf.scene.children[0]` hoặc một node khác trên scenegraph. Hãy tìm hiểu nội dung log ở Console để lấy ra chính xác.
 
-Định dạng OBJ, BLEND cũng rất phổ biến.
+Tiếp theo, chúng ta có thể phải chỉnh lại `scale` (nếu model trông quá lớn hoặc quá bé), `position`, `rotation` cho phù hợp với cảnh của chúng ta. Cuối cùng, thêm Mesh vào trong Scene.
 
-Animation.
+```javascript
+const scale = 0.005;
+mesh.scale.multiplyScalar(scale);
+this.scene.add(mesh);
+```
 
-[Pen1](https://codepen.io/gianlucadeidda/pen/abLXWPZ)
+[Ví dụ 08.01 - Model Loader](https://static.lockex1987.com/learn-threejs/chapter-08/08-01-model-loader.html)
+
+SCREENSHOT
+
+Nếu bạn 
+
+
+
+### Load model có animation
 
 Điều chỉnh lại model cho về đúng chính giữa.
 
-Bruno Simons: 23 imported models
 
-\- - - Hết tập 1: Cơ bản - - -
+
+
 
 ## Phụ lục
 
@@ -2989,10 +3036,6 @@ x
 [Three.js Tutorial Crash Course - 2021 - YouTube](https://www.youtube.com/watch?v=YK1Sw_hnm58)
 
 [Three.js Tutorial for Beginners - YouTube](https://www.youtube.com/playlist?list=PLbu98QxRH81KkLTN00OXhD8Y-pRVgTCnM)
-
-[Explore 3D Models - Sketchfab](https://sketchfab.com/3d-models?features=downloadable&sort_by=-likeCount&cursor=cD0yMTE4)
-
-[Free 3D Models, Download or Edit Online · Clara.io](https://clara.io/library)
 
 ## Ebook
 

@@ -3,10 +3,10 @@ import {
     PerspectiveCamera,
     WebGLRenderer,
     Color,
-    SpotLight,
+    PointLight,
     AmbientLight,
-    Vector2,
-    Mesh
+    AnimationMixer,
+    Clock
 } from 'https://unpkg.com/three@0.137.5/build/three.module.js';
 
 import { GLTFLoader } from 'https://unpkg.com/three@0.137.5/examples/jsm/loaders/GLTFLoader.js';
@@ -16,133 +16,111 @@ import { OrbitControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/cont
 
 class ThreejsExample {
     constructor(canvas) {
-        this.scene = this.createScene();
-        this.camera = this.createCamera(canvas);
-        this.renderer = this.createRenderer(canvas);
-
-        const spotLight = this.createSpotLight();
-        this.scene.add(spotLight);
-
-        const ambienLight = this.createAmbientLight();
-        this.scene.add(ambienLight);
-
+        this.createScene();
+        this.createCamera(canvas);
+        this.createRenderer(canvas);
+        this.createLights();
         this.createControls();
-        // this.render();
-        this.loadModels();
+
+        this.loadModel();
     }
 
     createScene() {
-        const scene = new Scene();
-        return scene;
+        this.scene = new Scene();
+        this.scene.background = new Color(0xFFFFFF);
     }
 
     createCamera(canvas) {
         const aspect = canvas.clientWidth / canvas.clientHeight;
-        const camera = new PerspectiveCamera(45, aspect, 0.1, 1000);
-        camera.position.x = -30;
-        camera.position.y = 40;
-        camera.position.z = 30;
-        camera.lookAt(this.scene.position);
-        return camera;
+        this.camera = new PerspectiveCamera(45, aspect, 0.1, 100);
+        this.camera.position.set(0, 2, 2);
+        this.camera.lookAt(this.scene.position);
     }
 
     createRenderer(canvas) {
-        const renderer = new WebGLRenderer({
+        this.renderer = new WebGLRenderer({
             canvas,
             antialias: true
         });
-        renderer.setClearColor(new Color(0xFFFFFF));
-        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-        renderer.shadowMap.enabled = true;
-        return renderer;
+        const aspectRatio = window.devicePixelRatio;
+        this.renderer.setSize(canvas.clientWidth * aspectRatio, canvas.clientHeight * aspectRatio);
     }
 
-    loadModels() {
-        // const url = '../models/watermelon/scene.gltf';
-        // const url = '../models/bank_of_china_tower/scene.gltf';
-        // const url = '../models/fighter_jet_russian/fighter_jet_russian.obj';
-        const url = '../models/cat/cat.obj';
+    createLights() {
+        const ambienLight = new AmbientLight(0x353535);
+        this.scene.add(ambienLight);
 
-        const onLoad = model => {
-            console.log(model);
-
-            // gltf.scene.children[0].geometry.center();
-
-            /*
-            gltf.scene.traverse(function (node) {
-                if (node instanceof Mesh) {
-                    node.castShadow = true;
-                    // node.material.side = DoubleSide;
-                    node.geometry.center();
-                }
-            });
-            */
-
-            // GLTF
-            // const mesh = model.scene;
-            // const tower = model.scene.children[0];
-            // const mesh = tower;
-
-            // OBJ
-            const mesh = model;
-
-            const scale = 0.5;
-            mesh.scale.set(scale, scale, scale);
-            this.scene.add(mesh);
-            console.log(mesh.position);
-            this.render();
-        };
-        const onError = error => {
-            console.error(error);
-        };
-        // const loader = new GLTFLoader();
-        const loader = new OBJLoader();
-        loader.load(url, onLoad, undefined, onError);
+        const pointLight = new PointLight(0xFFFFFF);
+        pointLight.position.set(0, 2, 2);
+        this.scene.add(pointLight);
     }
 
     createControls() {
-        const controls = new OrbitControls(this.camera, this.renderer.domElement);
-
-        // console.log(this);
-        controls.addEventListener('change', this.render.bind(this)); // use if there is no animation loop
-
-        // controls.minDistance = 2;
-        // controls.maxDistance = 10;
-        // controls.target.set(0, 0, -0.2);
-
-        controls.update();
-
-        this.controls = controls;
+        this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
+        this.orbitControls.enableDamping = true;
     }
 
-    /**
-     * Add spotlight for the shadows.
-     */
-    createSpotLight() {
-        const spotLight = new SpotLight(0xFFFFFF);
-        spotLight.position.set(-40, 40, -15);
-        spotLight.castShadow = true;
+    async loadModel() {
+        // const url = '../models/watermelon/scene.gltf';
+        // const url = '../models/nissan_gtr.glb'; // 4
+        // const url = '../models/flamingo.glb';
+        const url = 'https://threejs.org/examples/models/gltf/Flamingo.glb'; // 0.2
+        // const url = '../models/bank_of_china_tower/scene.gltf';
+        // const url = '../models/fighter_jet_russian/fighter_jet_russian.obj';
+        // const url = '../models/cat/cat.obj';
+        const gltfLoader = new GLTFLoader();
+        // const loader = new OBJLoader();
 
-        spotLight.shadow.mapSize = new Vector2(1024, 1024);
-        spotLight.shadow.camera.far = 130;
-        spotLight.shadow.camera.near = 40;
+        const gltf = await gltfLoader.loadAsync(url);
+        console.log(gltf);
 
-        // If you want a more detailled shadow you can increase the
-        // mapSize used to draw the shadows
-        // spotLight.shadow.mapSize = new Vector2(1024, 1024);
+        // gltf.scene.children[0].geometry.center();
 
-        return spotLight;
+        /*
+        gltf.scene.traverse(function (node) {
+            if (node instanceof Mesh) {
+                node.castShadow = true;
+                // node.material.side = DoubleSide;
+                node.geometry.center();
+            }
+        });
+        */
+
+        // GLTF
+        // const mesh = gltf.scene;
+        const mesh = gltf.scene.children[0];
+        // const tower = model.scene.children[0];
+        // const mesh = tower;
+
+        // OBJ
+        // const mesh = model;
+
+        const scale = 0.005;
+        mesh.scale.multiplyScalar(scale);
+        this.scene.add(mesh);
+        // console.log(mesh.position);
+
+        this.setupAnimation(mesh, gltf);
+
+        requestAnimationFrame(this.render.bind(this));
     }
 
-    createAmbientLight() {
-        const ambienLight = new AmbientLight(0x353535);
-        return ambienLight;
+    setupAnimation(mesh, gltf) {
+        this.clock = new Clock();
+        const clip = gltf.animations[0];
+        this.mixer = new AnimationMixer(mesh);
+        this.action = this.mixer.clipAction(clip);
+        this.action.play();
     }
 
     render() {
-        // this.controls.update();
+        this.orbitControls.update();
+        if (this.mixer) {
+            const delta = this.clock.getDelta();
+            this.mixer.update(delta);
+        }
         this.renderer.render(this.scene, this.camera);
-        // requestAnimationFrame(this.render.bind(this));
+        requestAnimationFrame(this.render.bind(this));
     }
 }
 
