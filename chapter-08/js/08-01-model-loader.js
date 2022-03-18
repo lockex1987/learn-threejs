@@ -21,8 +21,8 @@ class ThreejsExample {
         this.createRenderer(canvas);
         this.createLights();
         this.createControls();
-
         this.loadModel();
+        this.handleResize();
     }
 
     createScene() {
@@ -43,7 +43,7 @@ class ThreejsExample {
             antialias: true
         });
         const aspectRatio = window.devicePixelRatio;
-        this.renderer.setSize(canvas.clientWidth * aspectRatio, canvas.clientHeight * aspectRatio);
+        this.renderer.setSize(canvas.clientWidth * aspectRatio, canvas.clientHeight * aspectRatio, false);
     }
 
     createLights() {
@@ -89,8 +89,6 @@ class ThreejsExample {
         // GLTF
         // const mesh = gltf.scene;
         const mesh = gltf.scene.children[0];
-        // const tower = model.scene.children[0];
-        // const mesh = tower;
 
         // OBJ
         // const mesh = model;
@@ -98,7 +96,6 @@ class ThreejsExample {
         const scale = 0.005;
         mesh.scale.multiplyScalar(scale);
         this.scene.add(mesh);
-        // console.log(mesh.position);
 
         this.setupAnimation(mesh, gltf);
 
@@ -107,6 +104,7 @@ class ThreejsExample {
 
     setupAnimation(mesh, gltf) {
         this.clock = new Clock();
+
         const clip = gltf.animations[0];
         this.mixer = new AnimationMixer(mesh);
         this.action = this.mixer.clipAction(clip);
@@ -115,14 +113,33 @@ class ThreejsExample {
 
     render() {
         this.orbitControls.update();
+
         if (this.mixer) {
             const delta = this.clock.getDelta();
             this.mixer.update(delta);
         }
+
         this.renderer.render(this.scene, this.camera);
         requestAnimationFrame(this.render.bind(this));
+    }
+
+    handleResize() {
+        window.addEventListener('resize', () => {
+            this.onResize();
+        });
+    }
+
+    onResize() {
+        const canvas = this.renderer.domElement;
+        const pixelRatio = window.devicePixelRatio;
+        const aspect = canvas.clientWidth / canvas.clientHeight;
+        this.camera.aspect = aspect;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(canvas.clientWidth * pixelRatio, canvas.clientHeight * pixelRatio, false);
     }
 }
 
 
-new ThreejsExample(document.querySelector('#webglOutput'));
+window.addEventListener('load', () => {
+    new ThreejsExample(document.querySelector('#webglOutput'));
+});
