@@ -13,6 +13,7 @@ import {
 
 import { GLTFLoader } from 'https://unpkg.com/three@0.132.0/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'https://unpkg.com/three@0.132.0/examples/jsm/controls/OrbitControls.js';
+import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.16/+esm';
 
 
 class ThreejsExample {
@@ -22,10 +23,18 @@ class ThreejsExample {
         this.createRenderer(canvas);
         this.createLights();
         this.createControls();
-        this.loadModel();
+        this.models = [
+            { name: 'Flamingo', url: 'https://threejs.org/examples/models/gltf/Flamingo.glb', whole: false },
+            { name: 'Parrot', url: 'https://threejs.org/examples/models/gltf/Parrot.glb', whole: false },
+            { name: 'Stork', url: 'https://threejs.org/examples/models/gltf/Stork.glb', whole: false },
+            { name: 'DamagedHelmet', url: 'https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf', whole: false },
+            { name: 'Nissan', url: '../models/nissan_gtr.glb', whole: true },
+            { name: 'Keangnam', url: '../models/keangnam/scene.gltf', whole: true }
+        ];
+        const model = this.models[0];
+        this.loadModel(model);
         this.handleResize();
-
-        // TODO: Switch các model
+        this.createControlsGui();
     }
 
     createScene() {
@@ -63,57 +72,56 @@ class ThreejsExample {
         this.orbitControls.enableDamping = true;
     }
 
-    async loadModel() {
-        // const model = { url: '../models/nissan_gtr.glb', scale: 0.3, animation: false, whole: true };
-        const model = { url: '../models/keangnam/scene.gltf', scale: 0.0007, animation: false, whole: true };
-        // const model = { url: 'https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf', scale: 0.5, animation: false, whole: false };
-        // const model = { url: 'https://threejs.org/examples/models/gltf/Flamingo.glb', scale: 0.01, animation: true, whole: false };
-        // const model = { url: 'https://threejs.org/examples/models/gltf/Parrot.glb', scale: 0.01, animation: true, whole: false };
-        // const model = { url: 'https://threejs.org/examples/models/gltf/Stork.glb', scale: 0.01, animation: true, whole: false };
-
+    async loadModel(model) {
         const gltfLoader = new GLTFLoader();
         const gltf = await gltfLoader.loadAsync(model.url);
         console.log(gltf);
 
-        // gltf.scene.children[0].geometry.center();
-
-        /*
-            gltf.scene.traverse(function (node) {
-                if (node instanceof Mesh) {
-                    node.castShadow = true;
-                    // node.material.side = DoubleSide;
-                    node.geometry.center();
-                }
-            });
-        */
-
         const mesh = model.whole ? gltf.scene : gltf.scene.children[0];
-        console.log(mesh);
+        this.mesh = mesh;
 
-        mesh.scale.multiplyScalar(model.scale);
-
-        const box = new Box3().setFromObject(mesh);
-        const center = new Vector3();
-        box.getCenter(center);
-        mesh.position.sub(center);
-        // mesh.geometry.center();
+        this.resizeAndCenter(mesh);
 
         this.scene.add(mesh);
+        console.log(gltf);
 
-        if (model.animation) {
+        if (gltf.animations.length) {
             this.setupAnimation(mesh, gltf);
         }
 
         requestAnimationFrame(this.render.bind(this));
     }
 
+    resetModel() {
+        if (this.mixer) {
+            this.mixer.stopAllAction();
+            this.mixer = null;
+        }
+
+        if (this.mesh) {
+            this.scene.remove(this.mesh);
+        }
+    }
+
+    resizeAndCenter(mesh) {
+        const box = new Box3().setFromObject(mesh);
+        const size = box.getSize(new Vector3());
+        const maxSize = Math.max(size.x, size.y, size.z);
+        const desizedSize = 1.5;
+        mesh.scale.multiplyScalar(desizedSize / maxSize);
+
+        box.setFromObject(mesh);
+        const center = box.getCenter(new Vector3());
+        mesh.position.sub(center);
+    }
+
     setupAnimation(mesh, gltf) {
         this.clock = new Clock();
 
-        const clip = gltf.animations[0];
         this.mixer = new AnimationMixer(mesh);
-        this.action = this.mixer.clipAction(clip);
-        this.action.play();
+        const clip = gltf.animations[0];
+        const action = this.mixer.clipAction(clip);
+        action.play();
     }
 
     render() {
@@ -141,6 +149,20 @@ class ThreejsExample {
         this.camera.aspect = aspect;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(canvas.clientWidth * pixelRatio, canvas.clientHeight * pixelRatio, false);
+    }
+
+    createControlsGui() {
+        const options = this.models.map(model => model.name);
+        const gui = new GUI();
+        const controls = {
+            model: options[0]
+        };
+        gui.add(controls, 'model', options)
+            .onChange(modelName => {
+                this.resetModel();
+                const model = this.models.find(e => e.name == modelName);
+                this.loadModel(model);
+            });
     }
 }
 

@@ -2968,11 +2968,11 @@ class ThreejsExample {
 
 Kết quả in ra của đối tượng `gltf` ở Console có dạng như sau:
 
-animations
+CONSOLE SCREENSHOT?
 
-scene
+Hai thuộc tính mà chúng ta cần lưu ý, hay sử dụng là `scene` và  `animations`.
 
-Để lấy ra chỉ model chim hồng hạc thôi, chúng ta có thể lấy như sau:
+Thuộc tính `scene` là một đối tượng Group. Để lấy ra chỉ model chim hồng hạc thôi, chúng ta có thể lấy như sau:
 
 ```javascript
 const mesh = gltf.scene;
@@ -2989,15 +2989,15 @@ mesh.scale.multiplyScalar(scale);
 this.scene.add(mesh);
 ```
 
+Chú ý: Khi Mesh được thêm vào Scene của chúng ta thì nó sẽ bị loại bỏ khỏi `gltf.scene`. Do đó nó có thể không hiển thị ở `gltf.scene` khi bạn sử dụng `console.log()`.
+
 [Ví dụ 08.01 - Model Loader](https://static.lockex1987.com/learn-threejs/chapter-08/08-01-model-loader.html)
 
 SCREENSHOT
 
-Nếu bạn 
 
-[three.js webgl - GLTFloader](https://static.lockex1987.com/learn-threejs/chapter-08/webgl_loader_gltf.html)
 
-### Lỗi trên mobile
+### Lỗi hiển thị model trên mobile
 
 Lần đầu tiên làm chạy ví dụ trên trên máy tính thì kết quả vẫn hiển thị bình thường, tuy nhiên trên mobile (điện thoại Android Oppo của tôi) thì không hiển thị ra gì. Log lỗi trên mobile như sau:
 
@@ -3018,11 +3018,55 @@ Lỗi này chỉ trên một số model (ví dụ model Flamingo.glb), không ph
 
 Để khắc phục lỗi trên mobile này, tạm thời chúng ta sẽ không sử dụng version 0.137.5 nữa mà quay lại dùng version cũ hơn là 0.132.2. Version mới nhất ở thời điểm viết bài này là 0.138.3 cũng không chạy được.
 
+### Chỉnh kích thước và căn giữa model
+
+Trong nhiều trường hợp, khi download một model ở trên mạng và hiển thị ở cảnh của chúng ta, model sẽ bị quá lớn hoặc quá bé, và không hiển thị ở giữa màn hình. Chúng ta có thể chỉnh kích thước cho phù hợp và căn giữa một cách tự động bằng đoạn code sau:
+
+```javascript
+resizeAndCenter(mesh) {
+    const box = new Box3().setFromObject(mesh);
+    const size = box.getSize(new Vector3());
+    const maxSize = Math.max(size.x, size.y, size.z);
+    const desizedSize = 1.5;
+    mesh.scale.multiplyScalar(desizedSize / maxSize);
+
+    box.setFromObject(mesh);
+    const center = box.getCenter(new Vector3());
+    mesh.position.sub(center);
+}
+```
+
 ### Load model có animation
 
-Điều chỉnh lại model cho về đúng chính giữa.
+Một số model thường có thể đi kèm với Animation. Để có thể làm cho model chuyển động với Animation, chúng ta cần:
 
-Hiển thị progress
+- Tạo một [AnimationMixer](https://threejs.org/docs/#api/en/animation/AnimationMixer) với Mesh
+- Lấy ra một đối tượng [AnimationClip](https://threejs.org/docs/#api/en/animation/AnimationClip) từ mảng `gltf.animations`
+- Tạo một [AnimationAction](https://threejs.org/docs/#api/en/animation/AnimationAction) từ AnimationMixer và AnimationClip
+- Bắt đầu cho chuyển động với phương thức `play()` của AnimationAction
+- Trong vòng lặp Animation, cần gọi phương thức [update()](https://threejs.org/docs/#api/en/animation/AnimationAction) của AnimationMixer. Chúng ta cần truyền tham số là một khoảng thời gian delta. Chúng ta có thể lấy khoảng thời gian này từ một [Clock](https://threejs.org/docs/index.html?q=Clock#api/en/core/Clock).
+
+```javascript
+setupAnimation(mesh, gltf) {
+    this.clock = new Clock();
+
+    this.mixer = new AnimationMixer(mesh);
+    const clip = gltf.animations[0];
+    const action = this.mixer.clipAction(clip);
+    action.play();
+}
+
+render() {
+    // ...
+
+    if (this.mixer) {
+        const delta = this.clock.getDelta();
+        this.mixer.update(delta);
+    }
+    
+    // ...
+}
+```
 
 
 
