@@ -44,9 +44,9 @@ Inspiration:
 
 [Dyad Studios v5](https://www.dyadstudios.com)
 
-[Short           Trip - Alexander Perrin](https://alexanderperrin.com.au/paper/shorttrip/)
+[Short Trip - Alexander Perrin](https://alexanderperrin.com.au/paper/shorttrip/)
 
-[WindLand -           By Neotix](https://windland-neotix.vercel.app)
+[WindLand - By Neotix](https://windland-neotix.vercel.app)
 
 [Tree](tree forest/index.html)
 
@@ -2995,13 +2995,13 @@ SCREENSHOT
 
 Nếu bạn 
 
-
+[three.js webgl - GLTFloader](https://static.lockex1987.com/learn-threejs/chapter-08/webgl_loader_gltf.html)
 
 ### Load model có animation
 
 Điều chỉnh lại model cho về đúng chính giữa.
 
-
+Hiển thị progress
 
 
 
