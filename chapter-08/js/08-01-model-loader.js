@@ -88,7 +88,7 @@ class ThreejsExample {
 
         const gltfLoader = new GLTFLoader();
         const gltf = await gltfLoader.loadAsync(model.url, this.onProgress.bind(this));
-        console.log(gltf);
+        // console.log(gltf);
 
         const mesh = model.whole ? gltf.scene : gltf.scene.children[0];
         this.mesh = mesh;
@@ -96,7 +96,7 @@ class ThreejsExample {
         this.resizeAndCenter(mesh);
 
         this.scene.add(mesh);
-        console.log(gltf);
+        // console.log(gltf);
 
         if (gltf.animations.length) {
             this.setupAnimation(mesh, gltf);
