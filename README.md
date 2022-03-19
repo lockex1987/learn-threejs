@@ -2968,6 +2968,16 @@ class ThreejsExample {
 
 Kết quả in ra của đối tượng `gltf` ở Console có dạng như sau:
 
+gltf.animations; // Array<THREE.AnimationClip>
+
+gltf.scene; // THREE.Group
+
+gltf.scenes; // Array<THREE.Group>
+
+gltf.cameras; // Array<THREE.Camera>
+
+gltf.asset; // Object
+
 CONSOLE SCREENSHOT?
 
 Hai thuộc tính mà chúng ta cần lưu ý, hay sử dụng là `scene` và  `animations`.

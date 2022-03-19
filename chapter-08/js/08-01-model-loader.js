@@ -33,9 +33,13 @@ class ThreejsExample {
             { name: 'Flamingo', url: 'https://threejs.org/examples/models/gltf/Flamingo.glb', whole: false },
             { name: 'Parrot', url: 'https://threejs.org/examples/models/gltf/Parrot.glb', whole: false },
             { name: 'Stork', url: 'https://threejs.org/examples/models/gltf/Stork.glb', whole: false },
-            { name: 'DamagedHelmet', url: 'https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf', whole: false },
+            { name: 'Damaged_Helmet', url: 'https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf', whole: false },
             { name: 'Nissan', url: '../models/nissan_gtr.glb', whole: true },
-            { name: 'Keangnam', url: '../models/keangnam/scene.gltf', whole: true }
+            { name: 'Keangnam', url: '../models/keangnam/scene.gltf', whole: true },
+            // CC-BY 3.0 license: Living Room by Alex “SAFFY” Safayan [CC-BY], via Poly Pizza
+            { name: 'Living_Room', url: '../models/living_room.glb', whole: true },
+            { name: 'One_Pillar_Pagoda', url: '../models/one_pillar_pagoda/scene.gltf', whole: true },
+            { name: 'China', url: '../models/china/scene.gltf', whole: true }
         ];
         const model = this.models[0];
         this.loadModel(model);
