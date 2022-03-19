@@ -1,0 +1,11 @@
+Model Information:
+* title:	city
+* source:	https://sketchfab.com/3d-models/city-63f6238a3da14bcfb304768488c5e268
+* author:	dstran12 (https://sketchfab.com/dstan12)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "city" (https://sketchfab.com/3d-models/city-63f6238a3da14bcfb304768488c5e268) by dstran12 (https://sketchfab.com/dstan12) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

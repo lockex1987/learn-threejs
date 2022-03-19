@@ -6,7 +6,9 @@ import {
     PointLight,
     AmbientLight,
     AnimationMixer,
-    Clock
+    Clock,
+    Box3,
+    Vector3
 } from 'https://unpkg.com/three@0.132.0/build/three.module.js';
 
 import { GLTFLoader } from 'https://unpkg.com/three@0.132.0/examples/jsm/loaders/GLTFLoader.js';
@@ -63,7 +65,7 @@ class ThreejsExample {
 
     async loadModel() {
         // const model = { url: '../models/nissan_gtr.glb', scale: 0.3, animation: false, whole: true };
-        const model = { url: '../models/bank_of_china_tower/scene.gltf', scale: 0.003, animation: false, whole: true };
+        const model = { url: '../models/keangnam/scene.gltf', scale: 0.0007, animation: false, whole: true };
         // const model = { url: 'https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf', scale: 0.5, animation: false, whole: false };
         // const model = { url: 'https://threejs.org/examples/models/gltf/Flamingo.glb', scale: 0.01, animation: true, whole: false };
         // const model = { url: 'https://threejs.org/examples/models/gltf/Parrot.glb', scale: 0.01, animation: true, whole: false };
@@ -87,10 +89,15 @@ class ThreejsExample {
 
         const mesh = model.whole ? gltf.scene : gltf.scene.children[0];
         console.log(mesh);
+
+        mesh.scale.multiplyScalar(model.scale);
+
+        const box = new Box3().setFromObject(mesh);
+        const center = new Vector3();
+        box.getCenter(center);
+        mesh.position.sub(center);
         // mesh.geometry.center();
 
-        const scale = model.scale;
-        mesh.scale.multiplyScalar(scale);
         this.scene.add(mesh);
 
         if (model.animation) {
