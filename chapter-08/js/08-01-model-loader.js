@@ -55,7 +55,7 @@ class ThreejsExample {
     createCamera(canvas) {
         const aspect = canvas.clientWidth / canvas.clientHeight;
         this.camera = new PerspectiveCamera(45, aspect, 0.1, 1000);
-        this.camera.position.set(0, 2, 2);
+        this.camera.position.set(0, 0, 2);
         this.camera.lookAt(this.scene.position);
     }
 
@@ -69,11 +69,11 @@ class ThreejsExample {
     }
 
     createLights() {
-        const ambienLight = new AmbientLight(0x353535);
+        const ambienLight = new AmbientLight(0xFFFFFF, 0.5);
         this.scene.add(ambienLight);
 
         const pointLight = new PointLight(0xFFFFFF);
-        pointLight.position.set(0, 2, 2);
+        pointLight.position.set(0, 4, 0);
         this.scene.add(pointLight);
     }
 
