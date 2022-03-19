@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>three.js webgl - lights - hemisphere light</title>
+    <link rel="icon" href="../images/logo.svg" />
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<body>
+    <canvas id="webglOutput"></canvas>
+    
+    <script type="x-shader/x-vertex" id="vertexShader">
+        varying vec3 vWorldPosition;
+
+        void main() {
+
+            vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+            vWorldPosition = worldPosition.xyz;
+
+            gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+        }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragmentShader">
+        uniform vec3 topColor;
+        uniform vec3 bottomColor;
+        uniform float offset;
+        uniform float exponent;
+
+        varying vec3 vWorldPosition;
+
+        void main() {
+
+            float h = normalize( vWorldPosition + offset ).y;
+            gl_FragColor = vec4( mix( bottomColor, topColor, max( pow( max( h , 0.0), exponent ), 0.0 ) ), 1.0 );
+
+        }
+    </script>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://threejs.org/build/three.module.js"
+            }
+        }
+    </script>
+
+    <script type="module" src="js/webgl_lights_hemisphere.js"></script>
+</body>
+</html>

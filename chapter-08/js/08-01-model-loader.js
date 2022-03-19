@@ -45,7 +45,7 @@ class ThreejsExample {
             canvas,
             antialias: true
         });
-        const aspectRatio = 1; // window.devicePixelRatio;
+        const aspectRatio = window.devicePixelRatio;
         this.renderer.setSize(canvas.clientWidth * aspectRatio, canvas.clientHeight * aspectRatio, false);
     }
 
@@ -65,12 +65,13 @@ class ThreejsExample {
 
     // async
     loadModel() {
-        // return;
-
         // const url = '../models/watermelon/scene.gltf';
-        // const url = '../models/nissan_gtr.glb'; // 4
-        const url = '../models/flamingo.glb';
-        // const url = 'https://threejs.org/examples/models/gltf/Flamingo.glb'; // 0.2
+        // const url = '../models/nissan_gtr.glb'; // 0.3, file này vẫn chạy được
+        // const url = '../models/flamingo.glb'; // File glb không chạy được trên mobile?
+        // const url = 'https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf';
+        // const url = 'https://threejs.org/examples/models/gltf/Flamingo.glb'; // 0.05
+        const url = 'https://threejs.org/examples/models/gltf/Parrot.glb'; // 0.02
+        // const url = 'https://threejs.org/examples/models/gltf/Stork.glb'; // 0.01
         // const url = '../models/bank_of_china_tower/scene.gltf';
         // const url = '../models/fighter_jet_russian/fighter_jet_russian.obj';
         // const url = '../models/cat/cat.obj';
@@ -79,44 +80,42 @@ class ThreejsExample {
 
         // const gltf = await gltfLoader.loadAsync(url);
         gltfLoader.load(url, gltf => {
-            console.log(gltf);
+            // console.log(gltf);
+            // alert(gltf);
 
             // gltf.scene.children[0].geometry.center();
 
             /*
-        gltf.scene.traverse(function (node) {
-            if (node instanceof Mesh) {
-                node.castShadow = true;
-                // node.material.side = DoubleSide;
-                node.geometry.center();
-            }
-        });
-        */
+            gltf.scene.traverse(function (node) {
+                if (node instanceof Mesh) {
+                    node.castShadow = true;
+                    // node.material.side = DoubleSide;
+                    node.geometry.center();
+                }
+            });
+            */
 
             // GLTF
-            const mesh = gltf.scene;
-            // const mesh = gltf.scene.children[0];
+            // const mesh = gltf.scene;
+            // alert(mesh);
+            const mesh = gltf.scene.children[0];
 
             // OBJ
             // const mesh = model;
 
-            const scale = 0.005;
-            mesh.scale.multiplyScalar(scale);
-            // this.scene.add(mesh);
+            try {
+                const scale = 0.02;
+                mesh.scale.multiplyScalar(scale);
+                this.scene.add(mesh);
 
-            // this.setupAnimation(mesh, gltf);
-            // alert(3);
+                // this.setupAnimation(mesh, gltf);
 
-            const geometry = new SphereGeometry(0.4);
-            const material = new MeshStandardMaterial({
-                color: 0xFF0000
-            });
-            const mesh1 = new Mesh(geometry, material);
-            this.scene.add(mesh1);
-            // requestAnimationFrame(this.render.bind(this));
-            alert(4);
-
-            requestAnimationFrame(this.render.bind(this));
+                // requestAnimationFrame(this.render.bind(this));
+                // this.render();
+                this.renderer.render(this.scene, this.camera);
+            } catch (ex) {
+                alert(ex);
+            }
         });
     }
 
@@ -140,7 +139,7 @@ class ThreejsExample {
         */
 
         this.renderer.render(this.scene, this.camera);
-        requestAnimationFrame(this.render.bind(this));
+        // requestAnimationFrame(this.render.bind(this));
     }
 
     handleResize() {
@@ -151,7 +150,7 @@ class ThreejsExample {
 
     onResize() {
         const canvas = this.renderer.domElement;
-        const pixelRatio = 1; // window.devicePixelRatio;
+        const pixelRatio = window.devicePixelRatio;
         const aspect = canvas.clientWidth / canvas.clientHeight;
         this.camera.aspect = aspect;
         this.camera.updateProjectionMatrix();
