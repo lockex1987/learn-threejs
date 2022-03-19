@@ -8,7 +8,8 @@ import {
     AnimationMixer,
     Clock,
     Box3,
-    Vector3
+    Vector3,
+    GridHelper
 } from 'https://unpkg.com/three@0.132.0/build/three.module.js';
 
 import { GLTFLoader } from 'https://unpkg.com/three@0.132.0/examples/jsm/loaders/GLTFLoader.js';
@@ -22,7 +23,12 @@ class ThreejsExample {
         this.createCamera(canvas);
         this.createRenderer(canvas);
         this.createLights();
+        const gridHelper = new GridHelper(5, 5);
+        // this.scene.add(gridHelper);
         this.createControls();
+
+        this.progressBarDiv = document.querySelector('#progressBarDiv');
+
         this.models = [
             { name: 'Flamingo', url: 'https://threejs.org/examples/models/gltf/Flamingo.glb', whole: false },
             { name: 'Parrot', url: 'https://threejs.org/examples/models/gltf/Parrot.glb', whole: false },
@@ -73,8 +79,11 @@ class ThreejsExample {
     }
 
     async loadModel(model) {
+        this.updateProgressBar(0);
+        this.showProgressBar();
+
         const gltfLoader = new GLTFLoader();
-        const gltf = await gltfLoader.loadAsync(model.url);
+        const gltf = await gltfLoader.loadAsync(model.url, this.onProgress.bind(this));
         console.log(gltf);
 
         const mesh = model.whole ? gltf.scene : gltf.scene.children[0];
@@ -90,6 +99,8 @@ class ThreejsExample {
         }
 
         requestAnimationFrame(this.render.bind(this));
+
+        this.hideProgressBar();
     }
 
     resetModel() {
@@ -163,6 +174,24 @@ class ThreejsExample {
                 const model = this.models.find(e => e.name == modelName);
                 this.loadModel(model);
             });
+    }
+
+    showProgressBar() {
+        this.progressBarDiv.style.display = '';
+    }
+
+    hideProgressBar() {
+        this.progressBarDiv.style.display = 'none';
+    }
+
+    updateProgressBar(fraction) {
+        this.progressBarDiv.innerText = 'Loading... ' + Math.round(fraction * 100, 2) + '%';
+    }
+
+    onProgress(xhr) {
+        if (xhr.lengthComputable) {
+            this.updateProgressBar(xhr.loaded / xhr.total);
+        }
     }
 }
 

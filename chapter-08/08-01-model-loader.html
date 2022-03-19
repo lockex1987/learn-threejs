@@ -6,10 +6,25 @@
     <title>Ví dụ 08.01 - Model Loader</title>
     <link rel="icon" href="../images/logo.svg" />
     <link rel="stylesheet" href="../css/style.css" />
+    <style>
+        #progressBarDiv {
+            font-size: 3rem;
+            color: #888;
+            display: block;
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
     <canvas id="webglOutput"></canvas>
+
+    <div id="progressBarDiv">
+        Loading...
+    </div>
 
     <script type="importmap">
         {
