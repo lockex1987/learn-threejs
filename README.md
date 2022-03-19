@@ -2922,8 +2922,6 @@ Có rất nhiều các định dạng file để lưu thông tin 3D model. Tuy n
 - Dạng file JSON chuẩn `.gltf` không nén và có thể đi kèm thêm với các file `.bin`
 - Dạng file binary `.glb` chứa tất cả dữ liệu trong chỉ một file
 
-
-
 Tùy các định dạng file model, chúng ta sẽ có các Loader tương ứng. Ví dụ với định dạng glTF, OBJ sẽ có GLTFLoader, OBJLoader. Chúng ta sử dụng các Loader này tương tự cách chúng ta sử dụng các Loader khác đã tìm hiểu ở các bài trước như FontLoader, TTFLoader, SVGLoader, TextureLoader,...
 
 ### Load model tĩnh
@@ -3013,7 +3011,7 @@ Chú ý: Khi Mesh được thêm vào Scene của chúng ta thì đồng thời 
 
 [Ví dụ Model Loader](https://static.lockex1987.com/learn-threejs/chapter-08/08-01-model-loader.html)
 
-SCREENSHOT
+![Ví dụ 08.01 - Model Loader](screenshots/08-01-model-loader.png)
 
 ### Lỗi hiển thị model trên mobile
 
