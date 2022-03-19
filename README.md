@@ -2915,11 +2915,11 @@ Bạn có thể tải Texture từ các trang web sau:
 
 ### Các định dạng file và các Loader
 
-Có rất nhiều các định dạng file để lưu thông tin 3D model. Tuy nhiên, trong những năm gần đây, một định dạng file nổi lên như là chuẩn đó là glTF (GL Transmission Format). Định dạng này có ưu điểm là nó được thiết kế tối ưu để hiển thị chứ không phải để chỉnh sửa, dung lượng nhẹ, tải nhanh, có đầy đủ các tính năng như Material, Animation. Ngoài ra, một số các định dạng khác cũng phổ biến như OBJ, BLEND, FBX,...
+Có rất nhiều các định dạng file để lưu thông tin 3D model. Tuy nhiên, trong những năm gần đây, một định dạng file nổi lên như là chuẩn đó là glTF (GL Transmission Format). Định dạng này có ưu điểm là mã nguồn mở, được thiết kế tối ưu để hiển thị chứ không phải để chỉnh sửa, dung lượng nhẹ, tải nhanh, có đầy đủ các tính năng như Material, Animation. Ngoài ra, một số các định dạng khác cũng phổ biến như OBJ,  FBX,...
 
 Định dạng glTF lại có thể ở hai dạng:
 
-- Dạng file JSON chuẩn `.gltf` không nén và có thể đi kèm thêm với các file .bin
+- Dạng file JSON chuẩn `.gltf` không nén và có thể đi kèm thêm với các file `.bin`
 - Dạng file binary `.glb` chứa tất cả dữ liệu trong chỉ một file
 
 
@@ -2950,7 +2950,7 @@ Chúng ta sẽ sử dụng model con chim hồng hạc flamingo từ trang chủ
 
 Đầu tiên, chúng ta cũng tạo một cảnh 3D đơn giản với Scene, Camera, Renderer, AmbientLight, PointLight, OrbitControls. Chúng ta cũng tạo một vòng lặp Animation đơn giản.
 
-Tiếp theo, chúng ta import class GLTFLoader từ file trong thư mục `examples`,  khởi tạo một đối tượng Loader, sau đó gọi phương thức `loadAsync()`. Kết quả trả về sẽ là một đối tượng `gltf`. Bây giờ chúng ta hãy thử in đối tượng này ra thôi xem nó bao gồm những gì. Sau đó, chúng ta bắt đầu vòng lặp Animation.
+Tiếp theo, chúng ta import class GLTFLoader từ file trong thư mục `examples`,  khởi tạo một đối tượng Loader, sau đó gọi phương thức `loadAsync()`. Kết quả trả về sẽ là một đối tượng `gltf`. Bây giờ chúng ta hãy thử in đối tượng này ra thôi xem nó bao gồm những gì. Sau đó, chúng ta bắt đầu vòng lặp render.
 
 ```javascript
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -2968,17 +2968,27 @@ class ThreejsExample {
 
 Kết quả in ra của đối tượng `gltf` ở Console có dạng như sau:
 
-gltf.animations; // Array<THREE.AnimationClip>
+```
+{
+  animations: [AnimationClip],
+  asset: {version: '2.0', generator: 'THREE.GLTFExporter'},
+  cameras: [],
+  parser: GLTFParser {json: {…}, extensions: {…}, plugins: {…}, options: {…}, cache: {…}, …},
+  scene: Group {uuid: '7ED632DD-C02F-429A-84D7-DDA5A7D396EB', name: 'AuxScene', type: 'Group', parent: null, children: Array(0), …},
+  scenes: [Group],
+  userData: {}
+}
+```
 
-gltf.scene; // THREE.Group
+Trong đó:
 
-gltf.scenes; // Array<THREE.Group>
-
-gltf.cameras; // Array<THREE.Camera>
-
-gltf.asset; // Object
-
-CONSOLE SCREENSHOT?
+- `gltf.animations` là một mảng các AnimationClip, chứa các hoạt họa của model
+- `gltf.asset` chứa các metadata
+- `gltf.cameras` là một mảng các Camera
+- `gltf.parser` chứa các thông tin kỹ thuật về GLTFParser
+- `gltf.scene` là một đối tượng Group chứa các Mesh.
+- `gltf.scenes` là một mảng các Group (định dạng glTF hỗ trợ nhiều cảnh trong một file)
+- `gltf.userData` có thể chứa các thông tin thêm
 
 Hai thuộc tính mà chúng ta cần lưu ý, hay sử dụng là `scene` và  `animations`.
 
@@ -2999,13 +3009,11 @@ mesh.scale.multiplyScalar(scale);
 this.scene.add(mesh);
 ```
 
-Chú ý: Khi Mesh được thêm vào Scene của chúng ta thì nó sẽ bị loại bỏ khỏi `gltf.scene`. Do đó nó có thể không hiển thị ở `gltf.scene` khi bạn sử dụng `console.log()`.
+Chú ý: Khi Mesh được thêm vào Scene của chúng ta thì đồng thời nó sẽ bị loại bỏ khỏi `gltf.scene`. Do đó nó có thể không hiển thị ở `gltf.scene` khi bạn sử dụng `console.log()`.
 
-[Ví dụ 08.01 - Model Loader](https://static.lockex1987.com/learn-threejs/chapter-08/08-01-model-loader.html)
+[Ví dụ Model Loader](https://static.lockex1987.com/learn-threejs/chapter-08/08-01-model-loader.html)
 
 SCREENSHOT
-
-
 
 ### Lỗi hiển thị model trên mobile
 
@@ -3054,7 +3062,7 @@ Một số model thường có thể đi kèm với Animation. Để có thể l
 - Lấy ra một đối tượng [AnimationClip](https://threejs.org/docs/#api/en/animation/AnimationClip) từ mảng `gltf.animations`
 - Tạo một [AnimationAction](https://threejs.org/docs/#api/en/animation/AnimationAction) từ AnimationMixer và AnimationClip
 - Bắt đầu cho chuyển động với phương thức `play()` của AnimationAction
-- Trong vòng lặp Animation, cần gọi phương thức [update()](https://threejs.org/docs/#api/en/animation/AnimationAction) của AnimationMixer. Chúng ta cần truyền tham số là một khoảng thời gian delta. Chúng ta có thể lấy khoảng thời gian này từ một [Clock](https://threejs.org/docs/index.html?q=Clock#api/en/core/Clock).
+- Trong vòng lặp render, cần gọi phương thức [update()](https://threejs.org/docs/#api/en/animation/AnimationAction) của AnimationMixer. Chúng ta cần truyền tham số là một khoảng thời gian delta. Chúng ta có thể lấy khoảng thời gian này từ một [Clock](https://threejs.org/docs/index.html?q=Clock#api/en/core/Clock).
 
 ```javascript
 setupAnimation(mesh, gltf) {
@@ -3078,7 +3086,7 @@ render() {
 }
 ```
 
-
+Chúng ta đã đi đến cuối hành trình về tìm hiểu cơ bản của Three.js. Hy vọng các kiến thức của các bài viết giúp bạn có cái nhìn tổng quan, sơ lược về Three.js, là nền tảng để các bạn có thể tiếp tục tìm hiểu về Three.js, khám phá các kỹ thuật mới, tạo ra các cảnh 3D chân thực, ấn tượng.
 
 ## Phụ lục
 
