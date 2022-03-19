@@ -2997,6 +2997,27 @@ Nếu bạn
 
 [three.js webgl - GLTFloader](https://static.lockex1987.com/learn-threejs/chapter-08/webgl_loader_gltf.html)
 
+### Lỗi trên mobile
+
+Lần đầu tiên làm chạy ví dụ trên trên máy tính thì kết quả vẫn hiển thị bình thường, tuy nhiên trên mobile (điện thoại Android Oppo của tôi) thì không hiển thị ra gì. Log lỗi trên mobile như sau:
+
+```
+THREE.WebGLProgram: Shader Error 0 - VALIDATE_STATUS false
+
+Program Info Log:
+VERTEX
+
+
+WebGL: INVALID_OPERATION: useProgram: program not valid
+WebGL: INVALID_OPERATION: drawElements: no valid shader program in use
+```
+
+Lỗi này chỉ trên một số model (ví dụ model Flamingo.glb), không phải tất cả. Một số model khác vẫn chạy được. Lỗi này bị cả trên ví dụ trên trang chủ của Three.js.
+
+[three.js webgl - lights - hemisphere light](https://threejs.org/examples/webgl_lights_hemisphere.html)
+
+Để khắc phục lỗi trên mobile này, tạm thời chúng ta sẽ không sử dụng version 0.137.5 nữa mà quay lại dùng version cũ hơn là 0.132.2. Version mới nhất ở thời điểm viết bài này là 0.138.3 cũng không chạy được.
+
 ### Load model có animation
 
 Điều chỉnh lại model cho về đúng chính giữa.

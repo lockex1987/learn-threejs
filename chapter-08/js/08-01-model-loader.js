@@ -6,15 +6,11 @@ import {
     PointLight,
     AmbientLight,
     AnimationMixer,
-    Clock,
-    SphereGeometry,
-    MeshStandardMaterial,
-    Mesh
-} from 'https://unpkg.com/three@0.137.5/build/three.module.js';
+    Clock
+} from 'https://unpkg.com/three@0.132.0/build/three.module.js';
 
-import { GLTFLoader } from 'https://unpkg.com/three@0.137.5/examples/jsm/loaders/GLTFLoader.js';
-// import { OBJLoader } from 'https://unpkg.com/three@0.137.5/examples/jsm/loaders/OBJLoader.js';
-import { OrbitControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from 'https://unpkg.com/three@0.132.0/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from 'https://unpkg.com/three@0.132.0/examples/jsm/controls/OrbitControls.js';
 
 
 class ThreejsExample {
@@ -26,6 +22,8 @@ class ThreejsExample {
         this.createControls();
         this.loadModel();
         this.handleResize();
+
+        // TODO: Switch các model
     }
 
     createScene() {
@@ -63,29 +61,21 @@ class ThreejsExample {
         this.orbitControls.enableDamping = true;
     }
 
-    // async
-    loadModel() {
-        // const url = '../models/watermelon/scene.gltf';
-        // const url = '../models/nissan_gtr.glb'; // 0.3, file này vẫn chạy được
-        // const url = '../models/flamingo.glb'; // File glb không chạy được trên mobile?
-        // const url = 'https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf';
-        // const url = 'https://threejs.org/examples/models/gltf/Flamingo.glb'; // 0.05
-        const url = 'https://threejs.org/examples/models/gltf/Parrot.glb'; // 0.02
-        // const url = 'https://threejs.org/examples/models/gltf/Stork.glb'; // 0.01
-        // const url = '../models/bank_of_china_tower/scene.gltf';
-        // const url = '../models/fighter_jet_russian/fighter_jet_russian.obj';
-        // const url = '../models/cat/cat.obj';
+    async loadModel() {
+        // const model = { url: '../models/nissan_gtr.glb', scale: 0.3, animation: false, whole: true };
+        const model = { url: '../models/bank_of_china_tower/scene.gltf', scale: 0.003, animation: false, whole: true };
+        // const model = { url: 'https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf', scale: 0.5, animation: false, whole: false };
+        // const model = { url: 'https://threejs.org/examples/models/gltf/Flamingo.glb', scale: 0.01, animation: true, whole: false };
+        // const model = { url: 'https://threejs.org/examples/models/gltf/Parrot.glb', scale: 0.01, animation: true, whole: false };
+        // const model = { url: 'https://threejs.org/examples/models/gltf/Stork.glb', scale: 0.01, animation: true, whole: false };
+
         const gltfLoader = new GLTFLoader();
-        // const loader = new OBJLoader();
+        const gltf = await gltfLoader.loadAsync(model.url);
+        console.log(gltf);
 
-        // const gltf = await gltfLoader.loadAsync(url);
-        gltfLoader.load(url, gltf => {
-            // console.log(gltf);
-            // alert(gltf);
+        // gltf.scene.children[0].geometry.center();
 
-            // gltf.scene.children[0].geometry.center();
-
-            /*
+        /*
             gltf.scene.traverse(function (node) {
                 if (node instanceof Mesh) {
                     node.castShadow = true;
@@ -93,30 +83,21 @@ class ThreejsExample {
                     node.geometry.center();
                 }
             });
-            */
+        */
 
-            // GLTF
-            // const mesh = gltf.scene;
-            // alert(mesh);
-            const mesh = gltf.scene.children[0];
+        const mesh = model.whole ? gltf.scene : gltf.scene.children[0];
+        console.log(mesh);
+        // mesh.geometry.center();
 
-            // OBJ
-            // const mesh = model;
+        const scale = model.scale;
+        mesh.scale.multiplyScalar(scale);
+        this.scene.add(mesh);
 
-            try {
-                const scale = 0.02;
-                mesh.scale.multiplyScalar(scale);
-                this.scene.add(mesh);
+        if (model.animation) {
+            this.setupAnimation(mesh, gltf);
+        }
 
-                // this.setupAnimation(mesh, gltf);
-
-                // requestAnimationFrame(this.render.bind(this));
-                // this.render();
-                this.renderer.render(this.scene, this.camera);
-            } catch (ex) {
-                alert(ex);
-            }
-        });
+        requestAnimationFrame(this.render.bind(this));
     }
 
     setupAnimation(mesh, gltf) {
@@ -131,15 +112,13 @@ class ThreejsExample {
     render() {
         this.orbitControls.update();
 
-        /*
         if (this.mixer) {
             const delta = this.clock.getDelta();
             this.mixer.update(delta);
         }
-        */
 
         this.renderer.render(this.scene, this.camera);
-        // requestAnimationFrame(this.render.bind(this));
+        requestAnimationFrame(this.render.bind(this));
     }
 
     handleResize() {
@@ -159,6 +138,4 @@ class ThreejsExample {
 }
 
 
-window.addEventListener('load', () => {
-    new ThreejsExample(document.querySelector('#webglOutput'));
-});
+new ThreejsExample(document.querySelector('#webglOutput'));
