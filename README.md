@@ -3096,13 +3096,7 @@ Chúng ta đã đi đến cuối hành trình về tìm hiểu cơ bản của T
 
 [Định dạng file Epub](https://cttd.tk/posts/it%20-%20epub%20format/)
 
-[Export - Typora Support](https://support.typora.io/Export/)
 
-
-
-[Pandoc - Creating an ebook with pandoc](https://pandoc.org/epub.html)
-
-[Creating an eBook with Pandoc and Markdown](https://www.thepolyglotdeveloper.com/2019/10/creating-ebook-pandoc-markdown/)
 
 [GitHub - karlseguin/the-little-go-book](https://github.com/karlseguin/the-little-go-book)
 
