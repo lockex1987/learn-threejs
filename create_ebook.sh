@@ -13,4 +13,4 @@ pandoc -t epub \
     --shift-heading-level-by -1 \
     --metadata-file metadata.yaml \
     README.md \
-    -o "hoc three.js co ban.epub"
+    -o "hoc_three.js_co_ban.epub"

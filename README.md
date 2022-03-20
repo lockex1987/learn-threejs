@@ -38,77 +38,9 @@ Các bài viết trên Viblo:
 
 [Three.js - Viblo](https://viblo.asia/tags/threejs)
 
-Tham khảo:
+Khóa học có phí chất lượng:
 
-[Use three.js to achieve a cool acid style 3D page - SegmentFault](https://segmentfault.com/a/1190000040753633/en)
-
-[Creating the Effect of Transparent Glass and Plastic in Three.js - Codrops](https://tympanus.net/codrops/2021/10/27/creating-the-effect-of-transparent-glass-and-plastic-in-three-js/)
-
-[Three.js Archives - Red Stapler](https://redstapler.co/tag/three-js/)
-
-[Three.js Journey (có phí)](https://threejs-journey.com)
-
-[Sbcode Three.js tutorials](https://sbcode.net/threejs/)
-
-[Three.js Tutorial for Beginners - YouTube](https://www.youtube.com/playlist?list=PLbu98QxRH81KkLTN00OXhD8Y-pRVgTCnM)
-
-Inspiration:
-
-[Tree](tree forest/index.html)
-
-[Aviator](aviator/index.html)
-
-Chương 1, *Tạo 3D Scene đầu tiên với Three.js*, bao gồm các        bước cơ bản mà bạn cần làm để bắt đầu với Three.js. Bạn sẽ tạo Three.js        Scene đầu tiên của mình, và ở cuối chương này bạn sẽ có thể tạo và        animate cảnh 3D trực tiếp trên trình duyệt. Animation loop.
-
-Chương 2, *Các thành phần cơ bản tạo nên một ứng dụng Three.js*,        giải thích các thành phần cơ bản mà bạn cần hiểu khi làm việc với        Three.js. Bạn sẽ học về Light (ánh sáng), Mesh, Geometry, Material,        Camera. Trong chương này, bạn cũng sẽ có overview về các loại Light khác        nhau mà Three.js cung cấp và các loại Camera mà bạn có thể sử dụng.
-
-Chương 3, *Làm việc với các nguồn Light trong Three.js*, đi sâu        vào các Light khác nhau. Chương gồm các ví dụ và giải thích cách sử dụng        SpotLight, DirectionLight, AmbientLight, PointLight, HemisphereLight,        AreaLight. Thêm vào đó, chương này cũng chỉ ra cách áp dụng hiệu ứng len        flare.
-
-Chương 4, *Làm việc với Material*, nói về các Material có sẵn        trong Three.js mà bạn có thể sử dụng trên Mesh. Chương chỉ ra tất cả các        thuộc tính bạn có thể cấu hình cho các trường hợp cụ thể.
-
-Chương 5, *Làm việc với Geometry*, là chương đầu tiên trong hai        chương mà sẽ khám phá tất cả các Geometry được cung cấp bởi Three.js.        Trong chương này, bạn sẽ học cách tạo và cấu hình các Geometry như        Plane, Circle, Shape, Cube, Sphere, Cylinder, Torus, TorusKnot, và        PolyHedron.
-
-Chương 6, *Geometry nâng cao và Binary Operation*, tiếp tục ở        nơi mà chương trước kết thúc. Chương này chỉ cho bạn cách cấu hình và sử        dụng các Geometry nâng cao hơn như Convex và Lathe. Trong chương này,        bạn cũng học cách extrude 3D Geometry từ 2D Shape và cách bạn tạo        Geometry mới bằng cách kết hợp các Geometry sử dụng Binary Operation.
-
-Chương 7, *Point và Sprite (Particle)*, giải thích cách sử dụng        Point và Sprite trong Three.js. Bạn sẽ học cách tạo một đám mây Point từ        đầu và từ các Geometry đã tồn tại. Trong chương này, bạn cũng học cách        bạn có thể điều chỉnh cách một Point đơn lẻ trông thế nào bằng cách sử        dụng Sprite và Material.
-
-Chương 8, *Tạo và tải các Mesh và Geometry nâng cao (Model)*,
-
-Chương 9, *Animation và di chuyển Camera*,
-
-Chương 10, *Tải và làm việc với Texture*,
-
-Chương 11, *Render Post-processing*,
-
-Buffer
-
-Organize, group, scene graph
-
-Chương 12, *Thêm vật lý và âm thanh*,
-
-Chương 13, *3D Globe Map*,
-
-Chương 14, *3D Chart*,
-
-Chương 15, Export video,
-
-[Demo](export-video.html)
-
-Chương 16, WebGL, bắt đầu tìm hiểu
-
-[WebGL tutorial - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial)
-
-[WebGL Fundamentals](https://webglfundamentals.org/webgl/lessons/webgl-fundamentals.html)
-
-[Demo](webgl tutorial/sample1/index.html)
-
-Chương 17, Shader, tìm hiểu sâu về WebGL
-
-[List of common shading algorithms - Wikipedia](https://en.m.wikipedia.org/wiki/List_of_common_shading_algorithms)
-
-
-
-
+[Three.js Journey](https://threejs-journey.com)
 
 ## Chương 1 - Tạo cảnh 3D đầu tiên
 
@@ -2721,7 +2653,7 @@ Khi chúng ta zoom thì background giữ nguyên. Ngoài ra, Three.js sẽ nối
 
 Cách cuối cùng để tạo skybox mà chúng ta sẽ tìm hiểu là sử dụng một Equirectangular map. Đây chính là cách giống như phép chiếu từ bản đồ dạng phẳng lên quả địa cầu. Chúng ta sẽ sử dụng một ảnh panorama 360 độ, ví dụ ảnh sau:
 
-![Ninh Bình panorama](images/tears_of_steel_bridge_2k.jpg)
+![panorama](images/tears_of_steel_bridge_2k.jpg)
 
 Đầu tiên, chúng ta sẽ load ảnh như một Texture, sau đó, ở hàm callback (chúng ta cần chờ ảnh load xong), chúng ta tạo một đối tượng WebGLCubeRenderTarget và gọi phương thức `fromEquirectangularTexture()` để sinh ra một CubeTexture từ Texture đó. Chúng ta truyền kích thước cubemap khi khởi tạo WebGLCubeRenderTarget, có thể truyền giá trị bằng chiều cao của ảnh.
 
@@ -2916,7 +2848,7 @@ Bạn có thể tải Texture từ các trang web sau:
 
 - [Poly Haven](https://polyhaven.com) (free, không cần đăng ký)
 - [Free PBR Materials](https://freepbr.com)
-- [AmbientCG](https://ambientcg.com/)
+- [Ambient CG](https://ambientcg.com/)
 - [3D TEXTURES](https://3dtextures.me/)
 - [Poliigon](https://www.poliigon.com/)
 
@@ -2945,19 +2877,17 @@ Tùy các định dạng file model, chúng ta sẽ có các Loader tương ứn
 
 [Mixamo](https://www.mixamo.com/#/)
 
-[Clara.io](https://clara.io/library)
-
 [3D Models for Free - Free3D.com](https://free3d.com/)
 
 [Poly Pizza: Free 3D models for everyone](https://poly.pizza/)
 
 Chúng ta nên sử dụng các model dạng low poly để có thể hiển thị nhẹ nhàng trên cả các thiết bị yếu.
 
-Chúng ta sẽ sử dụng model con chim hồng hạc flamingo từ trang chủ của Three.js. Model này cũng có Animation để có thể sử dụng ở phần tiếp theo.
+Chúng ta sẽ sử dụng model flamingo (chim hồng hạc) từ trang chủ của Three.js. Model này cũng có Animation để có thể sử dụng ở phần tiếp theo.
 
 [https://threejs.org/examples/models/gltf/Flamingo.glb](https://threejs.org/examples/models/gltf/Flamingo.glb)
 
-Đầu tiên, chúng ta cũng tạo một cảnh 3D đơn giản với Scene, Camera, Renderer, AmbientLight, PointLight, OrbitControls. Chúng ta cũng tạo một vòng lặp Animation đơn giản.
+Đầu tiên, chúng ta cũng tạo một cảnh 3D đơn giản với Scene, Camera, Renderer, AmbientLight, PointLight, OrbitControls. Chúng ta cũng tạo một vòng lặp render đơn giản.
 
 Tiếp theo, chúng ta import class GLTFLoader từ file trong thư mục `examples`,  khởi tạo một đối tượng Loader, sau đó gọi phương thức `loadAsync()`. Kết quả trả về sẽ là một đối tượng `gltf`. Bây giờ chúng ta hãy thử in đối tượng này ra thôi xem nó bao gồm những gì. Sau đó, chúng ta bắt đầu vòng lặp render.
 
@@ -2995,13 +2925,13 @@ Trong đó:
 - `gltf.asset` chứa các metadata
 - `gltf.cameras` là một mảng các Camera
 - `gltf.parser` chứa các thông tin kỹ thuật về GLTFParser
-- `gltf.scene` là một đối tượng Group chứa các Mesh.
+- `gltf.scene` là một đối tượng Group chứa các Mesh
 - `gltf.scenes` là một mảng các Group (định dạng glTF hỗ trợ nhiều cảnh trong một file)
 - `gltf.userData` có thể chứa các thông tin thêm
 
 Hai thuộc tính mà chúng ta cần lưu ý, hay sử dụng là `scene` và  `animations`.
 
-Thuộc tính `scene` là một đối tượng Group. Để lấy ra chỉ model chim hồng hạc thôi, chúng ta có thể lấy như sau:
+Thuộc tính `scene` là một đối tượng Group. Để lấy ra chỉ model chim hồng hạc thôi, chúng ta có thể làm như sau:
 
 ```javascript
 const mesh = gltf.scene;
@@ -3018,7 +2948,7 @@ mesh.scale.multiplyScalar(scale);
 this.scene.add(mesh);
 ```
 
-Chú ý: Khi Mesh được thêm vào Scene của chúng ta thì đồng thời nó sẽ bị loại bỏ khỏi `gltf.scene`. Do đó nó có thể không hiển thị ở `gltf.scene` khi bạn sử dụng `console.log()`.
+Chú ý: Khi Mesh được thêm vào Scene của chúng ta thì đồng thời nó sẽ bị loại bỏ khỏi `gltf.scene`. Do đó nó có thể không hiển thị ở `gltf.scene` nữa khi bạn sử dụng `console.log()`.
 
 [Ví dụ Model Loader](https://static.lockex1987.com/learn-threejs/chapter-08/08-01-model-loader.html)
 
@@ -3026,7 +2956,7 @@ Chú ý: Khi Mesh được thêm vào Scene của chúng ta thì đồng thời 
 
 ### Lỗi hiển thị model trên mobile
 
-Lần đầu tiên làm chạy ví dụ trên trên máy tính thì kết quả vẫn hiển thị bình thường, tuy nhiên trên mobile (điện thoại Android Oppo của tôi) thì không hiển thị ra gì. Log lỗi trên mobile như sau:
+Lần đầu tiên khi tôi chạy ví dụ trên máy tính thì kết quả hiển thị bình thường, tuy nhiên trên mobile (điện thoại Android Oppo của tôi) thì không hiển thị ra gì. Log lỗi trên mobile như sau:
 
 ```
 THREE.WebGLProgram: Shader Error 0 - VALIDATE_STATUS false
@@ -3039,7 +2969,7 @@ WebGL: INVALID_OPERATION: useProgram: program not valid
 WebGL: INVALID_OPERATION: drawElements: no valid shader program in use
 ```
 
-Lỗi này chỉ trên một số model (ví dụ model Flamingo.glb), không phải tất cả. Một số model khác vẫn chạy được. Lỗi này bị cả trên ví dụ trên trang chủ của Three.js.
+Lỗi này chỉ trên một số model (ví dụ model Flamingo.glb), không phải tất cả. Một số model khác vẫn chạy được. Lỗi này bị cả ở ví dụ trên trang chủ của Three.js.
 
 [three.js webgl - lights - hemisphere light](https://threejs.org/examples/webgl_lights_hemisphere.html)
 
@@ -3071,7 +3001,7 @@ Một số model thường có thể đi kèm với Animation. Để có thể l
 - Lấy ra một đối tượng [AnimationClip](https://threejs.org/docs/#api/en/animation/AnimationClip) từ mảng `gltf.animations`
 - Tạo một [AnimationAction](https://threejs.org/docs/#api/en/animation/AnimationAction) từ AnimationMixer và AnimationClip
 - Bắt đầu cho chuyển động với phương thức `play()` của AnimationAction
-- Trong vòng lặp render, cần gọi phương thức [update()](https://threejs.org/docs/#api/en/animation/AnimationAction) của AnimationMixer. Chúng ta cần truyền tham số là một khoảng thời gian delta. Chúng ta có thể lấy khoảng thời gian này từ một [Clock](https://threejs.org/docs/index.html?q=Clock#api/en/core/Clock).
+- Trong vòng lặp render, cần gọi phương thức `update()` của AnimationMixer. Chúng ta cần truyền tham số là một khoảng thời gian delta. Chúng ta có thể lấy khoảng thời gian này từ một [Clock](https://threejs.org/docs/index.html?q=Clock#api/en/core/Clock).
 
 ```javascript
 setupAnimation(mesh, gltf) {
@@ -3095,9 +3025,8 @@ render() {
 }
 ```
 
-Chúng ta đã đi đến cuối hành trình về tìm hiểu cơ bản của Three.js. Hy vọng các kiến thức của các bài viết giúp bạn có cái nhìn tổng quan, sơ lược về Three.js, là nền tảng để bạn có thể tiếp tục tìm hiểu về Three.js, khám phá các kỹ thuật mới, tạo ra các cảnh 3D chân thực, ấn tượng.
+Chúng ta đã đi đến cuối hành trình tìm hiểu cơ bản về Three.js. Hy vọng kiến thức trong các bài viết giúp bạn có cái nhìn tổng quan, sơ lược về Three.js, là nền tảng để bạn có thể tiếp tục tìm hiểu sâu hơn nữa về Three.js, khám phá các kỹ thuật nâng cao mới, tạo ra các cảnh 3D chân thực, ấn tượng.
 
 Nội dung của tất cả các chương được tôi tổng hợp lại dưới một quyển ebook nhỏ định dạng EPUB, bạn có thể download ở địa chỉ sau:
 
-[Học Three.js cơ bản.epub](foo.epub)
-
+[Học Three.js cơ bản.epub](https://static.lockex1987.com/learn-threejs/hoc_three.js_co_ban.epub.epub)
