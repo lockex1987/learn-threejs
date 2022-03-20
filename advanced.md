@@ -1,3 +1,7 @@
+[Học Three.js (old)](https://cttd.tk/posts/js - three.js/)
+
+
+
 ## Shader
 
 Kiểu như code C.

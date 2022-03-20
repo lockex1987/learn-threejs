@@ -38,15 +38,21 @@ Các bài viết trên Viblo:
 
 [Three.js - Viblo](https://viblo.asia/tags/threejs)
 
+Tham khảo:
 
+[Use three.js to achieve a cool acid style 3D page - SegmentFault](https://segmentfault.com/a/1190000040753633/en)
+
+[Creating the Effect of Transparent Glass and Plastic in Three.js - Codrops](https://tympanus.net/codrops/2021/10/27/creating-the-effect-of-transparent-glass-and-plastic-in-three-js/)
+
+[Three.js Archives - Red Stapler](https://redstapler.co/tag/three-js/)
+
+[Three.js Journey (có phí)](https://threejs-journey.com)
+
+[Sbcode Three.js tutorials](https://sbcode.net/threejs/)
+
+[Three.js Tutorial for Beginners - YouTube](https://www.youtube.com/playlist?list=PLbu98QxRH81KkLTN00OXhD8Y-pRVgTCnM)
 
 Inspiration:
-
-[Dyad Studios v5](https://www.dyadstudios.com)
-
-[Short Trip - Alexander Perrin](https://alexanderperrin.com.au/paper/shorttrip/)
-
-[WindLand - By Neotix](https://windland-neotix.vercel.app)
 
 [Tree](tree forest/index.html)
 
@@ -3086,45 +3092,13 @@ render() {
 
 Chúng ta đã đi đến cuối hành trình về tìm hiểu cơ bản của Three.js. Hy vọng các kiến thức của các bài viết giúp bạn có cái nhìn tổng quan, sơ lược về Three.js, là nền tảng để các bạn có thể tiếp tục tìm hiểu về Three.js, khám phá các kỹ thuật mới, tạo ra các cảnh 3D chân thực, ấn tượng.
 
-## Phụ lục
-
-### Danh sách ví dụ
-
-x
-
-### Tham khảo
-
-[Use three.js to achieve a cool acid style 3D page - SegmentFault](https://segmentfault.com/a/1190000040753633/en)
-
-[How We Made a WebGL and Three.js Splash Page for a Music Release](https://olitunes.com/webgl-threejs-music-tech/)
-
-[Creating the Effect of Transparent Glass and Plastic in Three.js - Codrops](https://tympanus.net/codrops/2021/10/27/creating-the-effect-of-transparent-glass-and-plastic-in-three-js/)
-
-[WebGL - Quick Guide](https://www.tutorialspoint.com/webgl/webgl_quick_guide.htm)
-
-[Three.js Archives - Red Stapler](https://redstapler.co/tag/three-js/)
-
-[Beginning with 3D WebGL by Rachel Smith on CodePen](https://codepen.io/rachsmith/post/beginning-with-3d-webgl-pt-1-the-scene)
-
-[Three.js Journey (có phí)](https://threejs-journey.com)
-
-[Bruno Simon - The ultimate Three.js course Updated 11-2021](https://freetutsdownload.com/bruno-simon-the-ultimate-three-js-course/)
-
-[Bruno Simon - The ultimate Three.js course Updated 11-2021 - Google Drive](https://drive.google.com/drive/folders/1Ck6XrcZvIbnBcdvpHrpHvouwLSXopm3-)
-
-[Sbcode Three.js tutorials](https://sbcode.net/threejs/)
-
-[Three.js Tutorial Crash Course - 2021 - YouTube](https://www.youtube.com/watch?v=YK1Sw_hnm58)
-
-[Three.js Tutorial for Beginners - YouTube](https://www.youtube.com/playlist?list=PLbu98QxRH81KkLTN00OXhD8Y-pRVgTCnM)
-
 ## Ebook
 
 [Định dạng file Epub](https://cttd.tk/posts/it%20-%20epub%20format/)
 
 [Export - Typora Support](https://support.typora.io/Export/)
 
-[Self-Publishing via Markdown · GitHub](https://gist.github.com/caseywatts/3d8150fe04e0d8462cfc4d51b9856d39#:~:text=Markdown%20to%20eBook,the%20kindlegen%20command%20line%20command.)
+
 
 [Pandoc - Creating an ebook with pandoc](https://pandoc.org/epub.html)
 

@@ -3,6 +3,7 @@
 # --standalone \
 # --top-level-division=chapter \
 # --epub-chapter-level 2 \
+# --css epub.css \
 pandoc -f gfm \
     -t epub \
     --table-of-contents \
