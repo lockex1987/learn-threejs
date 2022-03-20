@@ -3029,4 +3029,4 @@ Chúng ta đã đi đến cuối hành trình tìm hiểu cơ bản về Three.j
 
 Nội dung của tất cả các chương được tôi tổng hợp lại dưới một quyển ebook nhỏ định dạng EPUB, bạn có thể download ở địa chỉ sau:
 
-[Học Three.js cơ bản.epub](https://static.lockex1987.com/learn-threejs/hoc_three.js_co_ban.epub.epub)
+[Học Three.js cơ bản.epub](https://static.lockex1987.com/learn-threejs/hoc_three.js_co_ban.epub)
