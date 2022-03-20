@@ -6,6 +6,7 @@
 # --no-highlight \
 # -f gfm \
 # TODO: Remove thẻ style ở file HTML
+# https://cttd.tk/posts/it%20-%20epub%20format/
 pandoc -t epub \
     --css css/epub.css \
     --table-of-contents \

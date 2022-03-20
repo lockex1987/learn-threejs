@@ -3091,38 +3091,3 @@ render() {
 ```
 
 Chúng ta đã đi đến cuối hành trình về tìm hiểu cơ bản của Three.js. Hy vọng các kiến thức của các bài viết giúp bạn có cái nhìn tổng quan, sơ lược về Three.js, là nền tảng để các bạn có thể tiếp tục tìm hiểu về Three.js, khám phá các kỹ thuật mới, tạo ra các cảnh 3D chân thực, ấn tượng.
-
-## Ebook
-
-[Định dạng file Epub](https://cttd.tk/posts/it%20-%20epub%20format/)
-
-
-
-[GitHub - karlseguin/the-little-go-book](https://github.com/karlseguin/the-little-go-book)
-
-[the-little-go-book/Makefile at master · karlsegui…](https://github.com/karlseguin/the-little-go-book/blob/master/Makefile)
-
-[Pandoc - Pandoc User’s Guide](https://pandoc.org/MANUAL.html#epub-metadata)
-
-[How to remove epub table of contents link to title page created by pandoc - Stack Overflow](https://stackoverflow.com/questions/31297646/how-to-remove-epub-table-of-contents-link-to-title-page-created-by-pandoc)
-
-[epub - How can I prevent pandoc from inserting an h1 element of my title in the content - Stack Overflow](https://stackoverflow.com/questions/67508187/how-can-i-prevent-pandoc-from-inserting-an-h1-element-of-my-title-in-the-conte)
-
-[Customizing pandoc to generate beautiful pdf and epub from markdown](https://learnbyexample.github.io/customizing-pandoc/)
-
-[What can I control with YAML header options in pandoc? - Stack Overflow](https://stackoverflow.com/questions/26395374/what-can-i-control-with-yaml-header-options-in-pandoc)
-
-[The Greatest CSS Tricks Vol. I eBook (PDF and EPUB) | CSS-Tricks - CSS-Tricks](https://css-tricks.com/the-greatest-css-tricks-vol-i-ebook-pdf-and-epub/)
-
-[baldurbjarnason/book-tricks: A starting point for ebook creation](https://github.com/baldurbjarnason/book-tricks)
-
-[book-tricks/Makefile at master · baldurbjarnason/book-tricks](https://github.com/baldurbjarnason/book-tricks/blob/master/Makefile)
-
-[github - Pandoc : set document title to first title - Stack Overflow](https://stackoverflow.com/questions/56004886/pandoc-set-document-title-to-first-title)
-
-[Release pandoc 2.17.1.1 · jgm/pandoc](https://github.com/jgm/pandoc/releases/tag/2.17.1.1)
-
-[themsaid/ibis: A PHP tool that helps you write eBooks in markdown and convert to PDF.](https://github.com/themsaid/ibis)
-
-[Free Laravel Tips and Tricks eBook](https://devdojo.com/bobbyiliev/free-laravel-tips-and-tricks-ebook#chapters)
-
