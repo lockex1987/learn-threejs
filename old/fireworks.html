@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Three.js FireWorks</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(0deg, rgb(0, 12, 91), rgb(0, 0, 0));
+        }
+    </style>
+</head>
+
+<body id="body">
+    <div id="WebGL-output"></div>
+
+    <script id="vs" type="x-shader/x-vertex">
+        precision mediump float;
+        attribute vec3 position;
+        uniform mat4 projectionMatrix;
+        uniform mat4 modelViewMatrix;
+        uniform float size;
+        attribute float adjustSize;
+        uniform vec3 cameraPosition;
+        varying float distanceCamera;
+        attribute vec3 velocity;
+        attribute vec4 color;
+        varying vec4 vColor;
+        void main() {
+            vColor = color;
+            vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0);
+            gl_PointSize = size * adjustSize * (100.0 / length(modelViewPosition.xyz));
+            gl_Position = projectionMatrix * modelViewPosition;
+        }
+    </script>
+
+    <script id="fs" type="x-shader/x-fragment">
+        precision mediump float;
+        uniform sampler2D texture;
+        varying vec4 vColor;
+        void main() {
+            vec4 color = vec4(texture2D(texture, gl_PointCoord));
+            gl_FragColor = color * vColor;
+        }
+    </script>
+  
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/104/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.104.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.6/dat.gui.min.js'></script>
+    <script  src="js/fireworks.js"></script>
+</body>
+</html>
