@@ -1,0 +1,16 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: #ecf0f1;
+}
+
+.threeChartContainer{
+  width: 98%;
+  height: 98%;
+  background: #ecf0f1;
+  margin: auto;
+  float: left;
+}

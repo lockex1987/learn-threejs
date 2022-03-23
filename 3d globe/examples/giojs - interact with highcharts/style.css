@@ -1,0 +1,50 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#importChartArea {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 50%;
+  width: 50%;
+  background-color: #000000;
+  border-right: 1px solid #9c9c9c;
+  border-bottom: 1px solid #9c9c9c;
+  box-sizing: border-box;
+}
+
+#exportChartArea {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  height: 50%;
+  width: 50%;
+  background-color: #000000;
+  border-right: 1px solid #9c9c9c;
+  box-sizing: border-box;
+}
+
+#globalArea {
+  position: fixed;
+  left: 50%;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  background-color: #000000;
+}
+
+#globeTitle {
+  position: fixed;
+  left: 50%;
+  top: 0;
+  color: #fff;
+  font-size: 16px;
+  line-height: 30px;
+  z-index: 10;
+  padding-left: 50px;
+}

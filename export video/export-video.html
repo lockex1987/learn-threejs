@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export video</title>
+    <link rel="icon" href="../../images/logo.svg">
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+    <article id="app">
+        <p>Canvas:</p>
+
+        <div class="mb-3">
+            <canvas ref="theCanvas"
+                style="width: 300px; height: 150px;"></canvas>
+        </div>
+
+        <div class="mb-3 d-flex">
+            <button v-show="!isRecording"
+                type="button"
+                class="btn btn-primary"
+                @click="startRecord()">
+                Record
+            </button>
+
+            <button v-show="isRecording"
+                type="button"
+                class="btn btn-danger"
+                @click="stopRecord()">
+                Stop
+            </button>
+        </div>
+
+        <div vv-show="isRecorded">
+            <p>Video:</p>
+
+            <div class="mb-3">
+                <video ref="theVideo"
+                    src="media/video.mp4"
+                    controls></video>
+            </div>
+
+            <div class="mb-3">
+                <a href=""
+                    download="my video.webm"
+                    ref="theLink">
+                    Download the video
+                </a>
+            </div>
+
+            <div class="mb-3">
+                <canvas ref="canvas1"
+                    style="width: 300px; height: 150px;"></canvas>
+            </div>
+
+            <div class="mb-3">
+                <canvas ref="canvas2"
+                    style="width: 300px; height: 150px; background-image: url(media/foo.png); background-repeat: no-repeat;"></canvas>
+            </div>
+        </div>
+    </article>
+
+    <script src="https://unpkg.com/vue@3.2.19/dist/vue.global.prod.js"></script>
+    <script src="js/export-video.js"></script>
+</body>
+</html>
