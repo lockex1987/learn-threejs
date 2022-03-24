@@ -4,7 +4,7 @@
 
 Kiểu như code C.
 
-## Globe Map
+## 3D Globe (Map, Chart?)
 
 Cần hiển thị được các nước.
 
@@ -16,14 +16,9 @@ Cần hiển thị được các nước.
 
 Demo
 
-- [3D Globe Map 1](3d globe/globe 1/index.html)
 - [3D Globe với thư viện amCharts](../js - amcharts/examples/map-globe-with-projected-circles/index.html)
 - [Hàm callback khi chọn nước](3d globe/examples/19 api on country picked.html)
 - [Chủ động chọn nước](3d globe/examples/20 api switch country.html)
-- [WebGL Earth](3d globe/thematic mapping/index.html)
-- [Pure JS with canvas](3d globe/pure js and canvas/index.html)
-- [World Population Density](3d globe/world-population-density/index.html)
-- [Three.js Earth](3d globe/three-js-earth/index.html)
 
 Bắt đầu từ:
 
@@ -122,23 +117,13 @@ WARNING: Checking for updates failed (use `--debug` to see full error)
 
 ## 3D Chart
 
-[Pie](https://codepen.io/Developer_sunset/pen/mXbEGz)
-
-[Pie-2](https://codepen.io/talyYang/pen/bRbKRM)
+Pie
 
 Column (cube)
 
 Trục
 
 Label
-
-[Learning Three.js With Real World Challenges (that have already been solved) - data analysis, data visualization, three.js - Bocoup](https://bocoup.com/blog/learning-three-js-with-real-world-challenges-that-have-already-been-solved)
-
-[Three.js - wooden bar chart / David B. / Observable](https://observablehq.com/@bumbeishvili/three-js-wooden-bar-chart)
-
-[3D bar chart port / David B. / Observable](https://observablehq.com/@bumbeishvili/3d-bar-chart-port?collection=@bumbeishvili/3d)
-
-[3D / David B. / Observable](https://observablehq.com/collection/@bumbeishvili/3d)
 
 Cảm hứng từ các video sau:
 
