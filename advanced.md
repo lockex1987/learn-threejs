@@ -4,21 +4,37 @@
 
 Kiểu như code C.
 
-## 3D Globe (Map, Chart?)
+[The Book of Shaders](https://thebookofshaders.com/)
 
-Cần hiển thị được các nước.
+[Jam3/jam3-lesson-webgl-shader-intro: A brief introduction to fragment shaders.](https://github.com/Jam3/jam3-lesson-webgl-shader-intro)
 
-[Andrey Sitnik](https://sitnik.ru/en/)
+[Jam3/jam3-lesson-webgl-shader-threejs: Using custom vertex and fragment shaders in ThreeJS](https://github.com/Jam3/jam3-lesson-webgl-shader-threejs)
 
-[ai/sitnik.ru: My homepage content and scripts](https://github.com/ai/sitnik.ru)
+[Shader 1: Rim lighted sphere](http://localhost:8000/shader/shader1.html)
 
-[Faster WebGL/Three.js 3D graphics with OffscreenCanvas and Web Workers - DEV Community](https://dev.to/evilmartians/faster-webgl-three-js-3d-graphics-with-offscreencanvas-and-web-workers-43he)
+## 3D Globe
 
-Demo
+Map, Chart? Cần hiển thị được các nước.
 
-- [3D Globe với thư viện amCharts](../js - amcharts/examples/map-globe-with-projected-circles/index.html)
-- [Hàm callback khi chọn nước](3d globe/examples/19 api on country picked.html)
-- [Chủ động chọn nước](3d globe/examples/20 api switch country.html)
+Demo:
+
+[Globe 1](http://localhost:8000/3d%20globe/globe1.html)
+
+[Globe 2](http://localhost:8000/3d%20globe/globe2.html)
+
+[Globe 3](http://localhost:8000/3d%20globe/globe3.html)
+
+[Globe 4](http://localhost:8000/3d%20globe/globe4.html)
+
+[Globe 5](http://localhost:8000/3d%20globe/globe5.html)
+
+[Hello World (Simplest Usage) / Gio.js](http://localhost:8000/3d%20globe/examples/00_hello_world(simplest).html)
+
+[API switchCountry() / Gio.js](http://localhost:8000/3d%20globe/examples/20%20api%20switch%20country.html)
+
+[API onCountryPicked() / Gio.js](http://localhost:8000/3d%20globe/examples/19%20api%20on%20country%20picked.html)
+
+[Map globe with projected circles](https://lockex1987.com/posts/js%20-%20amcharts/examples/map-globe-with-projected-circles/index.html)
 
 Bắt đầu từ:
 
@@ -42,9 +58,6 @@ Hướng dẫn:
 
 [Intermediate Three.js Tutorial - Create a Globe with Custom Shaders - YouTube](https://www.youtube.com/watch?v=vM8M4QloVL0)
 
-
-​      
-
 [HTML5: Render open data on a 3D world globe with Three.js](http://www.smartjava.org/content/html5-render-open-data-3d-world-globe-threejs/)
 
 Thư viện khác:
@@ -52,68 +65,6 @@ Thư viện khác:
 [Gio.js](https://giojs.org/)
 
 ![Gio logo](images/gio-logo.png)
-
-
-​      
-
-```
-$ cd new/sitnik.ru-main/
-$ npm install
-npm notice created a lockfile as package-lock.json. You should commit this file.
-npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@~2.3.2 (node_modules/rollup/node_modules/fsevents):
-npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@2.3.2: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
-npm WARN eslint-config-standard@16.0.3 requires a peer of eslint@^7.12.1 but none is installed. You must install peer dependencies yourself.
-npm WARN eslint-config-standard@16.0.3 requires a peer of eslint-plugin-promise@^4.2.1 || ^5.0.0 but none is installed. You must install peer dependencies yourself.
-
-added 572 packages from 333 contributors in 30.22s
-
-104 packages are looking for funding
-  run `npm fund` for details
-
-$ npm run build
-
-> @ build /home/huyennv9/new/sitnik.ru-main
-> NODE_ENV=production ./scripts/build.js
-
-✔ Load location 0 ms
-✔ Clean dist/ 2 ms
-✔ Save location cache 11 ms
-✔ Copy images 138 ms
-✔ Compile styles 220 ms
-✔ Bundle scripts 5387 ms
-✔ Update nginx.conf 136 ms
-✔ Compile HTML 137 ms
-✔ Precompess assets 18 ms
-$ npm run start
-
-> @ start /home/huyennv9/new/sitnik.ru-main
-> serve dist/
-
-WARNING: Checking for updates failed (use `--debug` to see full error)
-
-   ┌───────────────────────────────────────────────────┐
-   │                                                   │
-   │   Serving!                                        │
-   │                                                   │
-   │   - Local:            http://localhost:3000       │
-   │   - On Your Network:  http://172.16.40.196:3000   │
-   │                                                   │
-   │   Copied local address to clipboard!              │
-   │                                                   │
-   └───────────────────────────────────────────────────┘
-```
-
-
-​      
-
-
-
-
-​      
-
-
-
-
 
 ## 3D Chart
 
@@ -137,11 +88,11 @@ Cảm hứng từ các video sau:
 
 Demo:
 
-[Area chart](3d chart/area-chart/index.html)
+[Area chart](http://localhost:8000/3d%20chart/area-chart/index.html)
 
-[Line chart](3d chart/line-chart/index.html)
+[Line chart](http://localhost:8000/3d%20chart/line-chart/index.html)
 
-[Column chart](3d chart/column-chart/index.html)
+[Column chart](http://localhost:8000/3d%20chart/column-chart/index.html)
 
 ## Export video
 

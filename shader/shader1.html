@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shader 1: Rim lighted sphere</title>
+    <link rel="icon" href="../images/logo.svg" />
+	<link rel="stylesheet" href="../css/style.css" />
+    <style>
+        body{
+            background-size: cover;
+            background-image: url('https://images.unsplash.com/photo-1470290449668-02dd93d9420a?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=02ea21b9fed45efc7d1354dead77867b&auto=format');
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="webglOutput"></canvas>
+
+    <script type="x-shader/x-vertex" id="vertexShader2">
+        varying float alpha;
+
+        void main() { 
+            // calculate the vertex position as expected in a perpective renderer
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  
+            // now onto the alpha calculation
+            // get the vertex vertex normal 
+            vec3 nmal = normal;
+  
+            // find vector from the vertex to camera and then normalise it
+            vec3 viewVector =  normalize((cameraPosition - normal));
+  
+            // now find the dot poduct
+            // faceing the camera is 1 and perpendicular is 0 so for this effect you want to minus it from 1
+            // note that alpha is the varying float passed between the vertex and fragment shader
+            alpha =  1.0 - dot(nmal, viewVector);
+        }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragmentShader2">
+        varying float alpha;
+
+        void main() {
+            // make the fragment white with the alpha calculated from the vertex shader
+            gl_FragColor = vec4(1, 1, 1, alpha);
+        }
+    </script>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.137.5/build/three.module.js"
+            }
+        }
+    </script>
+
+    <script type="module" src="js/shader1.js"></script>
+</body>
+</html>
