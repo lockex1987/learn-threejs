@@ -1,6 +1,4 @@
-[Học Three.js (old)](https://cttd.tk/posts/js - three.js/)
-
-
+[Các ví dụ sách Học Three.js (old)](https://cttd.tk/posts/js%20-%20three.js/)
 
 ## Shader
 
@@ -134,8 +132,6 @@ Trục
 
 Label
 
-[Groundbreaking Skyscrapers - 3D model by USA TODAY           NETWORK (@EmergingTech) [fc64e66\]](https://sketchfab.com/3d-models/groundbreaking-skyscrapers-fc64e663a32342a187320e1f07aa476d)
-
 [Learning Three.js With Real World Challenges (that have already been solved) - data analysis, data visualization, three.js - Bocoup](https://bocoup.com/blog/learning-three-js-with-real-world-challenges-that-have-already-been-solved)
 
 [Three.js - wooden bar chart / David B. / Observable](https://observablehq.com/@bumbeishvili/three-js-wooden-bar-chart)
@@ -143,6 +139,8 @@ Label
 [3D bar chart port / David B. / Observable](https://observablehq.com/@bumbeishvili/3d-bar-chart-port?collection=@bumbeishvili/3d)
 
 [3D / David B. / Observable](https://observablehq.com/collection/@bumbeishvili/3d)
+
+Cảm hứng từ các video sau:
 
 [EVOLUTION of WORLD'S TALLEST BUILDING: Size Comparison (1901-2022) - YouTube](https://www.youtube.com/watch?v=PuTqWxuAazI)
 
@@ -152,17 +150,17 @@ Label
 
 [MetaBallStudios - YouTube](https://www.youtube.com/channel/UCQwFuQLnLocj5F7ZcmcuWYQ)
 
-Demo
+Demo:
 
 [Area chart](3d chart/area-chart/index.html)
-
-[3 axis](3d chart/3-axis/index.html)
 
 [Line chart](3d chart/line-chart/index.html)
 
 [Column chart](3d chart/column-chart/index.html)
 
 ## Export video
+
+Ví dụ
 
 ## Shadow
 
@@ -209,8 +207,6 @@ Các thuật toán tạo bóng: renderer.shadowMap.type
 
 Baking shadow: Tạo một Mesh để thể hiện bóng, di chuyển theo vật
 
-
-
 https://threejs.org/manual/#en/shadows
 
 ## Các ví dụ lẻ
@@ -240,10 +236,6 @@ Phần trăm tải
 [Build a simple 2D physics engine for JavaScript games – IBM Developer](https://developer.ibm.com/tutorials/wa-build2dphysicsengine/)
 
 [Building a Physics-based 3D Menu with Cannon.js and Three.js - Codrops](https://tympanus.net/codrops/2019/12/10/building-a-physics-based-3d-menu-with-cannon-js-and-three-js/)
-
-
-
-
 
 ## Render Post-processing
 
@@ -346,4 +338,3 @@ Sử dụng ràng buộc giới hạn chuyển động của các đối tượn
 Thêm âm thanh
 
 [Example 12.07 - Audio](https://cttd.tk/posts/js%20-%20three.js/learn%20three.js/src/chapter-12/07-audio.html)
-

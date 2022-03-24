@@ -1,8 +1,10 @@
 // http://learningthreejs.com/blog/2013/09/16/how-to-make-the-earth-in-webgl/
 function init() {
-    const renderer = new THREE.WebGLRenderer();
+    const canvas = document.querySelector('#webglOutput');
+    const renderer = new THREE.WebGLRenderer({
+        canvas
+    });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
@@ -86,7 +88,7 @@ function init() {
         camera.lookAt(scene.position);
     }
 
-    function animate(nowMsec) {
+    function render(nowMsec) {
         // measure time
         lastTimeMsec = lastTimeMsec || nowMsec - 1000 / 60;
         const deltaMsec = Math.min(200, nowMsec - lastTimeMsec);
@@ -95,10 +97,10 @@ function init() {
 
         update(delta);
         renderer.render(scene, camera);
-        requestAnimationFrame(animate);
+        requestAnimationFrame(render);
     }
 
-    requestAnimationFrame(animate);
+    requestAnimationFrame(render);
 }
 
 require(['bower_components/threex.planets/package.require.js'], init);

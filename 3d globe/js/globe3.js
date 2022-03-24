@@ -1,28 +1,64 @@
+import {
+    Scene,
+    PerspectiveCamera,
+    WebGLRenderer,
+    Color,
+    PointLight,
+    AmbientLight,
+    DirectionalLight,
+    SpotLight,
+    TextureLoader,
+    SphereGeometry,
+    MeshPhongMaterial,
+    MeshBasicMaterial,
+    MeshLambertMaterial,
+    ShaderMaterial,
+    Mesh,
+    Object3D,
+    BackSide,
+    DoubleSide,
+    AdditiveBlending,
+    Vector3
+} from 'https://unpkg.com/three@0.137.5/build/three.module.js';
+
+import { OrbitControls } from 'https://unpkg.com/three@0.137.5/examples/jsm/controls/OrbitControls.js';
+import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.16/+esm';
+
+
+const canvas = document.querySelector('#webglOutput');
+
 // Scene, Camera, Renderer
-const renderer = new THREE.WebGLRenderer();
-const scene = new THREE.Scene();
+const scene = new Scene();
+
+
 const aspect = window.innerWidth / window.innerHeight;
-const camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1500);
+const camera = new PerspectiveCamera(45, aspect, 0.1, 1500);
+
+const renderer = new WebGLRenderer({
+    canvas
+});
+
 let cameraRotation = 0;
 let cameraRotationSpeed = 0.001;
 let cameraAutoRotation = true;
-const orbitControls = new THREE.OrbitControls(camera);
+
+const orbitControls = new OrbitControls(camera, renderer.domElement);
 
 // Lights
-const spotLight = new THREE.SpotLight(0xffffff, 1, 0, 10, 2);
+const spotLight = new SpotLight(0xffffff, 1, 0, 10, 2);
 
 // Texture Loader
-const textureLoader = new THREE.TextureLoader();
+const textureLoader = new TextureLoader();
 
 // Planet Proto
 const planetProto = {
     sphere: function (size) {
-        const sphere = new THREE.SphereGeometry(size, 32, 32);
+        const sphere = new SphereGeometry(size, 32, 32);
         return sphere;
     },
 
     material: function (options) {
-        const material = new THREE.MeshPhongMaterial();
+        const material = new MeshPhongMaterial();
         if (options) {
             for (const property in options) {
                 material[property] = options[property];
@@ -33,53 +69,50 @@ const planetProto = {
 
     glowMaterial: function (intensity, fade, color) {
         // Custom glow shader from https://github.com/stemkoski/stemkoski.github.com/tree/master/Three.js
-        const glowMaterial = new THREE.ShaderMaterial({
+        const glowMaterial = new ShaderMaterial({
             uniforms: {
                 c: {
                     type: 'f',
                     value: intensity
                 },
-
                 p: {
                     type: 'f',
                     value: fade
                 },
-
                 glowColor: {
                     type: 'c',
-                    value: new THREE.Color(color)
+                    value: new Color(color)
                 },
-
                 viewVector: {
                     type: 'v3',
                     value: camera.position
                 }
             },
 
-
             vertexShader: `
                 uniform vec3 viewVector;
                 uniform float c;
                 uniform float p;
                 varying float intensity;
+
                 void main() {
-                vec3 vNormal = normalize( normalMatrix * normal );
-                vec3 vNormel = normalize( normalMatrix * viewVector );
-                intensity = pow( c - dot(vNormal, vNormel), p );
-                gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+                    vec3 vNormal = normalize( normalMatrix * normal );
+                    vec3 vNormel = normalize( normalMatrix * viewVector );
+                    intensity = pow( c - dot(vNormal, vNormel), p );
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
                 }`,
 
             fragmentShader: `
                 uniform vec3 glowColor;
                 varying float intensity;
-                void main() 
-                {
-                vec3 glow = glowColor * intensity;
-                gl_FragColor = vec4( glow, 1.0 );
+
+                void main() {
+                    vec3 glow = glowColor * intensity;
+                    gl_FragColor = vec4( glow, 1.0 );
                 }`,
 
-            side: THREE.BackSide,
-            blending: THREE.AdditiveBlending,
+            side: BackSide,
+            blending: AdditiveBlending,
             transparent: true
         });
 
@@ -87,7 +120,7 @@ const planetProto = {
     },
 
     texture: function (material, property, uri) {
-        const textureLoader = new THREE.TextureLoader();
+        const textureLoader = new TextureLoader();
         textureLoader.crossOrigin = true;
         textureLoader.load(
             uri,
@@ -103,26 +136,26 @@ const createPlanet = function (options) {
     // Create the planet's Surface
     const surfaceGeometry = planetProto.sphere(options.surface.size);
     const surfaceMaterial = planetProto.material(options.surface.material);
-    const surface = new THREE.Mesh(surfaceGeometry, surfaceMaterial);
+    const surface = new Mesh(surfaceGeometry, surfaceMaterial);
 
     // Create the planet's Atmosphere
     const atmosphereGeometry = planetProto.sphere(options.surface.size + options.atmosphere.size);
     const atmosphereMaterialDefaults = {
-        side: THREE.DoubleSide,
+        side: DoubleSide,
         transparent: true
     };
 
     const atmosphereMaterialOptions = Object.assign(atmosphereMaterialDefaults, options.atmosphere.material);
     const atmosphereMaterial = planetProto.material(atmosphereMaterialOptions);
-    const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+    const atmosphere = new Mesh(atmosphereGeometry, atmosphereMaterial);
 
     // Create the planet's Atmospheric glow
     const atmosphericGlowGeometry = planetProto.sphere(options.surface.size + options.atmosphere.size + options.atmosphere.glow.size);
     const atmosphericGlowMaterial = planetProto.glowMaterial(options.atmosphere.glow.intensity, options.atmosphere.glow.fade, options.atmosphere.glow.color);
-    const atmosphericGlow = new THREE.Mesh(atmosphericGlowGeometry, atmosphericGlowMaterial);
+    const atmosphericGlow = new Mesh(atmosphericGlowGeometry, atmosphericGlowMaterial);
 
     // Nest the planet's Surface and Atmosphere into a planet object
-    const planet = new THREE.Object3D();
+    const planet = new Object3D();
     surface.name = 'surface';
     atmosphere.name = 'atmosphere';
     atmosphericGlow.name = 'atmosphericGlow';
@@ -154,7 +187,7 @@ const earth = createPlanet({
         size: 0.5,
         material: {
             bumpScale: 0.05,
-            specular: new THREE.Color('grey'),
+            specular: new Color('grey'),
             shininess: 10
         },
 
@@ -184,28 +217,22 @@ const earth = createPlanet({
 });
 
 
-
-
 // Marker Proto
 const markerProto = {
     latLongToVector3: function latLongToVector3(latitude, longitude, radius, height) {
         const phi = latitude * Math.PI / 180;
         const theta = (longitude - 180) * Math.PI / 180;
-
         const x = -(radius + height) * Math.cos(phi) * Math.cos(theta);
         const y = (radius + height) * Math.sin(phi);
         const z = (radius + height) * Math.cos(phi) * Math.sin(theta);
-
-        return new THREE.Vector3(x, y, z);
+        return new Vector3(x, y, z);
     },
 
     marker: function marker(size, color, vector3Position) {
-        const markerGeometry = new THREE.SphereGeometry(size);
-        const markerMaterial = new THREE.MeshLambertMaterial({ color: color });
-
-        const markerMesh = new THREE.Mesh(markerGeometry, markerMaterial);
+        const markerGeometry = new SphereGeometry(size);
+        const markerMaterial = new MeshLambertMaterial({ color: color });
+        const markerMesh = new Mesh(markerGeometry, markerMaterial);
         markerMesh.position.copy(vector3Position);
-
         return markerMesh;
     }
 };
@@ -247,10 +274,12 @@ const placeMarkerAtAddress = function (address, color) {
 };
 
 // Galaxy
-const galaxyGeometry = new THREE.SphereGeometry(100, 32, 32);
-const galaxyMaterial = new THREE.MeshBasicMaterial({ side: THREE.BackSide });
+const galaxyGeometry = new SphereGeometry(100, 32, 32);
+const galaxyMaterial = new MeshBasicMaterial({
+    side: BackSide
+});
 
-const galaxy = new THREE.Mesh(galaxyGeometry, galaxyMaterial);
+const galaxy = new Mesh(galaxyGeometry, galaxyMaterial);
 
 // Load Galaxy Textures
 textureLoader.crossOrigin = true;
@@ -306,7 +335,7 @@ const render = function () {
 render();
 
 // dat.gui
-const gui = new dat.GUI();
+const gui = new GUI();
 const guiCamera = gui.addFolder('Camera');
 const guiSurface = gui.addFolder('Surface');
 const guiMarkers = guiSurface.addFolder('Markers');
